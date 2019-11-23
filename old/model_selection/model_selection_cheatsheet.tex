@@ -1,0 +1,119 @@
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\tp}{{\!\scriptscriptstyle \top}}
+\RequirePackage{amsmath,amssymb,hyperref}
+%%%% FONT %%%%%%%%%%%%%%
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+% fix markign
+\geometry{top=0.2cm,left=0.2cm,right=0.2cm,bottom=1.1cm} 
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\RequirePackage{titlesec, xcolor}
+\titleformat{name=\section,numberless}{\large\scshape\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+\titleformat{name=\subsection,numberless}{}{}{0em}{\colorsubsectionnonumber}
+\newcommand{\colorsectionnonumber}[1]{%
+	\colorbox{green!20}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+	\colorbox{green!10}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+
+% make a bigger \dot
+\usepackage{accents}
+\newcommand*{\dt}[1]{%
+	\accentset{\mbox{\large\bfseries .}}{#1}}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyhead{}
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyfoot[R]{\scriptsize Copyright \copyright\ 2017 Emi Tanaka \qquad \url{emi.tanaka@sydney.edu.au} \hfill Page~\thepage}
+
+\definecolor{Melon}             {RGB}{255, 129, 141} 	% Melon  Approximate PANTONE 177
+\definecolor{RubineRed}         {RGB}{202, 0, 93}       % RubineRed  Approximate PANTONE RUBINE-RED
+\definecolor{Cerulean}          {RGB}{0, 122, 201}      % Cerulean  Approximate PANTONE 3005
+\newcommand{\colU}[1]{{\color{Melon}{#1}}}
+\newcommand{\colT}[1]{{\color{RubineRed}{#1}}}
+\newcommand{\colW}[1]{{\color{Cerulean}{#1}}}
+
+% the right brace for cases
+\newenvironment{rcases}
+{\left.\begin{aligned}}
+	{\end{aligned}\right\rbrace}
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+
+\begin{center}
+     \Large{\textbf{Model Selection Cheat Sheet}} \\
+\end{center}
+
+\section{Akaike Information Criteria}
+$$2 \times \text{log-likelihood} + 2p $$
+BIC is consistent in selecting the true model.
+AIC is minimax-rate optimal for estimating the regression function.
+
+You cannot have both consistency and minimax-rate optimality (Yang 2005)
+
+\nocite{Yang2005}	
+%\nocite{*} % Insert publications even if they are not cited in the poster
+\small{\bibliography{/Users/emi/Dropbox/Articles/library}
+	\bibliographystyle{plain}\vspace{0.75in}}
+\end{multicols}
+\end{document}

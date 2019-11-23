@@ -1,0 +1,832 @@
+---
+title: "Linear Algebra"
+bibliography: references.bib
+nocite: '@*'
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    self_contained: false
+    social: menu
+    theme: united
+---
+
+\newcommand{\tp}{{\scriptscriptstyle \top}}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+\newcommand{\dim}[1]{{\rm dim}\left(#1\right)}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\matA}{\mat{A}}
+\newcommand{\matB}{\mat{B}}
+\newcommand{\matC}{\mat{C}}
+\newcommand{\matX}{\mat{X}}
+\newcommand{\matY}{\mat{Y}}
+\newcommand{\vecit}[1]{\boldsymbol{#1}}
+\newcommand{\vecv}{\boldsymbol{v}}
+\newcommand{\vecw}{\boldsymbol{w}}
+\newcommand{\vecx}{\boldsymbol{x}}
+\newcommand{\vecy}{\boldsymbol{y}}
+\newcommand{\vecz}{\boldsymbol{z}}
+
+
+
+Sidebar {.sidebar}
+=====================================
+
+### Table of Contents
+
+#### Identities
+* [Traces]
+* [Transpose]
+* [Inverses]
+* [Rank]
+* [Determinants]
+* [Orthogonality]
+* [Derivatives]
+* [Partitioned Matrix]
+* [Matrix Factorisation]
+* [Solving Linear Equations]
+* [Direct Sum]
+* [Direct Product]
+
+#### Special Matrices
+
+* [Non-negative definite matrices]
+* [Symmetric matrices]
+* [Diagonal Matrix]
+* [Matrices with all element equal]
+
+
+#### Definitions
+
+* [Notations]
+* [Projection matrix]
+* [Range/Span/Column Space]
+* [Orthogonal complement]
+* [Vector/Matrix operations]
+* [Quadratic Form]
+* [Vector Space]
+
+#### Applications
+
+
+Cheat Sheet {data-orientation=rows}
+=====================================
+
+
+Row
+-------------------------------------
+
+
+### Traces
+
+The **trace** of a square $n\times n$ matrix $\matA$ is the sum of the diagonal elements and denoted $\tr{\matA}$. The trace is not defined for a matrix that is not a square. 
+
+Let $\lambda_1, \lambda_2, ..., \lambda_n$ be the eigenvalues of $\matA$; $\matB$ and $\matC$ are $n\times n$ matrices; and $\vecx$ and $\vecy$ are vector of length $n$.
+
+* $\tr{\matA} = \tr{\matA^\tp}$
+* If $a$ is a scalar, then $\tr{a}=a$.
+* $\tr{\matA + \matB} = \tr{\matA} + \tr{\matB}$
+* $\tr{\matA\matB} = \tr{\matB\matA} = \sum_{i=1}^r\sum_{j=1}^c a_{ij}b_{ji}$
+* $\tr{\matA\matA^\tp} = \tr{\matA^\tp\matA} = \sum_{i=1}^r\sum_{j=1}^c a_{ij}^2$
+* $\tr{\matA\matB\matC} = \tr{\matB\matC\matA} = \tr{\matC\matA\matB}$. Note these are note equal to $\tr{\matC\matB\matA}$.
+* $\vecx^\tp\matA\vecy = \tr{\vecx^\tp\matA\vecy} =  \tr{\matA\vecy\vecx^\tp}$
+* $\tr{\matA} = \sum_i^n \lambda_i$
+* $\tr{\matA^k} = \sum_i^n \lambda_i^k$
+
+### Transpose
+
+* If $a_{ij}$ is the $(i,j)$-th element of $\matA$ then $a_{ij}$ is the $(j,i)$-th element of $\matA^\top$.
+* The transpose operation is reflexive: $(\matA^\tp)^\tp = \matA$.
+* $(\matA + \matB)^\tp = \matA^\tp + \matB^\tp$
+* $(\matA\matB)^\tp = \matB^\tp \matA^\tp$
+* Transposing a partitioned matrix:
+$$\begin{bmatrix}
+		\matA & \matB & \matC \\	
+		\mat{D} & \mat{E} & \mat{F} 
+		\end{bmatrix}^\tp  = \begin{bmatrix}
+		\matA^\tp & \mat{D}^\tp \\
+		\matB^\tp & \mat{E}^\tp \\
+		\matC^\tp & \mat{F}^\tp 
+		\end{bmatrix}$$
+* $\left(\matA^{-1}\right)^\tp = \left(\matA^\tp\right)^{-1}$
+
+Row
+-------------------------------------
+
+
+### Inverses
+
+* The **inverse** of a square matrix $\matA$ is the unique matrix $\matA^{-1}$ such that $\matA^{-1}\matA=\matA\matA^{-1}=\mat{I}.$ Note that $\matA^{-1}$ does not always exist.
+* $\matA^{-1} = |\matA|^{-1}\text{adj}\matA$ where $\text{adj}\matA$ is the **adjugate** (or adjoint) matrix of $\matA$ (the transpose of the matrix of co-factors).
+* Inverse of a matrix $\matA$ does not exist if $|\matA| = 0$ and $\matA$ is said to be *singular*. 
+* $(\matA^\tp)^{-1} = (\matA^{-1})^\tp$.
+* If $\matA$ is symmetric so is its inverse: if $\matA^\tp = \matA$ then $(\matA^{-1})^\tp = \matA^{-1}$.
+* $(\matA\otimes \matB)^{-1} = \matA^{-1}\otimes \matB^{-1}$
+* $(\matA \oplus \matB)^{-1} = \matA^{-1}\oplus \matB^{-1}$
+* $(\matA\matB)^{-1} = \matB^{-1}\matA^{-1}$.
+* $(a\mat{I}_n + b\mat{J}_n)^{-1} = \dfrac{1}{a}\left(\mat{I}_n - \dfrac{b}{a+nb}\mat{J}_n\right)$ if $a\neq =0$ and $a + nb \neq 0$.
+* $$\begin{bmatrix}
+		\mat{R} & \vecit{0} \\
+		\matX & \mat{S} 
+		\end{bmatrix}^{-1} = \begin{bmatrix}
+		\mat{R}^{-1} & \vecit{0} \\
+		-\mat{S}^{-1}\matX\mat{R}^{-1} & \mat{S}^{-1} 
+		\end{bmatrix}$$
+* $\displaystyle \matA = \begin{bmatrix}
+		a & b \\
+		c & d
+		\end{bmatrix}$ then $\matA^{-1} =  \dfrac{1}{ab - cd} \begin{bmatrix}
+		d & -b \\
+		-c & a
+		\end{bmatrix}$.
+* Suppose we have the partitioned matrix $\matA = \begin{bmatrix}
+		\matA_{11} & \matA_{12} \\
+		\matA_{21} & \matA_{22}
+		\end{bmatrix}$ then $\matA^{-1}$
+$$\begin{bmatrix}
+		(\matA_{11} - \matA_{12}\matA_{22}^{-1}\matA_{21})^{-1} & -\matA_{11}^{-1}\matA_{12}(\matA_{22} - \matA_{21}\matA_{11}^{-1}\matA_{12})^{-1} \\
+		-\matA_{22}^{-1}\matA_{21}(\matA_{11} - \matA_{12}\matA_{22}^{-1}\matA_{21})^{-1} & (\matA_{22} - \matA_{21}\matA_{11}^{-1}\matA_{12})^{-1}
+		\end{bmatrix}$$
+$$\begin{bmatrix}
+		(\matA_{11} - \matA_{12}\matA_{22}^{-1}\matA_{21})^{-1} & -(\matA_{11} - \matA_{12}\matA_{22}^{-1}\matA_{21})^{-1}\matA_{12}\matA_{22}^{-1} \\
+		-(\matA_{22} - \matA_{21}\matA_{11}^{-1}\matA_{12})^{-1}\matA_{21}\matA_{11}^{-1} & (\matA_{22} - \matA_{21}\matA_{11}^{-1}\matA_{12})^{-1}
+		\end{bmatrix}$$
+
+#### Woodbury matrix identity
+$$\left(\matA + \mat{U}\matB\mat{V}\right)^{-1} = \matA^{-1} - \matA^{-1}\mat{U}(\matB^{-1} + \mat{V}\matA^{-1}\mat{U})^{-1}\mat{V}\matA^{-1}.$$
+Alternatively, \cite{Henderson1981} deal with 
+$$\left(\matA + \mat{U}\matB\mat{V}\right)^{-1} = \matA^{-1} - \matA^{-1}\mat{U}\matB\vecit{V}(\mat{I} + \matA^{-1}\mat{U}\matB\mat{V})^{-1}\matA^{-1}.$$
+Special case:
+$$(\matA + \vecu\vecv^\tp)^{-1} = \matA^{-1} - \dfrac{\matA^{-1}\vecu\vecv^\tp\matA^{-1}}{1 + \vecv^\tp\matA^{-1}\vecu}$$
+
+
+#### Generalised inverse
+
+* For a given matrix $\matA \in \mathbb{R}^{n \times m}$, if $\matA^{-} \in \mathbb{R}^{m \times n}$ is such that 
+$$\vecit{AA}^{-}\matA = \matA$$
+then $\matA^{-}$ is a **generalised inverse** of $\matA$. If $\matA^{-}$ also satisfies 
+		$$\matA^{-}\matA\matA^{-} = \matA^{-}$$
+then $\matA^{-}$ is a **generalised reflexive inverse** of \matA. 
+		
+If $\matA^{-}$ satisfies the above two conditions and also $$ (\matA\matA^{-})^\tp = \matA\matA^{-}\quad\text{ and }\quad (\matA^{-}\matA)^\tp = \matA^{-}\matA,$$ then $\matA^{-}$ is the **Moore-Penrose pseudoinverse** of $\matA$.
+		
+* $\matA^-$ is generally not unique (as opposed to $\matA^{-1}$) although the Moore-Penrose pseudoinverse exists and unique for any matrix. 
+* For symmetric matrix $\matA$, $\mat{G}=\matA^-$ may not be symmetric although $\mat{G}^\tp$ is still a generalised inverse.    
+
+Row
+-------------------------------------
+
+
+### Derivatives
+
+Let $a$ be a constant that is not a function of $\vecx$; $b$ a constant that is a function of $\vecx$; vectors $\vecit{u}$ and $\vecit{v}$ functions of $\vecx$, and a matrix $\matA$ that is not a function of $\vecx$ and a non-singular matrix $\matB$ that is a function of the scalar $s$.    
+
+* $\displaystyle \frac{\partial a}{\partial \vecx} = \vecit{0}$
+* $\displaystyle \frac{\partial \vecx}{\partial \vecx} = \mat{I}_m$
+* $\displaystyle \frac{\partial \vecit{Ax}}{\partial \vecx} = \matA^\tp$
+* $\displaystyle \frac{\partial \vecx^\tp\matA}{\partial \vecx} = \matA$
+* $\displaystyle \frac{\partial a\vecit{u}}{\partial \vecx} = a\frac{\partial \vecit{u}}{\partial \vecx}$
+* $\displaystyle \frac{\partial b\vecit{u}}{\partial \vecx} = b\frac{\partial \vecit{u}}{\partial \vecx} + \frac{\partial b}{\partial \vecx}\vecit{u}^\tp$
+* $\displaystyle \frac{\partial \vecit{Au}}{\partial \vecx} = \frac{\partial \vecit{u}}{\partial \vecx}\matA^\tp$
+* $\displaystyle \frac{\partial (\vecit{u} + \vecit{v})}{\partial \vecx} = \frac{\partial \vecit{u}}{\partial \vecx} + \frac{\partial \vecit{v}}{\partial \vecx}$
+* $\displaystyle \frac{\partial \vecit{g}(\vecit{u})}{\partial \vecx} = \frac{\partial \vecit{u}}{\partial \vecx}\frac{\partial \vecit{g}(\vecit{u})}{\partial \vecit{u}} $
+* $\displaystyle \frac{\partial \vecit{u}^\tp\vecit{v}}{\partial \vecx} = \frac{\partial \vecit{u}}{\partial \vecx}\vecit{v} + \frac{\partial \vecit{v}}{\partial \vecx}\vecit{u} $
+* $\displaystyle \frac{\partial \vecit{u}^\tp\vecit{Av}}{\partial \vecx} = \frac{\partial \vecit{u}}{\partial \vecx}\vecit{Av} + \frac{\partial \vecit{v}}{\partial \vecx}\matA^\tp\vecit{u} $
+* $\displaystyle \frac{\partial \matB^{-1}}{\partial s} = -\matB^{-1} \frac{\partial \matB}{\partial s} \matB^{-1}$
+* $\displaystyle \frac{\partial \log|\matB|}{\partial s} = \tr{\matB^{-1}\frac{\partial \matB}{\partial s}}$
+
+### Determinants
+
+* Determinants of non-square matrix are undefined.
+* For a $n\times n$ matrix $\matA = \{a_{ij}\}$ the determinant can be obtained by expanding by elements of a row: 
+$$|\matA| = \sum_{j=1}^n a_{ij} (-1)^{i + j} |\mat{M}_{ij}|$$
+for any $i = 1, ..., n$ where the **minor** of $a_{ij}$, $|\mat{M}_{ij}|$, is the determinant of $\matA$ with rows $i$ and $j$ removed. The determinant can also be obtained by expanding elements of a column in a similar fashion. 
+* The signed minor $(-1)^{i + j} |\mat{M}_{ij}|$ is referred to as **cofactor**.
+* $|\matA\matB| = |\matB\matA|= |\matA||\matB|$ if $\matA$ and $\matB$ are square matrices. 
+* If $\matB$ is obtained from $\matA$ by swapping two rows then $|\matA| = -|\matB|$.
+* If $\matB$ is obtained from $\matA$ by adding a multiple of a row (column) to a row (column) then $|\matA| = |\matB|$.
+* If $\matB$ is obtained from $\matA$ by taking out a common factor $\lambda$ from each entry in a row of $\matA$ then $|\matA| = \lambda |\matB|$.
+* If $\matA$ is a triangular matrix then $|\matA| = a_{11}a_{22}...a_{nn}$.
+* $|\matA| = |\matA^\tp|$. 
+* $|\matA^k| = |\matA|^k$.
+* $|\matA^{-1}| = |\matA|^{-1}$.
+* If $\matA$ is an $n\times n$ matrix then $|k\matA| = k^n|\matA|$ where $k \in \mathbb{R}$.
+* If two rows of $\matA$ are the same, $|\matA| = 0$.
+* If a row of $\matA$ has zero for every element then $|\matA| = 0$.
+* For orthogonal $\matA$, $|\matA|=\pm 1$ since $\matA\matA^\tp = \mat{I}$ implies $|\matA|^2 = 1$.
+* For idempotent $\matA$, $|\matA|=0$ or 1 because $|\matA|^2 = |\matA|$. 
+* $|\matA| = \prod_{i=1}^{n} \lambda_i$
+* $|\matA \otimes \matB| = |\matA|^m |\matB|^n$ where $\matA$ and $\matB$ are square matrices of size $n$ and $m$, respectively.
+* For square matrices of the same dimension $\matA, \matB, \matC$:
+$$\begin{vmatrix}
+\matA & \mat{0} \\
+\matB & \matC
+\end{vmatrix} = |\matA||\matC|\quad\text{and}\quad\begin{vmatrix}\mat{0} & \matA \\
+-\mat{I} & \matB
+\end{vmatrix} = |\matA|.$$
+
+* **Sylvestor's theorem for determinants**
+$$|\matA + \matB\matC\mat{D}^\tp| = |\matC^{-1} + \mat{D}^\tp\matA^{-1}\matB||\matA||\matC|$$
+
+
+
+
+
+
+
+
+
+Row
+-------------------------------------
+
+### Eigen-Decomposition
+If $\matA$ is an $n\times n$ matrix, $\vecx$ a non-zero $n\times 1$ column vector and $\lambda$ is a scalar such that $\matA\vecx = \lambda \vecx$, we call $\vecx$ an **eigenvector** of $\matA$, and $\lambda$ the corresponding **eigenvalue** (or $\lambda$-eigenvector of $A$). The set $\{\vecx \in \mathbb{R}^{n} | \matA\vecx = \lambda \vecx \}$ is called the $\lambda$-**eigenspace** of $\matA$ and comprises of the $\lambda$-eigenvectors and $\vecit{0}$.
+
+* A number $\lambda$ is an eigenvalue of $\matA$ if and only if $|\matA-\lambda \mat{I}_n| = 0$.
+
+
+#### Diagonalizable
+
+**Diagonalizable Theorem**: If $\mathbb{R}^n$ is a basis of $\{\vecit{v}_1, \vecit{v}_2, ..., \vecit{v}_n  \}$ consisting of eigenvectors of an $n\times n$ matrix $\matA$ then there exists an invertible matrix $\mat{P}$ and a diagonal matrix $\mat{D}$ such that $\mat{D} = \mat{P}^{-1}\matA\mat{P}$. And so $\matA^n = \mat{P}\mat{D}^{n}\mat{P}^{-1}$.
+
+* Projection matrix are diagonalizable with 0s and 1s on the diagonal.
+* Real symmetric matrices are (orthogonally) diagonalizable by orthogonal matrices so $\mat{D} = \mat{Q}^\tp\matA\mat{Q}$ where $\mat{Q}$ is an orthogonal matrix. 
+* $\matA$ is diagonalizable if and only if the sum of the dimensions of its eigenspaces is equal to $n$. 
+
+Row
+-------------------------------------
+
+### Illustrations
+
+* **Generation matrix** $\matA$: relating the frequencies of mating types in one generation to those in another $f^{(i+1)} = \matAf^{(i)}$.
+* **Markov Chain**: $\vecx$ is a *state probability vector* and $\mat{P}$ is the transition probability matrix which is related by $\vecx_{n+1}^\tp = \vecx_n^\tp \mat{P} = \vecx_0^\tp \mat{P}^{n+1}$. Note $\mat{P}^n\vecit{1} = \vecit{1}$.
+* **Linear Programming**: below are equivalent.
+	1. minimise $f=\vecit{c}^\tp\vecx$ subject to $\matA\vecx \geq \vecit{r}$ and $\vecx \geq \vecit{0}$
+	2. maximise $g=\vecit{r}^\tp\vecit{z}$ subject to $\matA\vecit{z} \leq \vecit{r}$ and $\vecit{z} \geq \vecit{0}$
+* **Graph Theory**: Suppose a set of communication stations $\{S_i\}$. $\mat{T} = \{t_{ij}\}$ where $t_{ij} = 0$ except $t_{ij}=1$ if a message can be sent from $S_i$ to $S_j$. Then $\mat{T}^r = \{t_{ij}^{(r)}\}$, the element $t_{ij}^{(r)}$ is then the number of ways of getting a message from station $i$ to station $j$ in exactly $r$ steps.  
+
+Row
+-------------------------------------
+
+### Partitioned Matrix
+
+* If $\matA_{r\times c} = \begin{bmatrix}
+\vecit{\alpha}^\tp_1 \\
+\vdots \\
+\vecit{\alpha}^\tp_r \\
+\end{bmatrix}$ and $\matB_{c\times s} = \begin{bmatrix}
+\vecit{b}_1 & \cdots & \vecit{b}_s
+\end{bmatrix}$: 
+$$\matA \matB = \{\vecit{\alpha}^\tp_i \vecit{b}_j\} = \left\{\sum_{k=1}^c a_{ik}b_{kj}\right\}$$
+* If $\matA = \begin{bmatrix}
+\matA_{11} & \matA_{12} \\
+\matA_{21} & \matA_{22}
+\end{bmatrix}$ and $\matB = \begin{bmatrix}
+\matB_{11}\\
+\matB_{21}
+\end{bmatrix}$ then 
+$$\matA\matB = \begin{bmatrix}\matA_{11}\matB_{11} + \matA_{12}\matB_{21}\\
+\matA_{21}\matB_{11} + \matA_{22}\matB_{21}
+\end{bmatrix}$$
+
+Row
+-------------------------------------
+
+### Non-negative definite matrices
+
+#### Positive definite matrices
+A symmetric $n\times n$ real matrix $\matA$ is said to be **positive definite** if $\vecx^\tp\matA\vecx > 0 $ is positive for every non-zero column vector $\vecx$. 
+
+A positive definite matrix holds the following properties:
+
+* all its eigenvalues are positive 
+* every positive definite matrix is invertible and its inverse is also positive definite.
+* it has a unique **Cholesky decomposition**: the matrix $\matA$ is positive definite if and only if there exists a unique lower triangular matrix $\vecit{L}$, with real and strictly positive diagonal elements, such that $\matA = \vecit{L}\vecit{L}^\tp$.
+* $\matX^\tp\matA\matX$ is positive-semidefinite. If $\matX$ is invertible, then $\matX^\tp\matA\matX$ is positive definite. Note that $\matX^{-1}\matA\matX$ does not need to be positive definite.
+
+
+#### Positive semi-definite matrices
+
+A symmetric matrix $\matA$ is **positive semi-definite** if $\vecx^\tp\matA\vecx \geq 0$ for all $\vecx$ and $\vecx^\tp\matA\vecx=0$ for some $\vecx\neq \vecit{0}$. 
+
+* When $\matA$ is p.(s.)d. so is $\mat{P}\matA\mat{P}^\tp$ for nonsingular $\mat{P}$. 
+* For real $\matX$, $\matX^\tp\matX$ is n.n.d. It is p.d. when $\matX$ has full rank or else it is p.s.d. 
+
+Row
+-------------------------------------
+
+
+### Quadratic Form
+
+* 	The **quadratic form** of a matrix \matA is given as $\vecx^\tp \matA\vecx = \sum_i \sum_j x_i x_j a_{ij}$.
+* For any particular quadratic form, there is a unique symmetric matrix $\matA$ for which the quadratic form can be expressed as $\vecx^\tp \matA\vecx$. 
+* If we have the quadratic form $\vecx^\tp\matA\vecx$ where $\matA$ is not symmetric then we can rewrite it as $\vecx^\tp\left[\frac{1}{2}(\matA+ \matA^\tp)\right]\vecx$ where $\frac{1}{2}(\matA+ \matA^\tp)$ is a unique symmetric matrix. 
+
+Row
+-------------------------------------
+### Elementary operator matrix
+
+There are three types of elementary operator matrices:
+* *Adding multiple of a row to another row*. Let $\mat{E}_{ij}(k)$ be an identity matrix where the off-diagonal element $(i,j)$ is $k$. Then $\mat{E}_{ij}(k)\matA$ is the operation on $\matA$ of adding to its $i$-th row $k$ times its $j$-th row. Note $|\mat{E}_{ij}(k)| = 1$.
+* *Interchanging two rows of a matrix*. Let $\mat{P}_{ij}$ be an identity matrix with $i$-th and $j$-th rows interchanged. Note $|\mat{P}_{ij}| = -1$.
+* *Multiplying a row by a scalar $k$*. Let $\mat{R}_{ii}(k)$ be an identity matrix with $i$-th diagional element replaced by $k$. Note $|\mat{R}_{ii}(k)| = k$.
+
+
+Row
+-------------------------------------
+### Matrices with all element equal
+
+* $\vecit{1}_n$ is a vector of length $n$ with all elements are unity.
+* $\mat{J}_{r\times s}$ is a $r\times s$ matrix with all elements unity.
+* Pre (post) multiplication of a matrix $\matA$ by $\vecit{1}_n^\tp$ results in a row (column) vector with $i$-th element equal to the sum of the elements of $i$-th column (row) of $\matA$. 
+* $\vecit{1}_n^\tp \vecit{1}_n = n$
+* $\vecit{1}_r\vecit{1}_s^\tp = \mat{J}_{r\times s}$
+* $\mat{J}_{r\times s}\mat{J}_{s\times t} = s\mat{J}_{r\times t}$
+* $\vecit{1}^\tp_r \mat{J}_{r\times s} = r\vecit{1}_s^\tp$
+* $\mat{J}_{r\times s}\vecit{1}_s = s\vecit{1}_r$
+* $\mat{J}_n=\vecit{1}_n\vecit{1}_n^\tp$ 
+* $\mat{J}_n^2 = n\mat{J}_n$
+* $\bar{\mat{J}}_n = \frac{1}{n} \mat{J}_n$
+* $\bar{\mat{J}}_n^2 = \bar{\mat{J}}_n$
+
+#### Centering matrix
+* $\mat{C}_n = \mat{I} - \bar{\mat{J}}_n$
+* $\mat{C} = \mat{C}^\tp = \mat{C}^2$ 
+* $\mat{C}\vecit{1} = \vecit{0}$
+* $\mat{C}\mat{J} = \mat{J}\mat{C} = \vecit{0}$
+* $\vecx^\tp \mat{C}\vecx = \sum_{i=1}^n (x_i - \bar{x})^2$
+
+
+Row
+-------------------------------------
+
+### Vector Space
+
+A **vector space** over $\mathbb{R}$ is a non-empty set $V$ whose elements are called vectors on which two operations are defined, namely *addition of vectors* and *multiplication of a vector by a scalar* satisfying the 10 axioms below.
+
+#### Axioms of vector space:
+
+For all $\vecit{u}, \vecit{v}, \vecit{w} \in V$ and $k$, $k1$, $k2$ $\in \mathbb{R}$,
+
+* [A1] $\vecit{u} + \vecit{v} \in V$. This property is called *closure under addition*.
+* [A2] $(\vecit{u} + \vecit{v}) + \vecit{w} = \vecit{u} + (\vecit{v} + \vecit{w})$. This is called \emph{associative law of addition}.
+* [A3] $\vecit{u} + \vecit{v} = \vecit{v} + \vecit{u}$. That is, addition is *commutative*. 
+* [A4] There is a *zero vector* $\vecit{0} \in V$ with $\vecit{v} + \vecit{0} = \vecit{0} + \vecit{v} = \vecit{v}$. 
+* [A5] There is a vector which we write as $-\vecit{v}$ and call a negative of \vecit{v}, such that $\vecit{v} +  -\vecit{v} =  \vecit{0}$. 
+* [S1] $k\vecit{v} \in V$. This property is called *closure under multiplication by a scalar*.
+* [S2] $k(\vecit{u} + \vecit{v}) = k\vecit{u} + k\vecit{v}$.
+* [S3] $(k_1 + k_2) \vecit{v} = k_1\vecit{v} + k_2 \vecit{v}$.
+* [S4] $(k_1 k_2)\vecit{v} = k_1(k_2\vecit{v})$.
+* [S5] $1\vecit{v} = \vecit{v}$.
+
+
+#### Special set of vectors
+The set of vectors $X=\{\vecit{v}_1, \vecit{v}_2, ..., \vecit{v}_n \}$ in a vector space $V$ is called a **linearly independent** set if the only scalars that satisfy $\sum_{i=1}^n a_i\vecit{v}_i =  \vecit{0}$ are $a_1 = a_2 = ... = a_n = 0$, otherwise it is called a **linearly dependent** set. $\mathcal{R}(X)$ is a subspace of $V$ and is the smallest subspace of $V$ containing the set $X$.
+
+#### Basis 
+
+A set of vectors $X$ in a vector space $V$ is called a **basis** of $V$ if $\{\vecit{v}_1, \vecit{v}_2, ..., \vecit{v}_n \}$ is a linearly independent set and $\mathcal{R}(X) = V$. 
+
+* If an $n\times n$ matrix $\vecit{M}$ has $n$ distinct eigenvalues then the set of $n$ eigenvectors formed by selecting a non-zero vector from each eigenspace is a basis of $\mathbb{R}^n$.
+* If $\{\vecit{v}_1, \vecit{v}_2, ..., \vecit{v}_n \}$ is a basis of a vector space $V$ then each vector $\vecit{v}$ in $V$ can be expressed as a linear combination of the basis in \emph{exactly one way}.
+* If one basis of a vector space $V$ contains $n$ vectors then every basis of $V$ contains $n$ vectors.
+* If $W$ is a non-zero subspace of $V$ and $V$ has dimension $n$ then $\dim W$ $\leq n$  with $\dim W$ $=n$ if and only if $W=V$.
+* In a vector space $V$ of dimension $n$, every linearly independent set containing fewer than $n$ vectors can be extended to a basis of $V$, and every spanning set of $V$ with more than $n$ vectors contains a basis of $V$ where a spanning set is the span of the set of vectors in $V$. Moreover, every linearly independent set of $n$ vectors is a basis of $V$ and every set of $n$ vectors which spans $V$ is a basis of $V$.
+\end{itemize}
+
+#### Vector subspaces
+Let $S$ be a non-empty subset of a vector space $V$. If $S$ itself satisfies the 10 vector space axioms with the same operations of addition and multiplication by a scalar then $S$ is called a *subspace* of $V$. 
+
+A subset $S$ of a vector space $V$ is a subspace of $V$ if $S$ is not empty and $S$ satisfies A1 and S1. If the zero vector of $V$ is *not* in $S$ then $S$ is not a subspace.
+
+The addition of vector spaces is defined below:
+$$V + U = \{\vecit{v} + \vecit{u}: \vecit{v}\in V,\vecit{w}\in U\}.$$
+A decomposition of a vector space $W$ to $V$ and $U$ is written as 
+$$  W = V \oplus U$$ 
+where $V \cap U = \{\vecit{0}\}$. We also say $W$ is the direct sum of $V$ and $U$. 
+
+Row
+-------------------------------------
+
+### Diagonal Matrix
+
+* $\mat{D}\matA$ (or $\matA\mat{D}$) gives a matrix whose *rows* (or *columns*) are those of $\matA$ multiplied by the respective diagonal elements of $\mat{D}$
+
+### Triangular Matrix
+
+* A square matrix with all elements above (or below) the diagonal are zero is called a *lower (upper) triangular matrix*.
+
+### Transition Probability Matrix 
+
+* The $(i,j)$-th element of a transition probability matirx, $p_ij$, is the probability of the probability of transitioning from state $i$ to state $j$ in a pre-defined time period. 
+* The sum of the elements of each row is 1.
+* For a transition probability matrix $\mat{P}$, $\mat{P}^k$ is also a transition proability matrix with the elements correspond to the transition from state $i$ to state $j$ in $k$ time periods.
+
+#### Examples 
+
+* Feller (1968, p. 439) for a transition proability matrix 
+$$\mat{P} = \begin{bmatrix}
+\matA & \mat{0} & \mat{0} \\
+\mat{0} & \matB & \mat{0} \\
+\mat{U}_1 & \mat{V}_1 & \mat{T}
+\end{bmatrix}$$
+where $\matA$ and $\matB$ are also transition probality matrices. Then for $\mat{U}_n = \mat{U}_1\matA^{n - 1} + \mat{T}\mat{U}_{n-1}$ and $\mat{V}_n = \mat{V}_1\matB^{n - 1} + \mat{T}\mat{V}_{n-1}$, we have 
+$$\mat{P}^n = \begin{bmatrix}\matA^n & \mat{0} & \mat{0}\\
+\mat{0} & \matB^n & \mat{0} \\
+\mat{U}_n & \mat{V}_n & \mat{T}^n \end{bmatrix}$$
+
+Row
+-------------------------------------
+
+### Orthogonal Matrix
+
+* If any two of the following conditions are satisfied then the matrix $\matA$ is an **orthogonal matrix**:
+	1. $\matA$ is square
+	2. $\matA^\tp\matA = \mat{I}$
+  3. $\matA\matA^\tp = \mat{I}$
+	4. $|\matA| = \pm 1$
+* $\matA^{-1} = \matA^\tp$
+
+#### Special Cases
+
+* Helmert matrix $\mat{H}_n$ of order $n$ has $n^{-\frac{1}{2}}\vecit{1}_n^\tp$ for its first row and the other $i$-th row is given by
+$$\left(i(i-1)\right)^{-\frac{1}{2}}\begin{bmatrix}\vecit{1}_{i - 1}^\tp & -(i-1) & \vecit{0}_{1\times (n-i)}\end{bmatrix}.$$
+<details>
+<summary>Example</summary>
+$$\mat{H}_4 = \begin{bmatrix}
+1/\sqrt{4} & 1/\sqrt{4} & 1/\sqrt{4} & 1/\sqrt{4}\\
+1/\sqrt{2} & -1/\sqrt{2} & 0          & 0\\
+1/\sqrt{6} & 1/\sqrt{6} & -2/\sqrt{6} & 0 \\
+1/\sqrt{12} & 1/\sqrt{12} & 1/\sqrt{12} & -3/\sqrt{12}
+\end{bmatrix}$$
+</details>
+
+* Givens matrices $\mat{G}_{rs}$ or order $n$ is an identity matrix except for four elements: $g_{rr}=g_{ss}=\cos\theta_{rs}$ and for $r > s$, $-g_{rs}=g_{sr} = \sin\theta_{rs}$. 
+<details><summary>Examples</summary>
+Givens matrix of order 2
+$$\begin{bmatrix}
+\cos\theta & \sin\theta \\
+-\sin\theta & \cos\theta
+\end{bmatrix}$$
+Givens matrix of order 3
+$$
+\mat{G}_{12} = \begin{bmatrix}
+\cos \alpha & \sin \alpha & 0 \\
+-\sin \alpha & \cos\alpha & 0 \\
+0 & 0 & 1\end{bmatrix}\quad
+\mat{G}_{13} = \begin{bmatrix}
+\cos\beta & 0 & \sin\beta\\
+0 & 1 & 0 \\
+-\sin\beta & 0 & \cos\beta
+\end{bmatrix}\quad 
+\mat{G}_{23}= \begin{bmatrix}
+1 & 0 & 0 \\
+0 & \cos \gamma & \sin\gamma\\
+0 & -\sin\gamma & \cos\gamma
+\end{bmatrix}
+$$
+</details>
+* Premultiplying by a Givens matrix will make the result an upper triangle. Postmultiplying by a Givens matrix will make the result a lower triangle. These tranformations are sometimes referred to as a *Givens transformation*.
+* *Household matrices** are orthogonal matrices such that 
+$$\mat{H} = \mat{I} - 2\vecit{h}\vecit{h}^\tp\quad\text{for }\vecit{h}^\tp\vecit{h}=1.$$
+For any non-null vector $\vecit{x}$ there exists $\vecit{h}$ such that $\mat{H}\vecit{x} = (\lambda, 0, ..., 0)^\tp$ for $\lambda = -(\text{sign of }x_1)\sqrt{\vecit{x}^\tp\vecit{x}}$, $h_1=\sqrt{\frac{1}{2}(1 - x_1/\lambda)}$ and $h_i=-x_i/(2h_1\lambda)$ for $i=2, ..., n$.
+
+
+
+Row
+-------------------------------------
+
+### Null or Zero Matrices
+
+A matrix is a null or zero matrix if every element is zero.
+
+### Identity Matrices
+
+* A diagonal matrix with all diagonal elements equal to unity is called an *identity matrix*. 
+* An identity matrix is denoted with letter $\mat{I}$ with a subscript for its order. 
+* $\mat{I}_r\matA_{r\times c} = \matA_{r\times c} \mat{I}_c = \matA_{r\times c}$.
+
+Row
+-------------------------------------
+
+
+### Symmetric Matrices
+
+* $\matA$ is symmetric if $\matA = \matA^\tp$.
+* $\matA\matA^\tp$ and $\matA^\tp\matA$ are symmetric. 
+* $\matA^\tp\matA = \vecit{0}$ implies $\matA = \vecit{0}$.
+* $\text{tr}\left(\matA^\tp\matA\right) = \vecit{0}$ implies $\matA = \vecit{0}$.
+* If $\matA$ and $\matB$ are symmetric matrices, then in general $\matA\matB$ is not a symmetric matrix.
+<details>
+<summary>Proof</summary>
+$$(\matA\matB)^\tp = \matB^\tp\matA^\tp = \matB\matA.$$
+Since $\matB\matA$ is generally not the same as $\matA\matB$, this means $\matA\matB$ is generally not symmetric.
+</details>
+
+### Skew-symmetric matrices
+
+* If a matrix $\matA$ is skew-symmetric, then $\matA^\tp = - \matA$. 
+* The diagonal elements of a skew-symmetric matrices is zero.
+
+Row
+-------------------------------------
+
+### Matrix Factorisation
+
+* Suppose a non-full rank matrix $\matA = \begin{bmatrix}
+	\matX & \matY \\
+	\mat{Z} & \vecit{W} 
+	\end{bmatrix}$ where $\matX$ is full rank. Then 
+	$$\matA = \begin{bmatrix}
+	\mat{I} \\
+	\mat{Z}\matX^{-1} 
+	\end{bmatrix} \matX \begin{bmatrix}
+	\mat{I} & \matX^{-1}\matY
+	\end{bmatrix}$$ 
+* If matrix $\matA$ is not in above form then there exists permutation matrices $\mat{P}$ and $\mat{Q}$ such that $\mat{P}\matA\mat{Q}$ is in the above form. 
+
+
+Row
+-------------------------------------
+
+### Solving Linear Equations
+
+
+* The consistent equations $\matA\vecx = \vecy$ for $\vecy \neq \vecit{0}$ have a solution $\vecx = \mat{G}\vecy$ if and only if $\matA\mat{G}\matA=\matA$.
+* $\matA\vecx = \vecy$ have solutions 
+	$$\tilde{\vecx} = \mat{G}\vecy + (\mat{G}\matA - \mat{I})\vecit{z} $$
+	for $\mat{G}=\matA^-$ and any arbitrary vector $\vecit{z}$. 
+
+Row
+-------------------------------------
+
+### Direct Sum
+
+* $\matA \oplus \matB = \begin{bmatrix}
+	\matA & \vecit{0} \\
+	\vecit{0} & \matB
+	\end{bmatrix}$
+* $(\matA \oplus \matB) + (\mat{C} \oplus \mat{D}) = (\matA + \mat{C}) \oplus (\matB + \mat{D})$
+* $(\matA\oplus \matB)(\mat{C} \oplus \mat{D}) =  \matA\mat{C} \oplus \matB\mat{D}$
+* $(\matA \oplus \matB)^{-1} = \matA^{-1}\oplus \matB^{-1}$
+
+Row
+-------------------------------------
+
+### Direct Product
+
+* $(\matA \otimes \matB)^\tp = \matA^\tp\otimes \matB^\tp$
+* For vectors $\vecx$ and $\vecy$: $\vecx^\tp\otimes \vecy = \vecy\vecx^\tp = \vecy \otimes \vecx^\tp$
+* $\begin{bmatrix}
+	\matA_1 & \matA_2
+	\end{bmatrix} \otimes \matB = \begin{bmatrix}
+	\matA_1 \otimes \matB & \matA_2 \otimes \matB
+	\end{bmatrix}$
+* $(\matA \otimes \matB)(\matX\otimes \matY) = \matA\matX \otimes \matB\matY$
+* $(\matA \otimes \matB)^{-1} = \matA^{-1}\otimes \matB^{-1}$
+* $\tr{\matA\otimes \matB} = \tr{\matA}\tr{\matB}$
+* $|\matA_{p\times p}\otimes \matB_{m\times m }| = |\matA|^m|\matB|^p$
+* Eigenvalues of $\matA\otimes \matB$ are products of eigenvalues of $\matA$ with those of $\matB$. 
+
+Row
+-------------------------------------
+
+### The matrix $\matX^\tp \matX$
+
+* $\matX^\tp \matX$ and $\matX \matX^\tp$ are symmetric matrices.
+* If $\matX^\tp \matX = \mat{0}$ then $\matA = \mat{0}$.
+* $\left((\matX^\tp\matX)^-\right)^\tp$ is a generalised inverse of $\matX^\tp\matX$.
+* If $\mat{P}\matX\matX^\tp = \mat{Q}\matX\matX^\tp$ then $\mat{P}\matX = \mat{Q}\matX$.
+<details>
+<summary>Proof</summary>
+Observe that 
+$$(\mat{P}\matX\matX^\tp - \mat{Q}\matX\matX^\tp)(\mat{P}^\tp - \mat{Q}^\tp) \equiv (\mat{P}\matX - \mat{Q}\matX)(\mat{P}\matX - \mat{Q}\matX)^\tp.$$
+Hence if $\mat{P}\matX\matX^\tp = \mat{Q}\matX\matX^\tp$, then $\mat{P}\matX = \mat{Q}\matX$.
+</details>
+* $\matX(\matX^\tp\matX)^-\matX^\tp\matX = \matX$, i.e. $(\matX^\tp\matX)^-\matX^\tp$ is a generalised inverse of $\matX$.
+* $\matX(\matX^\tp\matX)^-\matX^\tp$ is invariant to the choice of $(\matX^\tp\matX)^-$.
+* $\matX(\matX^\tp\matX)^-\matX^\tp$ is symmetric whether $(\matX^\tp\matX)^-$ is or not. 
+
+### Least Squares Equations
+The following are invariant to the choice of $\left(\matX^\tp\matX\right)^-$:
+
+* the vector of predicted values $\hat{\vecy} = \matX\left(\matX^\tp\matX\right)^-\matX^\tp \vecy$;
+* The residual sum of squares $(\vecy - \hat{\vecy})^\tp (\vecy - \hat{\vecy})$. 
+
+
+Row
+-------------------------------------
+
+### Notations
+
+* The following conventions are used unless stated otherwise:
+   * An italic, non-bold lower-case letter is a *scalar*, e.g. $a, b$.
+   * An italic, bold lower-case letter is a *vector*, e.g. $\vecit{v}, \vecit{w}$.
+   * A non-italic, bold upper-case letter is a *matrix*, e.g. $\matA, \matB$. 
+* Matrix is a rectangular (two-dimensional) array of numbers arranged in rows and columns, with individual entries in the array referred to as *elements* or *terms* of the matrix. 
+* A matrix $\matA$ with 2 rows and 3 columns can be conveniently written as $\matA_{2\times 3}$ with dimensions on the subscript, or 
+$$\begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} 
+\end{bmatrix} = \{a_{ij}\}\quad\text{for}\quad i=1,2;~j=1,2,3.$$
+* A vector is a *column vector* (i.e. a matrix with a single column) in this cheatsheet.
+* The elements of a matrix are usually scalar. A scalar can be thought of as a matrix with order $1\times 1$.
+
+#### Operators
+
+* $\text{diag}\left(\matA_{r\times r}\right) = (a_{11}, a_{22}, ..., a_{rr})^\tp$
+* $\text{diag}\left(a_{11}, a_{22}, ..., a_{rr}\right) = \begin{bmatrix}a_{11} & 0 & \cdots & 0\\
+0 & a_{22} & \ddots & \vdots \\ \vdots & \ddots & \ddots & 0 \\ 0 & \cdots & 0 & a_{rr} \end{bmatrix}$
+* If $\vecit{a}=(a_{11}, a_{22}, ..., a_{rr})^\tp$, then $$\text{diag}(\vecit{a})=\text{diag}\left(a_{11}, a_{22}, ..., a_{rr}\right).$$
+* $\rank{\matA}$ is the rank of a matrix $\matA$.
+* $\tr{\matA}$ is the trace of a matrix $\matA$.
+* $\mathcal{R}(\matA)$ is the range/span/column space of a matrix $\matA$.
+* $\mathcal{N}(\matA)$ is the kernel/null space of a matrix $\matA$.
+
+### Elements of vectors 
+
+* Inner product $\vecx^\tp\vecy$
+* Outer product $\vecx\vecy^\tp$
+* Elementary vector of length $n$, $\vecit{e}_i$, is the $i$-th column of the identity matrix $\mat{I}_n$.
+* $\mat{I}_n = \sum_{i=1}^n \vecit{e}_i\vecit{e}_i^\tp$.
+* $\mat{E}_{12} = \vecit{e}_1\vecit{e}_2^\tp = \begin{bmatrix}0 & 1 & 0 \\0 & 0 & 0 \\ 0 & 0 & 0\end{bmatrix}$
+* A norm of a vector $\vecx$ is given as $\sqrt{\vecx^\tp\vecx}$.
+* A vector is said to be either *normal* or a *unit vector* if its norm is unity.
+* Non-null vectors $\vecx$ and $\vexy$ are *orthogonal* if $\vecx^\tp\vexy = 0$. 
+* Two vectors are *orthonormal vectors* if they are orthogonal and normal.
+
+
+### Elements of matrices
+
+#### Dimension/Order of a matrix
+
+* The dimension or order of a matrix refer to the size of the matrix (i.e. the number of rows and the number of columns).
+
+* A matrix with $r$ rows and $c$ columns has order $r\times c$. When $r=c$, it can simply be said that the matrix has order $r$. 
+
+
+#### Diagonal and off-diagonal elements
+
+* For a square matrix $\matA_{r\times r}$, the elements $a_{11}, a_{22}, ..., a_{rr}$ are referred to as *diagonal elements*.
+* The elements of a square matrix that lie in a line parallel to and just below the diagonal, i.e. $a_{1,2}, ...,a_{i,j+1}, ..., a_{r-1,r}$ and $a_{2,1}, ...,a_{i,j-1}, ..., a_{r,r-1}$, are referred to as *subdiagonal elements*. 
+* The elements of square matrix that are not diagonal elements are referred to as *off-diagonal* or *non-diagonal elements*.
+
+#### The laws of algebra
+
+Assume all matrices are conformable for the operations performed.
+
+* Associative laws of addition: $(\matA + \matB) + \matC= \matA + (\matB+ \matC)$.
+* Associative laws of products: $(\matA\matB)\matC = \matA(\matB\matC)$.
+* Distributive law: $\matA(\matB + \matC) = \matA\matB + \matA\matC$.
+* Commutative law of addition: $\matA + \matB = \matB + \matA$.
+* Commutative law of products do not hold.
+
+
+Row
+-------------------------------------
+
+### Range/Span/Column Space
+
+Range, span or column space of $\matX$ is denoted $\mathcal{R}(\matX)$ is the space or set of all possible linear combinations of the columns of $\matX$. Thus $\matA \in \mathcal{R}(\matX)$ if $\matA=\matX\vecit{b}$ for some $\vecit{b}$.
+
+
+### Kernel/Null space
+
+Kernel or null space os a matrix $\matX$ is denoted $\mathcal{N}(\matX)$ is the space of all possible linear combinations of vectors orthogonal to the columns of $\matX$.
+
+Row
+-------------------------------------
+
+### Orthogonal complement
+
+Let $V$ be a finite dimensional vector space and $W$ is a subspace of $V$. Then the orthogonal complement of $W$, denoted $W^\perp$, is the set of vectors 
+$$\{\vecit{v}\in V: \vecit{v}^\tp\vecit{w}=0 \text{ for all } \vecit{w}\in W\}.$$
+
+* $W^\perp$ is also a subspace of $V$
+* $(W^\perp)^\perp = W$
+* $\text{dim}(W^\perp) = \text{dim} V - \text{dim} W$
+* $V=W \oplus W^\perp$ 
+
+### Rank
+
+The **rank** of the matrix $\matX$ or the **dimension** of $\mathcal{R}(\matX)$, written as  $\text{rank}\left(\matX\right)$ or $\text{dim}\left(\mathcal{R}(\matX)\right)$, is the number in the minimal (linearly independent) set of columns of $\matX$ that span $\mathcal{R}(\matX)$. Similar definition applies to any vector space $V$, where the dimension of $V$ is the number of the vectors in any basis of $V$. 
+
+Suppose that $\matA$ is an $m\times n$ matrix then
+
+* $\rank{\matA} \leq \min (m,n)$
+* If $\rank{\matA} = \min (m,n)$ then the matrix $\matA$ is said to have \emph{full rank}.
+* Only a zero matrix has rank zero. 
+* If $\matA$ is a square matrix ($m=n$) then $\matA$ is invertible if and only if $\matA$ has rank $n$. 
+* If $\matB$ is any $n\times k$ matrix, then $\rank{\matA\matB} \leq \min(\rank{\matA}, \rank{\matB})$.
+*  If $\matB$ is any $n\times k$ matrix of rank $n$, then $\rank{\matA\matB} = \rank{\matA}$.
+*  If $\matC$ is any $l\times m$ matrix of rank $m$, then $\rank{\matC\matA} = \rank{\matA}$.
+* The $\rank{\matA}=r$ if and only if there exists an invertible $m\times m$ matrix $\matX$ and an invertible $n\times n$ matrix $\matY$ such that $\matX\matA\matY = \begin{bmatrix}
+	\mat{I}_r & \mat{0} \\
+	\mat{0} & \mat{0}
+	\end{bmatrix}$. 
+* $\rank{\matA + \matB} \leq \rank{\begin{bmatrix}
+		\matA & \matB
+		\end{bmatrix}} \leq \rank{\matA} + \rank{\matB}$
+* **Sylvestor's rank of nullity**: If $\matA$ is an $m\times n$ matrix and $\matB$ is any $n\times k$ matrix, $\rank{A} + \rank{B} - n \leq \rank{AB}$.
+* The inequality due to Frobenius: $\rank{AB} + \rank{BC} \leq \rank{B} + \rank{ABC}$.
+* If $\matA\matB\matA = \matA$ then $\rank{\matB\matA} = \rank{\matA}$
+* **Rank-nullity Theorem**: The rank of a matrix plus the nullity of the matrix equals the number of columns of the matrix, i.e. $$\dim{\mathcal{R}(\matA)} + \dim{\mathcal{N}(\matA)} = n.$$
+* $\rank{\matA^\tp \matA} = \rank{\matA\matA^\tp} = \rank{\matA} = \rank{\matA^\tp}$
+
+
+
+Row
+-------------------------------------
+
+### Projection matrix
+
+For any $\vecit{v}\in V$, there are unique vectors $\vecx\in W$ and $\vecit{z}\in W^\perp$ such that $\vecit{v} = \vecx + \vecit{z}$. We call $\vecx$ the projection of $\vecit{v}$ onto $W$ and write $\vecx = \mat{P}_W(\vecit{v})$. In fact, $\vecx = \mat{P}_W\vecit{v}$ where $\mat{P}_W$ is the projection matrix that maps any $\vecit{v}\in V$ onto $W$. Similarly $\vecit{z}$ is the projection of $\vecit{v}$ onto $W^\perp$ and the corresponding projection matrix is referred to as the orthogonal projection matrix, $\mat{P}_{W^\perp}$. Note $\vecit{z} = \vecit{v} - \mat{P}_W\vecit{v}=(\mat{I} - \mat{P}_W)\vecit{v}$. So $\mat{P}_{W^\perp} = \mat{I} - \mat{P}_W$. 
+
+The projection matrix $\mat{P}_W$ has the following basic properties:
+
+* $\mat{P}_W$ is idempotent, i.e. $\mat{P}_W^2 = \mat{P}_W$,
+* $\mat{P}_W\vecx = \vecx$ for all $\vecx\in W$ (i.e. $\mat{P}_W$ is the identity operator on $W$),
+* Every vector $\vecx\in V$ may be decomposed uniquely as $\vecit{v} = \vecx + \vecit{z}$ with $\vecx = \mat{P}_W\vecit{v}$ and $\vecit{z} = \mat{P}_{W^\perp}\vecit{v} = (\mat{I} - \mat{P}_W)\vecit{v}$. 
+* There exists matrix $\matA$ with columns corresponding to orthonormal basis of $W$ such that $\mat{P}_W = \matA\matA^\tp$.  
+
+
+
+
+#### Projection onto the range of a matrix
+
+Suppose $W=\mathcal{R}(\matX)$.  Suppose $\mat{P}_W$ is a projection matrix onto $W$ and assume $\matX$ is full-rank, then $\mat{P}_W = \matX(\matX^\tp\matX)^{-1}\matX^\tp$. Note there are, of course, other projection matrices onto $W$. 
+Note that the $\tr{\mat{P}_W} = \rank{\matX}$. 
+
+
+Row
+-------------------------------------
+
+
+### Idempotent matrix
+
+A matrix $\matA$ such that $\matA = \matA^2$ is called **idempotent**. 
+An idempotent matrix $\matA$ has the following properties:
+	
+* $\matA$ is a square matrix
+* the eigenvalues of $\matA$ are either 0 or 1
+* $\tr{\matA} = \rank{\matA}$
+* $\matA$ is singular unless $\matA = \mat{I}$, the identity matrix 
+* $\mat{I} - \matA$ is also an idempotent matrix 
+
+
+### Nilpotent and Unipotent matrices
+
+* A matrix $\matA$ is nilpotent if $\matA^2 = \mat{0}$.
+* A matrix $\matA$ is unipotent if $\matA^2 = \mat{I}$.
+
+
+### Permutation matrix
+A permutation matrix $\mat{P}$ is a square binary matrix that has exactly one entry of 1 in each row and each column and 0s elsewhere. The properties of a permutation matrix include
+
+* Pre-multiplying by $\mat{P}$ will result in permutation of the rows. 
+* Post-multiplying by $\mat{P}$ will result in permutation of the columns.
+* $\mat{P}$ is a orthogonal matrix.
+* $\mat{P}^{-1} = \mat{P}^\tp$.
+
+
+### Rotation matrix
+A rotation matrix $\mat{R}$ is a matrix that is used to perform a rotation in Euclidean space. For example the matrix
+$$\mat{R} = \begin{bmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{bmatrix} $$
+rotates points in the $xy$-Cartesian plane (counter)-clockwise through an angle $\theta$ about the origin of the Cartesian coordinate system by (pre-) post-multiplying.
+
+Row
+-------------------------------------
+
+### Vector/Matrix operations
+
+* 	A **scalar product** (also called *inner product* or *dot product*) for vectors $\vecit{v}$, $\vecit{w}\in \mathbb{R}^n$ is written $\vecit{v}\cdot\vecit{w}$ and 
+$$\vecit{v}\cdot\vecit{w} = \vecit{v}^\tp\vecit{w} = \displaystyle\sum_{i=1}^nv_i w_i = v_1 w_1 + .. + v_n w_n.$$
+	The (Euclidean) **norm** (sometimes called *length* or *magnitude*) of a vector $\vecit{v}$ is written as $||\vecit{v}||$ and note $\vecit{v}^\tp\vecit{v} = \displaystyle\sum_{i=1}^n v^2_i=||\vecit{v}||^2$.
+* A **Hadamard product** is given as $\matA\cdot \matB = \{a_{ij}b_{ij}\}$.
+* A **Kronecker product**
+* A **matrix product** of $\matA = \begin{bmatrix}\vecit{a}_1^\tp \\\vecit{a}_2^\tp \\\end{bmatrix}$ and $\matB= \begin{bmatrix}\vecit{b}_1 & \vecit{b}_2 & \vecit{b}_3 & \vecit{b}_4 \end{bmatrix}$:
+$$\matA\matB = \begin{bmatrix}
+\matA\vecit{b}_1 & \matA\vecit{b}_2 & \matA\vecit{b}_3 & \matA\vecit{b}_4\end{bmatrix}$$
+$$\matA\matB = \begin{bmatrix}
+\vecit{a}_1^\tp\vecit{b}_1 & \vecit{a}_1^\tp\vecit{b}_2 & \vecit{a}_1^\tp\vecit{b}_3 & \vecit{a}_1^\tp\vecit{b}_4\\
+\vecit{a}_2^\tp\vecit{b}_1 & \vecit{a}_2^\tp\vecit{b}_2 & \vecit{a}_2^\tp\vecit{b}_3 & \vecit{a}_2^\tp\vecit{b}_4\\\end{bmatrix}$$
+
+
+About {data-orientation=rows}
+=====================================
+
+Row
+-------------------------------------
+
+
+References {data-orientation=rows}
+=====================================
+
+Row
+-------------------------------------
+
+### References
+

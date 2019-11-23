@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{Beckman1974}
+Richard~J Beckman and H~J Trussell.
+\newblock {The Distribution of an Arbitrary Studentized Residual and the
+  Effects of Updating in Multiple Regression}.
+\newblock {\em Journal of the American Statistical Association},
+  69(345):199--201, 1974.
+
+\bibitem{Christensen1992}
+Ronald Christensen and Larry~M Pearson.
+\newblock {Case-Deletion Diagnostics for Mixed Models}.
+\newblock {\em Technometrics}, 34(1):38--45, 1992.
+
+\bibitem{Cook1977}
+R~Dennis Cook.
+\newblock {Detection of Influential Observation in Linear Regression}.
+\newblock {\em Technometrics}, 19(1):15--18, 1977.
+
+\end{thebibliography}

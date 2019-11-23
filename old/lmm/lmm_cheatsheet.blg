@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: lmm_cheatsheet.aux
+The style file: plain.bst
+Database file #1: /Users/emi/Dropbox/Articles/library.bib
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            515 strings with 4404 characters,
+and the built_in function-call counts, 642 in all, are:
+= -- 63
+> -- 25
+< -- 0
++ -- 10
+- -- 8
+* -- 52
+:= -- 116
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 10
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 22
+empty$ -- 51
+format.name$ -- 8
+if$ -- 125
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 2
+newline$ -- 13
+num.names$ -- 4
+pop$ -- 6
+preamble$ -- 1
+purify$ -- 8
+quote$ -- 0
+skip$ -- 14
+stack$ -- 0
+substring$ -- 48
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 8
+warning$ -- 0
+while$ -- 7
+width$ -- 3
+write$ -- 24

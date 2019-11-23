@@ -1,0 +1,28 @@
+---
+title: "Probability"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    self_contained: false
+    social: menu
+    theme: united
+---
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tp}{{\scriptscriptstyle \top}}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+Sidebar {.sidebar}
+=====================================
+
+### Table of Contents
+
+
+#### Useful Results 
+
+Row
+-------------------------------------
+
+* Cauchy-Schwarz inequality
+$$\left(\sum_{i=1}^n x_i y_i\right)^2 \leq \sum_{i=1}^nx_i^2\sum_{i=1}^ny_i^2$$

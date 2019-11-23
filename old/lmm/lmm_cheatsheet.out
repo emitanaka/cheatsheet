@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{Doc-Start}{Linear Mixed Model}{}% 1
+\BOOKMARK [1][-]{equation.0.1}{Mixed Model Equation}{}% 2
+\BOOKMARK [1][-]{equation.0.1}{Prediction Error Variance}{}% 3
+\BOOKMARK [1][-]{equation.0.1}{Non-full rank bold0mu mumu XXemptyXXXX}{}% 4
+\BOOKMARK [1][-]{equation.0.1}{Miscellaneous}{}% 5
+\BOOKMARK [1][-]{equation.0.1}{Residual}{}% 6
+\BOOKMARK [1][-]{equation.0.1}{Variance Parameters}{}% 7
+\BOOKMARK [2][-]{section*.1}{Residual likelihood}{equation.0.1}% 8
+\BOOKMARK [2][-]{section*.1}{Residual score equations}{equation.0.1}% 9
+\BOOKMARK [2][-]{section*.1}{Quasi Newton-Raphson algorithm}{equation.0.1}% 10
+\BOOKMARK [2][-]{section*.1}{Information Matrix}{equation.0.1}% 11
+\BOOKMARK [2][-]{section*.1}{Augmented MMEs}{equation.0.1}% 12
+\BOOKMARK [1][-]{section*.1}{Mean Shift Outlier Model}{}% 13
+\BOOKMARK [2][-]{equation.0.2}{Solution}{section*.1}% 14
+\BOOKMARK [1][-]{equation.0.2}{Variance Shift / Alternative Outlier Model}{}% 15
+\BOOKMARK [2][-]{equation.0.3}{Solution}{equation.0.2}% 16

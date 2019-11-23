@@ -1,0 +1,288 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\tp}{{\!\scriptscriptstyle \top}}
+\RequirePackage{amsmath,amssymb,hyperref}
+%\usefonttheme[onlymath]{}
+%%%% FONT %%%%%%%%%%%%%%
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+% fix markign
+\geometry{top=0.2cm,left=0.2cm,right=0.2cm,bottom=1.1cm} 
+% Turn off header and footer
+\pagestyle{empty}
+ 
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\RequirePackage{titlesec, xcolor}
+\titleformat{name=\section,numberless}{\large\scshape\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+\titleformat{name=\subsection,numberless}{}{}{0em}{\colorsubsectionnonumber}
+\newcommand{\colorsectionnonumber}[1]{%
+	\colorbox{red!20}{\parbox{\dimexpr0.49\textwidth-2\fboxsep}{#1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+	\colorbox{red!10}{\parbox{\dimexpr0.49\textwidth-2\fboxsep}{#1}}}
+
+\usepackage{scrextend}
+
+% make a bigger \dot
+\usepackage{accents}
+\newcommand*{\dt}[1]{\accentset{\mbox{\large\bfseries .}}{#1}}
+
+\usepackage{fancyhdr}
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyhead{}
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyfoot[R]{\scriptsize Copyright \copyright\ 2017 Emi Tanaka \qquad \url{emi.tanaka@sydney.edu.au} \hfill Page~\thepage}
+
+% the right brace for cases
+\newenvironment{rcases}
+{\left.\begin{aligned}}
+	{\end{aligned}\right\rbrace}
+% -----------------------------------------------------------------------
+
+% multicol parameters
+% These lengths are set only within the two main columns
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+
+\begin{document}
+
+\raggedright
+\footnotesize
+
+\begin{multicols}{2}
+\begin{center}
+     \Large{\textbf{Linear Mixed Model Cheat Sheet}} \\
+\end{center}
+
+\section{Linear Mixed Model}
+\begin{equation}
+\bs{y} = \bs{X}\bs{\tau} + \bs{Z}\bs{u} + \bs{e}
+\end{equation}
+where 
+\begin{itemize}
+	\item $\bs{y}$ is a $n\times 1$ vector of observations,
+	\item $\bs{X}$ is a $n \times p$ design matrix of fixed effects $\bs{\tau}$ with rank $p_0 \leq p$,
+	\item $\bs{Z}$ is a $n \times q$ design matrix of random effects $\bs{u}$, and
+	\item $\bs{e}$ is a $n \times 1$ vector of random error.
+\end{itemize}
+Assume 
+$$\begin{bmatrix}
+\bs{u} \\
+\bs{e} 
+\end{bmatrix} \sim N\left(\begin{bmatrix}
+\bs{0} \\
+\bs{0}
+\end{bmatrix}, \begin{bmatrix}
+\bs{G}(\bs{\kappa}_G) & \bs{0} \\
+\bs{0} & \bs{R}(\bs{\kappa}_R) \\
+\end{bmatrix}\right).$$
+
+\section{Mixed Model Equation}
+$$
+\underbrace{\begin{bmatrix}
+	\bs{X}^\tp\bs{R}^{-1}\bs{X} & 	\bs{X}^\tp\bs{R}^{-1}\bs{Z}\\
+	\bs{Z}^\tp\bs{R}^{-1}\bs{X} & \bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}
+	\end{bmatrix}}_{\textstyle (\bs{W}^\tp\bs{R}^{-1}\bs{W} + \bs{G}^*)} \underbrace{\begin{bmatrix}
+	\hat{\bs{\tau}} \\
+	\tilde{\bs{u}}
+	\end{bmatrix}}_{\textstyle\tilde{\bs{\beta}}} = \underbrace{\begin{bmatrix}
+	\bs{X}^\tp\bs{R}^{-1}\bs{y} \\	
+	\bs{Z}^\tp\bs{R}^{-1}\bs{y} 
+	\end{bmatrix}}_{\textstyle \bs{W}^\tp\bs{R}^{-1}\bs{y}} $$
+
+$$
+\begin{rcases}
+\hat{\bs{\tau}} &= (\bs{X}^\tp\bs{V}^{-1}\bs{X})^-\bs{X}^\tp\bs{V}^{-1}\bs{y} \\
+\tilde{\bs{u}}  &= \bs{G}\bs{Z}^\tp\bs{P}_X\bs{y} = \bs{G}\bs{Z}^\tp\bs{V}^{-1}(\bs{y}  - \bs{X}\hat{\bs{\tau}})
+\end{rcases}
+\tilde{\bs{\beta}} = \bs{C}^-\bs{W}^\tp\bs{R}^{-1}\bs{y}
+$$
+
+
+\section{Prediction Error Variance}
+$${\rm var}(\tilde{\bs{\beta}} - \bs{\beta})  = \bs{C}^-$$
+$$	\begin{bmatrix}
+(\bs{X}^\tp\bs{V}^{-1}\bs{X})^- & -(\bs{X}^\tp\bs{V}^{-1}\bs{X})^- \bs{X}^\tp\bs{V}^{-1}\bs{Z}\bs{G}\\
+-\bs{G}\bs{Z}^\tp\bs{V}^{-1}\bs{X}(\bs{X}^\tp\bs{V}^{-1}\bs{X})^- & \bs{G} - \bs{G}\bs{Z}^\tp\bs{P}_X\bs{Z}\bs{G} 
+\end{bmatrix}$$
+
+\section{Non-full rank $\bs{X}$}
+\begin{itemize}
+	\item If ${\rm rank}(\bs{X})$ is less than full-rank then the inverse of $\bs{X}^\tp\bs{V}^{-1}\bs{X}$ does not exist. 
+	\item Let $\bs{T}$ be a permutation matrix such that $\bs{X}\bs{T} = \begin{bmatrix}
+	\bs{X}_1 & \bs{X}_2
+	\end{bmatrix}$ where $\bs{X}_2$ is full rank. 
+	\item Let $\bs{X}^* = \bs{X}\bs{T}$ and $\bs{\tau}^* = \bs{T}^\tp\bs{\tau}$. Note that $\bs{X}\bs{\tau} = \bs{X}^*\bs{\tau}^*$.
+	\item Note $\bs{X}_1 = \bs{X}_2 \bs{F}$ for some matrix $\bs{F}$.
+	\item Note $\bs{T}$ is orthogonal so $\bs{T}^{-1} = \bs{T}^\tp$. 
+	\item Selected generalise inverse of $\bs{X}^\tp\bs{V}^{-1}\bs{X}$ is 
+	$$\bs{T}\begin{bmatrix}
+	\bs{0} & \bs{0} \\
+	\bs{0} & (\bs{X}_2^\tp\bs{V}^{-1}\bs{X}_2)^{-1}
+	\end{bmatrix}\bs{T}^\tp $$
+	and we select $\bs{\tau}_1 = \bs{0}$.
+\end{itemize}
+
+\section{Miscellaneous}
+\begin{itemize}
+	\item $ \bs{V} = \bs{Z}\bs{G}\bs{Z}^\tp + \bs{R}$
+	\item $\bs{P}_X = \bs{V}^{-1} - \bs{V}^{-1}\bs{X}(\bs{X}^\tp\bs{V}^{-1}\bs{X})^-\bs{X}^\tp\bs{V}^{-1} $
+	\item $ \bs{P}_X = \bs{V}^{-1} - \bs{V}^{-1}\bs{X}_2(\bs{X}_2^\tp\bs{V}^{-1}\bs{X}_2)^{-1}\bs{X}_2^\tp\bs{V}^{-1}$
+	\item $ \bs{P}_X = \bs{R}^{-1} - \bs{R}^{-1}\bs{W}\bs{C}^-\bs{W}^\tp\bs{R}^{-1}$
+	\item $\bs{V}^{-1} = \bs{R}^{-1} - \bs{R}^{-1}\bs{Z}(\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1})^{-1}\bs{Z}^\tp\bs{R}^{-1}$
+	\item $\bs{G}\bs{Z}^\tp\bs{V}^{-1} = (\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1})^{-1}\bs{Z}^\tp\bs{R}^{-1}$
+\end{itemize}
+
+\section{Residual}
+\begin{itemize}
+	\item {Marginal residual} $\hat{\bs{e}} = \bs{y} - \bs{X}\hat{\bs{\tau}} = \bs{Z}\tilde{\bs{u}}+\bs{e}$.
+	\item {Model-based residual} $\tilde{\bs{e}} = \bs{R}\bs{P}_X\bs{y}= \bs{R}\bs{V}^{-1}\hat{\bs{e}}$
+	\item {Conditional residual} is $r_i = (\bs{\delta}_i^\tp\bs{P}_X\bs{\delta}_i)^{-1}\bs{\delta}_i^\tp\bs{P}_X\bs{y}$.
+	\item Studentised conditional residual $t_i = r_i / \sqrt{{\rm var}(r_i)}$ where ${\rm var}(r_i) =(\bs{\delta}_i^\tp\bs{P}_X\bs{\delta}_i)^{-1}$.
+	\item Residual sum of squares $\bs{y}^\tp\bs{P}\bs{y}$.
+\end{itemize}
+
+
+\end{multicols}
+
+\begin{addmargin}[8em]{8em}
+\section{Variance Parameters}
+Suppose $\bs{L} = \begin{bmatrix}
+\bs{L}_1 & \bs{L}_2 
+\end{bmatrix}$ is a non-singular matrix and $\bs{L}_1$ and $\bs{L}_2$ are $n\times p_0$ and $n \times (n - p_0)$ matrices such that 
+$$\bs{L}_1^\tp\bs{X}_2 = \bs{I}_{p_0} \qquad  \text{and} \qquad \bs{L}_2^\tp\bs{X}_2 = \bs{0}.$$
+\\\vspace{4mm}
+\subsection{Residual likelihood}
+	\begin{eqnarray*}
+		\ell_R &=& - \frac{n - p_0}{2}\log 2\pi - \frac{1}{2}\log |\bs{L}_2^\tp\bs{V}\bs{L}_2| - \frac{1}{2}\bs{y}_2^\tp(\bs{L}_2^\tp\bs{V}\bs{L}_2)^{-1}\bs{y}_2 \\
+		&=& - \frac{n - p_0}{2}\log 2\pi - \frac{1}{2} \log |\bs{L}^\tp\bs{L}| - \frac{1}{2}|\bs{V}| - \frac{1}{2}\log |\bs{X}_2^\tp \bs{V}^{-1}\bs{X}_2| - \frac{1}{2}\bs{y}^\tp\bs{P}_X\bs{y}\\
+		&=& {\rm constant~w.r.t.~}\bs{\kappa} - \frac{1}{2}|\bs{V}| - \frac{1}{2}\log |\bs{X}_2^\tp \bs{V}^{-1}\bs{X}_2| - \frac{1}{2}\bs{y}^\tp\bs{P}_X\bs{y} 
+	\end{eqnarray*}
+\begin{center}
+	\rule{0.2\textwidth}{.4pt}
+\end{center}\vspace{4mm}
+$$ \ell_R = -\frac{1}{2}\left\{\log|\bs{G}| + \log|\bs{R}| + \log|\bs{C}| + \bs{y}^\tp\bs{P}_X\bs{y}\right\}$$
+\\\vspace{4mm}
+\subsection{Residual score equations}
+$$\bs{u}_R(\kappa_i)  = - \frac{1}{2}\left\{{\rm tr}\left(\bs{P}_X\dt{\bs{V}}_i \right) - \bs{y}^\tp\bs{P}_X\dt{\bs{V}}_i\bs{P}_X\bs{y} \right\}  $$
+where $\dt{\bs{V}}_i = \partial \bs{V} / \partial \kappa_i$. 
+\begin{center}
+	\rule{0.2\textwidth}{.4pt}
+\end{center}\vspace{4mm}
+	$$u_R(\kappa_{R_i}) = -\frac{1}{2}\left({\rm tr}\left(\bs{R}^{-1}\bs{\dt{R}}_i\right) - {\rm tr}\left(\bs{C}^-\bs{W}^\tp\bs{R}^{-1}\bs{\dt{R}}_i\bs{R}^{-1}\bs{W}\right) - \bs{\tilde{e}}\bs{R}^{-1}\bs{\dt{R}}_i\bs{R}^{-1}\bs{\tilde{e}}\right)
+	$$
+	$$ u_R(\kappa_{G_i}) = -\frac{1}{2}\left({\rm tr}\left(\bs{G}^{-1}\bs{\dt{G}}_i\right) - {\rm tr}\left(\bs{G}^{-1}\bs{\dt{G}}_i\bs{G}^{-1}\bs{C}^{ZZ}\right) - \bs{\tilde{u}}^\tp\bs{G}^{-1}\bs{\dt{G}}_i\bs{G}^{-1}\bs{\tilde{u}}\right)$$
+where $\bs{\dt{R}}_i = \partial\bs{R}/\partial\kappa_{R_i}$ and $\bs{\dt{G}}_i = \partial\bs{G}/\partial\kappa_{G_i}$.
+\\\vspace{4mm}
+\subsection{Quasi Newton-Raphson algorithm}
+\begin{eqnarray*}
+	\bs{\kappa}^{(m + 1)} &=& \bs{\kappa}^{(m)} - \left[ \frac{\delta \bs{u}_R(\bs{\kappa})}{\delta \bs{\kappa}^\tp}\right]^{-1}_{\bs{\kappa}= \bs{\kappa}^{(m)} }\bs{u}_R(\bs{\kappa}^{(m)}) \\
+	&=& \bs{\kappa}^{(m)} + \left[\bs{\mathcal{I}}^{(m)}\right]^{-1}\bs{u}_R(\bs{\kappa}^{(m)} )
+\end{eqnarray*}
+\\\vspace{4mm}
+\subsection{Information Matrix}
+\begin{eqnarray*}
+	\bs{\mathcal{I}}_o(\kappa_i, \kappa_j) &=& \frac{1}{2}\left\{{\rm tr}\left(\bs{P}_X\dt{\bs{V}}_{ij}\right) - {\rm tr}\left(\bs{P}_X\dt{\bs{V}}_{i}\bs{P}_X\dt{\bs{V}}_{j}\right) + \bs{y}^\tp\bs{P}_X\dt{\bs{V}}_i\bs{P}_X\dt{\bs{V}}_j\bs{P}_X\bs{y} - \bs{y}^\tp\bs{P}_X\dt{\bs{V}}_{ij}\bs{P}_X\bs{y}\right\} \\
+	\bs{\mathcal{I}}_e(\kappa_i,\kappa_j) &=& \frac{1}{2}\tr{\bs{P}_X\bs{\dt{V}}_i\bs{P}_X\bs{\dt{V}}_j\bs{P}_X}\\
+	\bs{\mathcal{I}}_A(\kappa_i, \kappa_j) &=& \frac{1}{2}\bs{y}^\tp\bs{P}_X\bs{\dt{V}}_i\bs{P}_X\bs{\dt{V}}_j\bs{P}_X\bs{y} = \frac{1}{2}\bs{Q}^\tp\bs{P}_X\bs{Q} 
+\end{eqnarray*}
+where $\bs{Q}  = \begin{bmatrix}
+\bs{q}_1 & \cdots & \bs{q}_{n_\kappa}
+\end{bmatrix}$ and $\bs{q}_i = \dt{\bs{V}}_i\bs{P}_X\bs{y}$ (the working vector for $\kappa_i$).
+\\\vspace{4mm}
+\subsection{Augmented MMEs}
+\begin{equation*}
+\bs{M} = \begin{bmatrix}
+\bs{C}_{QQ} & \bs{C}_{yQ}^\tp & \bs{C}_{XQ}^\tp & \bs{C}_{ZQ}^\tp\\
+\bs{C}_{yQ} & \bs{C}_{yy} & \bs{C}_{Xy}^\tp & \bs{C}_{Zy}^\tp\\
+\bs{C}_{XQ} & \bs{C}_{Xy} & \bs{C}_{XX}& \bs{C}_{XZ}\\
+\bs{C}_{ZQ} & \bs{C}_{Zy} & \bs{C}_{ZX}& \bs{C}_{ZZ}\\
+\end{bmatrix}
+\end{equation*}
+where $\bs{C}_{QQ} = \bs{Q}^\tp\bs{R}^{-1}\bs{Q}$, $\bs{C}_{XQ} = \bs{X}^\tp\bs{R}^{-1}\bs{Q}$, and so on. Following the absorption of $\bs{C}$ provides $\bs{\tilde{\beta}}$, $\bs{C}_+^{-1}$ (and $\bs{C}^-$) as well as $\log|\bs{C}|_+$.
+\end{addmargin}
+
+\begin{multicols}{2}
+\section{Mean Shift Outlier Model}
+\begin{equation}
+\bs{y} = \bs{X}\bs{\tau} + \bs{Z}\bs{u} + \bs{\delta}_I\phi_I + \bs{e}
+\end{equation}
+
+where $\bs{\delta}_I$ is a $n\times 1$ binary vector where the $i\in I$ positions is 1 and 0 else where and  $\phi_I$ is the fixed mean shift effect for the set $I$ . 
+\subsection{Solution}
+\begin{eqnarray*}
+\hat{\bs{\tau}} &=& (\bs{X}^\tp\bs{P}_{\delta_I}\bs{X})^- \bs{X}^\tp\bs{P}_{\delta_I}\bs{y}\\
+\hat{\phi}_I &=& (\bs{\delta}_I^\tp\bs{P}_{X}\bs{\delta}_I)^- \bs{\delta}_I^\tp\bs{P}_{X}\bs{y}\\
+\tilde{\bs{u}} &=& \bs{G}\bs{Z}^\tp\bs{V}^{-1}(\bs{y} - \bs{X}\hat{\bs{\tau}} - \bs{\delta}_I\hat\phi_I)
+\end{eqnarray*}
+where $\bs{P}_{\bs{\delta}_I} = \bs{V}^{-1} - \bs{V}^{-1}\bs{\delta}_I(\bs{\delta}_I^\tp\bs{V}^{-1}\bs{\delta}_I)^-\bs{\delta}_I^\tp\bs{V}^{-1} $. 
+
+
+\section{Variance Shift / Alternative Outlier Model}
+\begin{equation}
+\bs{y} = \bs{X}\bs{\tau} + \bs{Z}\bs{u} + \bs{\delta}_Io_I + \bs{e}
+\end{equation}
+where $o_I \sim N(0, \sigma^2_o\bs{I}_{|I|})$.
+
+
+\subsection{Solution}
+\begin{eqnarray*}
+	\hat{\bs{\tau}} &=& (\bs{X}^\tp(\bs{V} + \sigma^2_o\bs{I}_{|I|})^{-1}\bs{X})^- \bs{X}^\tp(\bs{V} + \sigma^2_o\bs{I}_{|I|})^{-1}\bs{y}\\
+	\tilde{o}_I &=& (\bs{\delta}_I^\tp\bs{P}_{X}\bs{\delta}_I)^- \bs{\delta}_I^\tp\bs{P}_{X}\bs{y}\\
+	\tilde{\bs{u}} &=& \bs{G}\bs{Z}^\tp(\bs{V} + \sigma^2_o\bs{I}_{|I|})^{-1}(\bs{y} - \bs{X}\hat{\bs{\tau}} )
+\end{eqnarray*}
+where $\bs{P}_{\bs{\delta}_I} = \bs{V}^{-1} - \bs{V}^{-1}\bs{\delta}_I(\bs{\delta}_I^\tp\bs{V}^{-1}\bs{\delta}_I)^-\bs{\delta}_I^\tp\bs{V}^{-1} $. 
+
+%\section{Key References}
+\nocite{Henderson1949}
+\nocite{Smith2005}
+%\nocite{*} % Insert publications even if they are not cited in the poster
+\small{\bibliography{/Users/emi/Dropbox/Articles/library}
+	\bibliographystyle{plain}\vspace{0.75in}}
+\end{multicols}
+
+\end{document}

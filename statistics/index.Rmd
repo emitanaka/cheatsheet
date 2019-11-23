@@ -1,0 +1,92 @@
+---
+title: "Statistics Cheat Sheet"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    self_contained: false
+    social: menu
+    theme: united
+---
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tp}{{\scriptscriptstyle \top}}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+Sidebar {.sidebar}
+=====================================
+
+### Table of Contents
+
+#### Identities
+* [Range/Span/Column Space]
+
+
+
+Univariate Distributions {data-icon="fa-list" data-orientation=rows}
+=====================================
+
+Row
+-------------------------------------
+
+### Normal distribution
+Suppose $X\sim N(\mu, \sigma^2)$.
+
+* $f(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}} {\rm exp}\left(-\dfrac{1}{2\sigma^2}(x-\mu) ^2\right)$
+* $E(X)=\mu$ and $var(X) = \sigma^2$
+
+
+### $t$ distribution
+
+Row
+-------------------------------------
+
+### $\chi^2$ distribution
+Suppose $X \sim \chi^2_k$.
+
+* Support: $x \in (0, \infty)$ if $k=1$ otherwise $x \in [0, \infty)$
+* $E(X) = k$ and $var(X) = 2k$
+* $\sum_{i=1}^k Z_i^2 \sim \chi^2_k$ where $Z_i \sim N(0,1)$
+* $\sum_{i=1}^k X_i^2 \sim \sigma^2 \chi^2_k$ where $X_i \sim N(0,\sigma^2)$	
+* $\sum_{i=1}^k (X_i - \hat{\mu})^2 \sim \sigma^2 \chi^2_{k-1}$ where $X_i \sim N(\mu,\sigma^2)$
+* $\frac{1}{m}\sum_{i=1}^k (X_i - \hat{\mu})^2 \sim \frac{\sigma^2}{m} \chi^2_{k-1}$ where $X_i \sim N(\mu,\sigma^2)$
+
+
+### $F$ distribution}
+
+
+* $\dfrac{X_1 /  d_1}{X_2 /  d_2} \sim F_{d_1, d_2}$ where $X_1 \sim \chi^2_{d_1}$ and $X_2 \sim \chi^2_{d_2}$
+* $\dfrac{S_1^2/d_1} {\sigma^2_1} / \dfrac{S_2^2/d_2}{\sigma^2_2}\sim F_{d_1, d_2} $
+* If $X \sim t_n$ then $X^2 \sim F_{1, n}$ and $X^{-2} \sim F_{n, 1}$ 
+
+
+Multivariate Distributions {data-icon="fa-list" data-orientation=rows}
+=====================================
+
+Row
+-------------------------------------
+
+###  Normal Distribution
+Suppose $\bs{X} \sim N(\bs{\mu}, \bs{\Sigma})$ with $|\bs{X}|=k$.
+
+* $f(\bs{x}) = \dfrac{1}{\sqrt{(2\pi)^k|\bs{\Sigma}|}} {\rm exp}\left(-\dfrac{1}{2}(\bs{x}-\bs{\mu})^\tp\bs{\Sigma}^{-1} (\bs{x}-\bs{\mu})\right)$
+
+#### Conditional distribution
+$$\begin{bmatrix}
+\bs{X}_1 \\
+\bs{X}_2 
+\end{bmatrix} \sim N\left(\begin{bmatrix}
+\bs{\mu}_1\\
+\bs{\mu}_2
+\end{bmatrix},  \begin{bmatrix}
+\bs{\Sigma}_{11} & \bs{\Sigma}_{12}\\
+\bs{\Sigma}_{21} & \bs{\Sigma}_{22}
+\end{bmatrix} \right)
+ $$
+
+* $E(\bs{X}_2 | \bs{X}_1 = \bs{x_1}) = \bs{\mu}_2 + \bs{\Sigma}_{21}\bs{\Sigma}_{11}^{-1}(\bs{x}_1 - \bs{\mu}_1)$
+* $var(\bs{X}_2 | \bs{X}_1 = \bs{x_1}) = \bs{\Sigma}_{22} - \bs{\Sigma}_{21}\bs{\Sigma}_{11}^{-1}\bs{\Sigma}_{12}$
+
+
+### Univariate Tests
+

@@ -1,0 +1,3363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title>Linear Algebra</title>
+
+<meta property="og:title" content="Linear Algebra" />
+
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+<link rel="icon" href="data:image/x-icon;" type="image/x-icon">
+
+
+<script type="text/javascript">
+window.FlexDashboardComponents = [];
+</script>
+
+<script id="flexdashboard-navbar" type="application/json">
+[{"icon":"fa-share-alt","items":[{"title":"Twitter","icon":"fa-twitter"},{"title":"Facebook","icon":"fa-facebook"},{"title":"Google+","icon":"fa-google-plus"},{"title":"LinkedIn","icon":"fa-linkedin"},{"title":"Pinterest","icon":"fa-pinterest"}]}]
+</script>
+<script src="index_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="index_files/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="index_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="index_files/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<link href="index_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="index_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<style type="text/css">
+
+/*
+ Dashboard CSS from Keen IO Dashboards
+ (https://github.com/keen/dashboards)
+*/
+
+body {
+  background: #f2f2f2;
+  padding: 60px 0 0 8px; /* padding-top overridden by theme */
+}
+
+body hr {
+  border-color: #d7d7d7;
+  margin: 10px 0;
+}
+
+.navbar-inverse .navbar-nav > li > a,
+.navbar .navbar-brand {
+  text-decoration: none;
+}
+
+.navbar-logo {
+  margin-top: 1px;
+}
+
+.navbar-logo img {
+  margin-right: 12px;
+}
+
+.navbar-author {
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.navbar .dropdown-menu .fa {
+  min-width: 20px;
+}
+
+.navbar .dropdown-menu {
+  min-width: 150px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.chart-wrapper,
+.nav-tabs-custom,
+.sbframe-commentary
+{
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.chart-title {
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 7px 10px 4px;
+}
+
+.chart-wrapper .chart-title:empty {
+  display: none;
+}
+
+.chart-wrapper .chart-stage {
+  overflow: hidden;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.chart-wrapper .chart-notes {
+  background: #fbfbfb;
+  border-top: 1px solid #e2e2e2;
+  color: #808080;
+  font-size: 12px;
+  padding: 8px 10px 5px;
+}
+
+/*
+ CSS for handling flexbox layout
+*/
+
+#dashboard-container {
+  visibility: hidden;
+}
+
+.tab-content>.dashboard-page-wrapper.active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dashboard-page-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.dashboard-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-row-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.dashboard-column-orientation {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.dashboard-column {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-wrapper-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chart-stage-flex {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: relative;
+}
+
+.chart-shim {
+  position: absolute;
+  left: 8px; top: 8px; right: 8px; bottom: 8px;
+}
+
+.no-padding .chart-shim {
+  left: 0; top: 0; right: 0; bottom: 0;
+}
+
+.flowing-content-shim {
+  overflow: auto;
+  left: 0; top: 0; right: 0; bottom: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.flowing-content-container {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.chart-stage .table-bordered {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > th,
+.chart-stage .table-bordered > tfoot > tr > th,
+.chart-stage .table-bordered > tbody > tr > td,
+.chart-stage .table-bordered > tfoot > tr > td {
+  border: none;
+}
+
+.chart-stage .table-bordered > tbody > tr > td {
+  border-top: 1px solid #dddddd;
+}
+
+.chart-stage .table-bordered > thead > tr > th {
+  border: none;
+  border-bottom: 2px solid #dddddd;
+}
+
+.bootstrap-table table>thead {
+  background-color: #fff;
+}
+
+.bootstrap-table table.data,
+.bootstrap-table table.shiny-table {
+  width: inherit !important;
+}
+
+.bootstrap-table table.data>tbody>tr>th,
+.bootstrap-table table.shiny-table>tbody>tr>th {
+  border-top: none;
+  border-bottom: 2px solid #dddddd;
+  padding: 5px;
+}
+
+.bootstrap-table .data td[align=right] {
+  font-family: inherit;
+}
+
+.chart-wrapper form {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.shiny-input-container label {
+  font-weight: normal;
+}
+
+.chart-stage .html-widget {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .html-widget-static-bound {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-stage .shiny-bound-output {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Omit display of empty paragraphs */
+
+.chart-shim>p:empty {
+  display: none;
+}
+
+.chart-stage>p:empty {
+  display: none;
+}
+
+/* Omit display of special knitr options div*/
+
+.chart-stage .knitr-options {
+  display: none;
+}
+
+/* Automatically resizing images */
+
+.image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.image-container img {
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Value box */
+
+.value-box {
+  border-radius: 2px;
+  position: relative;
+  display: block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.value-box > .inner {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.value-box .value {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.value-box .caption {
+  font-size: 15px;
+}
+.value-box .caption > small {
+  display: block;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.value-box .icon i {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 80px;
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.linked-value:hover {
+  cursor: pointer;
+}
+
+.value-box.linked-value:hover {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* STORYBOARD */
+
+.storyboard-nav button {
+  background: transparent;
+  border: 0;
+  opacity: .3;
+  outline: none;
+  padding: 0;
+}
+
+.storyboard-nav button:hover,
+.storyboard-nav button:hover {
+  opacity: .5;
+}
+
+.storyboard-nav button:disabled,
+.storyboard-nav button:disabled {
+  opacity: .1;
+}
+
+.storyboard-nav .sbnext,
+.storyboard-nav .sbprev {
+  float: left;
+  width: 2%;
+  height: 120px;
+  font-size: 50px;
+}
+
+.storyboard-nav .sbprev {
+  text-align: left;
+  width: 2%;
+}
+
+.storyboard-nav .sbnext {
+  float: right;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.storyboard-nav .sbframelist {
+  margin: 0 auto;
+  width: 94%;
+  height: 120px;
+  overflow: hidden;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.storyboard-nav .sbframelist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.storyboard-nav .sbframelist ul li {
+  float: left;
+  width: 270px;
+  height: 100%;
+  padding: 10px 10px 10px 10px;
+  margin-right: 8px;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  color: #3a3c47;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.storyboard-nav .sbframelist ul li:last-child {
+  margin-right: 0px;
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  color: #fff;
+  background: #B8B8B8;
+}
+
+.sbframe-commentary {
+  width: 300px;
+  background: #fbfbfb;
+  font-size: 14px;
+}
+
+.sbframe-commentary ul {
+  padding-left: 22px;
+}
+
+.sbframe.active {
+  display: flex;
+}
+
+.sbframe:not(.active) {
+  display: none;
+}
+
+/* NAV TABS */
+
+.nav-tabs-custom > .nav-tabs {
+  margin: 0;
+  border-bottom: 1px solid #d7d7d7;
+  color: #666;
+  font-size: 14px;
+  font-weight: 300;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.nav-tabs-custom > .nav-tabs > li {
+  border-top: 3px solid transparent;
+  margin-bottom: -1px;
+  margin-right: 5px;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:active {
+  color: #666;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 0;
+  padding: 3px 10px 5px;
+  text-transform: none;
+}
+
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a {
+  border-bottom-color: transparent;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a.text-muted {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li > a,
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  background: transparent;
+  margin: 0;
+}
+.nav-tabs-custom > .nav-tabs > li > a:hover {
+  color: #999;
+}
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:hover,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus,
+.nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
+  border-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: #3c8dbc;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a,
+.nav-tabs-custom > .nav-tabs > li.active:hover > a {
+  background-color: #fff;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.active > a {
+  border-top-color: transparent;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type {
+  margin-left: 0;
+}
+.nav-tabs-custom > .nav-tabs > li:first-of-type.active > a {
+  border-left-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs.pull-right {
+  float: none !important;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li {
+  float: right;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type {
+  margin-right: 0;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type > a {
+  border-left-width: 1px;
+}
+.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type.active > a {
+  border-left-color: #d7d7d7;
+  border-right-color: transparent;
+}
+.nav-tabs-custom > .nav-tabs > li.header {
+  line-height: 35px;
+  padding: 0 10px;
+  font-size: 20px;
+  color: #666;
+}
+.nav-tabs-custom > .nav-tabs > li.header > .fa,
+.nav-tabs-custom > .nav-tabs > li.header > .glyphicon,
+.nav-tabs-custom > .nav-tabs > li.header > .ion {
+  margin-right: 5px;
+}
+.nav-tabs-custom > .tab-content {
+  background: #fff;
+  padding: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom > .tab-content > .chart-wrapper {
+  background: #fff;
+  border: none;
+  margin: 0;
+}
+
+
+.nav-tabs-custom > .tab-content > .active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav-tabs-custom .dropdown.open > a:active,
+.nav-tabs-custom .dropdown.open > a:focus {
+  background: transparent;
+  color: #999;
+}
+
+
+@media (max-width: 767px) {
+  .value-box {
+    text-align: center;
+    margin-right: 8px;
+  }
+  .value-box .icon {
+    display: none;
+  }
+}
+
+/* Fixed position sidebar */
+
+.section.sidebar {
+  position: fixed;
+  top: 51px; /* overridden by theme */
+  left: 0;
+  bottom: 0;
+  border-right: 1px solid #e2e2e2;
+  background-color: white; /* overridden by theme */
+  padding-left: 10px;
+  padding-right: 10px;
+  visibility: hidden;
+  overflow: auto;
+}
+
+.section.sidebar form p:first-child {
+  margin-top: 10px;
+}
+
+/* Embedded source code */
+
+#flexdashboard-source-code {
+  display: none;
+}
+
+.featherlight-content #flexdashboard-source-code {
+  display: inline-block;
+}
+
+.featherlight-content {
+  width: 80%;
+  max-width: 800px;
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+
+.featherlight:last-of-type {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.featherlight-inner {
+  width: 100%;
+}
+
+.featherlight-content pre {
+  margin: 0;
+  border: 0;
+  background: #fff;
+  font-size: 12px;
+}
+
+.unselectable {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#flexdashboard-source-code code {
+  -ms-user-select: text;
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -o-user-select: text;
+  user-select: text;
+}
+
+/* DataTables Tweaks */
+
+.dataTables_filter input[type="search"] {
+  -webkit-appearance: searchfield;
+  outline: none;
+}
+
+.dataTables_wrapper.no-footer
+.dataTables_info {
+  padding-top: 0;
+}
+
+
+table.dataTable thead th {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 1px solid #d7d7d7;
+}
+
+/* Mobile phone only CSS */
+
+.desktop-layout div.section.mobile {
+  display: none;
+}
+
+.mobile-layout div.section.no-mobile {
+  display: none;
+}
+
+.mobile-figure {
+  display: none;
+}
+
+
+
+body {
+  padding-top: 60px;
+}
+
+.section.sidebar {
+  top: 51px;
+  background-color: rgba(119, 41, 83, 0.1);
+}
+
+.value-box {
+  color: inherit;
+}
+
+.bg-primary {
+  background-color: rgba(221, 72, 20, 0.3);
+}
+
+.storyboard-nav .sbframelist ul li.active {
+  background-color: rgba(221, 72, 20, 0.7);
+}
+
+.nav-tabs-custom > .nav-tabs > li.active {
+  border-top-color: rgba(221, 72, 20, 1);
+}
+</style>
+
+
+
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="container-fluid">
+<div class="navbar-header">
+
+<button id="navbar-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+
+<span class="navbar-logo pull-left">
+  
+</span>
+<span class="navbar-brand">
+  Linear Algebra
+  <span class="navbar-author">
+        </span>
+</span>
+
+</div>
+<div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav navbar-left">
+</ul>
+<ul class="nav navbar-nav navbar-right">
+</ul>
+</div><!--/.nav-collapse-->
+</div><!--/.container-->
+</div><!--/.navbar-->
+
+<script type="text/javascript">
+
+
+var FlexDashboard = (function () {
+
+  // initialize options
+  var _options = {};
+
+  var FlexDashboard = function() {
+
+    // default options
+    _options = $.extend(_options, {
+      theme: "cosmo",
+      fillPage: false,
+      orientation: 'columns',
+      storyboard: false,
+      defaultFigWidth: 576,
+      defaultFigHeight: 461,
+      defaultFigWidthMobile: 360,
+      defaultFigHeightMobile: 461,
+      isMobile: false,
+      isPortrait: false
+    });
+  };
+
+  function init(options) {
+
+    // extend default options
+    $.extend(true, _options, options);
+
+    // add ids to sections that don't have them (pandoc won't assign ids
+    // to e.g. sections with titles consisting of only chinese characters)
+    var nextId = 1;
+    $('.level1:not([id]),.level2:not([id]),.level3:not([id])').each(function() {
+      $(this).attr('id', 'dashboard-' + nextId++);
+    });
+
+    // find navbar items
+    var navbarItems = $('#flexdashboard-navbar');
+    if (navbarItems.length)
+      navbarItems = JSON.parse(navbarItems.html());
+    addNavbarItems(navbarItems);
+
+    // find the main dashboard container
+    var dashboardContainer = $('#dashboard-container');
+
+    // resolve mobile classes
+    resolveMobileClasses(dashboardContainer);
+
+    // one time global initialization for components
+    componentsInit(dashboardContainer);
+
+    // look for a global sidebar
+    var globalSidebar = dashboardContainer.find(".section.level1.sidebar");
+    if (globalSidebar.length > 0) {
+
+      // global layout for fullscreen displays
+      if (!isMobilePhone()) {
+
+         // hoist it up to the top level
+         globalSidebar.insertBefore(dashboardContainer);
+
+         // lay it out (set width/positions)
+         layoutSidebar(globalSidebar, dashboardContainer);
+
+      // tuck sidebar into first page for mobile phones
+      } else {
+
+        // convert it into a level3 section
+        globalSidebar.removeClass('sidebar');
+        globalSidebar.removeClass('level1');
+        globalSidebar.addClass('level3');
+        var h1 = globalSidebar.children('h1');
+        var h3 = $('<h3></h3>');
+        h3.html(h1.html());
+        h3.insertBefore(h1);
+        h1.remove();
+
+        // move it into the first page
+        var page = dashboardContainer.find('.section.level1').first();
+        if (page.length > 0)
+          page.prepend(globalSidebar);
+      }
+    }
+
+    // look for pages to layout
+    var pages = $('div.section.level1');
+    if (pages.length > 0) {
+
+        // find the navbar and collapse on clicked
+        var navbar = $('#navbar');
+        navbar.on("click", "a[data-toggle!=dropdown]", null, function () {
+           navbar.collapse('hide');
+        });
+
+        // envelop the dashboard container in a tab content div
+        dashboardContainer.wrapInner('<div class="tab-content"></div>');
+
+        pages.each(function(index) {
+
+          // lay it out
+          layoutDashboardPage($(this));
+
+          // add it to the navbar
+          addToNavbar($(this), index === 0);
+
+        });
+
+    } else {
+
+      // remove the navbar and navbar button if we don't
+      // have any navbuttons
+      if (navbarItems.length === 0) {
+        $('#navbar').remove();
+        $('#navbar-button').remove();
+      }
+
+      // add the storyboard class if requested
+      if (_options.storyboard)
+        dashboardContainer.addClass('storyboard');
+
+      // layout the entire page
+      layoutDashboardPage(dashboardContainer);
+    }
+
+    // if we are in shiny we need to trigger a window resize event to
+    // force correct layout of shiny-bound-output elements
+    if (isShinyDoc())
+      $(window).trigger('resize');
+
+    // make main components visible
+    $('.section.sidebar').css('visibility', 'visible');
+    dashboardContainer.css('visibility', 'visible');
+
+    // handle location hash
+    handleLocationHash();
+
+    // intialize prism highlighting
+    initPrismHighlighting();
+
+    // record mobile and orientation state then register a handler
+    // to refresh if it changes
+    _options.isMobile = isMobilePhone();
+    _options.isPortrait = isPortrait();
+    $(window).on('resize', function() {
+      if (_options.isMobile !== isMobilePhone() ||
+          _options.isPortrait !== isPortrait()) {
+        window.location.reload();
+      }
+    });
+
+    // trigger layoutcomplete event
+    dashboardContainer.trigger('flexdashboard:layoutcomplete');
+  }
+
+  function resolveMobileClasses(dashboardContainer) {
+     // add top level layout class
+    dashboardContainer.addClass(isMobilePhone() ? 'mobile-layout' :
+                                                  'desktop-layout');
+
+    // look for .mobile sections and add .no-mobile to their peers
+    var mobileSections = $('.section.mobile');
+    mobileSections.each(function() {
+       var id = $(this).attr('id');
+       var nomobileId = id.replace(/-\d+$/, '');
+       $('#' + nomobileId).addClass('no-mobile');
+    });
+  }
+
+  function addNavbarItems(navbarItems) {
+
+    var navbarLeft = $('ul.navbar-left');
+    var navbarRight = $('ul.navbar-right');
+
+    for (var i = 0; i<navbarItems.length; i++) {
+
+      // get the item
+      var item = navbarItems[i];
+
+      // determine the container
+      var container = null;
+      if (item.align === "left")
+        container = navbarLeft;
+      else
+        container = navbarRight;
+
+      // navbar menu if we have multiple items
+      if (item.items) {
+        var menu = navbarMenu(null, item.icon, item.title, container);
+        for (var j = 0; j<item.items.length; j++) {
+          var subItem = item.items[j];
+          var li = $('<li></li>');
+          li.append(navbarLink(subItem.icon, subItem.title, subItem.href, subItem.target));
+          menu.append(li);
+        }
+      } else {
+        var li = $('<li></li>');
+        li.append(navbarLink(item.icon, item.title, item.href, item.target));
+        container.append(li);
+      }
+    }
+  }
+
+  // create or get a reference to an existing dropdown menu
+  function navbarMenu(id, icon, title, container) {
+    var existingMenu = [];
+    if (id)
+      existingMenu = container.children('#' + id);
+    if (existingMenu.length > 0) {
+      return existingMenu.children('ul');
+    } else {
+      var li = $('<li></li>');
+      if (id)
+        li.attr('id', id);
+      li.addClass('dropdown');
+      // auto add "Share" title on mobile if necessary
+      if (!title && icon && (icon === "fa-share-alt") && isMobilePhone())
+        title = "Share";
+      if (title) {
+        title = title + ' <span class="caret"></span>';
+      }
+      var a = navbarLink(icon, title, "#");
+      a.addClass('dropdown-toggle');
+      a.attr('data-toggle', 'dropdown');
+      a.attr('role', 'button');
+      a.attr('aria-expanded', 'false');
+      li.append(a);
+      var ul = $('<ul class="dropdown-menu"></ul>');
+      ul.attr('role', 'menu');
+      li.append(ul);
+      container.append(li);
+      return ul;
+    }
+  }
+
+  function addToNavbar(page, active) {
+
+    // capture the id and data-icon attribute (if any)
+    var id = page.attr('id');
+    var icon = page.attr('data-icon');
+    var navmenu = page.attr('data-navmenu');
+
+    // get hidden state (transfer this to navbar)
+    var hidden = page.hasClass('hidden');
+    page.removeClass('hidden');
+
+    // sanitize the id for use with bootstrap tabs
+    id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+    page.attr('id', id);
+
+    // get the wrapper
+    var wrapper = page.closest('.dashboard-page-wrapper');
+
+    // move the id to the wrapper
+    page.removeAttr('id');
+    wrapper.attr('id', id);
+
+    // add the tab-pane class to the wrapper
+    wrapper.addClass('tab-pane');
+    if (active)
+      wrapper.addClass('active');
+
+    // get a reference to the h1, discover it's id and title, then remove it
+    var h1 = wrapper.find('h1').first();
+    var title = h1.html();
+    h1.remove();
+
+    // create a navbar item
+    var li = $('<li></li>');
+    var a = navbarLink(icon, title, '#' + id);
+    a.attr('data-toggle', 'tab');
+    li.append(a);
+
+    // add it to the navbar (or navbar menu if specified)
+    var container = $('ul.navbar-left');
+    if (navmenu) {
+      var menuId = navmenu.replace(/\s+/g, '');
+      var menu = navbarMenu(menuId, null, navmenu, container);
+      menu.append(li);
+    } else {
+      container.append(li);
+    }
+
+    // hide it if requested
+    if (hidden)
+      li.addClass('hidden');
+  }
+
+  function navbarLink(icon, title, href, target) {
+
+    var a = $('<a></a>');
+    if (icon) {
+
+      // get the name of the icon set and icon
+      var dashPos = icon.indexOf("-");
+      var iconSet = icon.substring(0, dashPos);
+      var iconName = icon.substring(dashPos + 1);
+
+      // create the icon
+      var iconElement = $('<span class="' + iconSet + ' ' + icon + '"></span>');
+      if (title)
+        iconElement.css('margin-right', '7px');
+      a.append(iconElement);
+      // if href is null see if we can auto-generate based on icon (e.g. social)
+      if (!href)
+        maybeGenerateLinkFromIcon(iconName, a);
+    }
+    if (title)
+      a.append(title);
+
+    // add the href.
+    if (href) {
+      if (href === "source_embed") {
+        a.attr('href', '#');
+        a.attr('data-featherlight', "#flexdashboard-source-code");
+        a.featherlight({
+            beforeOpen: function(event){
+              $('body').addClass('unselectable');
+            },
+            afterClose: function(event){
+              $('body').removeClass('unselectable');
+            }
+        });
+      } else {
+        a.attr('href', href);
+      }
+    }
+
+    // add the arget
+    if (target)
+      a.attr('target', target);
+
+    return a;
+  }
+
+  // auto generate a link from an icon name (e.g. twitter) when possible
+  function maybeGenerateLinkFromIcon(iconName, a) {
+
+     var serviceLinks = {
+      "twitter": "https://twitter.com/share?text=" + encodeURIComponent(document.title) + "&url="+encodeURIComponent(location.href),
+      "facebook": "https://www.facebook.com/sharer/sharer.php?s=100&p[url]="+encodeURIComponent(location.href),
+      "google-plus": "https://plus.google.com/share?url="+encodeURIComponent(location.href),
+      "linkedin": "https://www.linkedin.com/shareArticle?mini=true&url="+encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title),
+      "pinterest": "https://pinterest.com/pin/create/link/?url="+encodeURIComponent(location.href) + "&description=" + encodeURIComponent(document.title)
+    };
+
+    var makeSocialLink = function(a, href) {
+      a.attr('href', '#');
+      a.on('click', function(e) {
+        e.preventDefault();
+        window.open(href);
+      });
+    };
+
+    $.each(serviceLinks, function(key, value) {
+      if (iconName.indexOf(key) !== -1)
+        makeSocialLink(a, value);
+    });
+  }
+
+  // layout a dashboard page
+  function layoutDashboardPage(page) {
+
+    // use a page wrapper so that free form content above the
+    // dashboard appears at the top rather than the side (as it
+    // would without the wrapper in a column orientation)
+    var wrapper = $('<div class="dashboard-page-wrapper"></div>');
+    page.wrap(wrapper);
+
+    // if there are no level2 or level3 headers synthesize a level3
+    // header to contain the (e.g. frame it, scroll container, etc.)
+    var headers = page.find('h2,h3');
+    if (headers.length === 0)
+      page.wrapInner('<div class="section level3"></div>');
+
+    // hoist up any content before level 2 or level 3 headers
+    var children = page.children();
+    children.each(function(index) {
+      if ($(this).hasClass('level2') || $(this).hasClass('level3'))
+        return false;
+      $(this).insertBefore(page);
+    });
+
+    // determine orientation and fillPage behavior for distinct media
+    var orientation, fillPage, storyboard;
+
+    // media: mobile phone
+    if (isMobilePhone()) {
+
+      // if there is a sidebar we need to ensure it's content
+      // is properly framed as an h3
+      var sidebar = page.find('.section.sidebar');
+      sidebar.removeClass('sidebar');
+      sidebar.wrapInner('<div class="section level3"></div>');
+      var h2 = sidebar.find('h2');
+      var h3 = $('<h3></h3>');
+      h3.html(h2.html());
+      h3.insertBefore(h2);
+      h2.remove();
+
+      // wipeout h2 elements then enclose them in a single h2
+      var level2 = page.find('div.section.level2');
+      level2.each(function() {
+        level2.children('h2').remove();
+        level2.children().unwrap();
+      });
+      page.wrapInner('<div class="section level2"></div>');
+
+      // substitute mobile images
+      if (isPortrait()) {
+        var mobileFigures = $('img.mobile-figure');
+        mobileFigures.each(function() {
+          // get the src (might be base64 encoded)
+          var src = $(this).attr('src');
+
+          // find it's peer
+          var id = $(this).attr('data-mobile-figure-id');
+          var img = $('img[data-figure-id=' + id + "]");
+          img.attr('src', src)
+             .attr('width', _options.defaultFigWidthMobile)
+             .attr('height', _options.defaultFigHeightMobile);
+        });
+      }
+
+      // hoist storyboard commentary into it's own section
+      if (page.hasClass('storyboard')) {
+        var commentaryHR = page.find('div.section.level3 hr');
+        commentaryHR.each(function() {
+          var commentary = $(this).nextAll().detach();
+          var commentarySection = $('<div class="section level3"></div>');
+          commentarySection.append(commentary);
+          commentarySection.insertAfter($(this).closest('div.section.level3'));
+          $(this).remove();
+        });
+      }
+
+      // force a non full screen layout by columns
+      orientation = _options.orientation = 'columns';
+      fillPage = _options.fillPage = false;
+      storyboard = _options.storyboard = false;
+
+    // media: desktop
+    } else {
+
+      // determine orientation
+      orientation = page.attr('data-orientation');
+      if (orientation !== 'rows' && orientation != 'columns')
+        orientation = _options.orientation;
+
+      // determine storyboard mode
+      storyboard = page.hasClass('storyboard');
+
+      // fillPage based on options (force for storyboard)
+      fillPage = _options.fillPage || storyboard;
+
+      // handle sidebar
+      var sidebar = page.find('.section.level2.sidebar');
+      if (sidebar.length > 0)
+        layoutSidebar(sidebar, page);
+    }
+
+    // give it and it's parent divs height: 100% if we are in fillPage mode
+    if (fillPage) {
+      page.addClass('vertical-layout-fill');
+      page.css('height', '100%');
+      page.parents('div').css('height', '100%');
+    } else {
+      page.addClass('vertical-layout-scroll');
+    }
+
+    // perform the layout
+    if (storyboard)
+      layoutPageAsStoryboard(page);
+    else if (orientation === 'rows')
+      layoutPageByRows(page, fillPage);
+    else if (orientation === 'columns')
+      layoutPageByColumns(page, fillPage);
+  }
+
+  function layoutSidebar(sidebar, content) {
+
+    // get it out of the header hierarchy
+    sidebar = sidebar.first();
+    if (sidebar.hasClass('level1')) {
+      sidebar.removeClass('level1');
+      sidebar.children('h1').remove();
+    } else if (sidebar.hasClass('level2')) {
+      sidebar.removeClass('level2');
+      sidebar.children('h2').remove();
+    }
+
+    // determine width
+    var sidebarWidth = isTablet() ? 220 : 250;
+    var dataWidth = parseInt(sidebar.attr('data-width'));
+    if (dataWidth)
+      sidebarWidth = dataWidth;
+
+    // set the width and shift the page right to accomodate the sidebar
+    sidebar.css('width', sidebarWidth + 'px');
+    content.css('padding-left', sidebarWidth + 'px');
+
+    // wrap it's contents in a form
+    sidebar.wrapInner($('<form></form>'));
+  }
+
+  function layoutPageAsStoryboard(page) {
+
+    // create storyboard navigation
+    var nav = $('<div class="storyboard-nav"></div>');
+
+    // add navigation buttons
+    var prev = $('<button class="sbprev"><i class="fa fa-angle-left"></i></button>');
+    nav.append(prev);
+    var next= $('<button class="sbnext"><i class="fa fa-angle-right"></i></button>');
+    nav.append(next);
+
+    // add navigation frame
+    var frameList = $('<div class="sbframelist"></div>');
+    nav.append(frameList);
+    var ul = $('<ul></ul>');
+    frameList.append(ul);
+
+     // find all the level3 sections (those are the storyboard frames)
+    var frames = page.find('div.section.level3');
+    frames.each(function() {
+
+      // mark it
+      $(this).addClass('sbframe');
+
+      // divide it into chart content and (optional) commentary
+      $(this).addClass('dashboard-column-orientation');
+
+      // stuff the chart into it's own div w/ flex
+      $(this).wrapInner('<div class="sbframe-component"></div>');
+      setFlex($(this), 1);
+      var frame = $(this).children('.sbframe-component');
+
+      // extract the title from the h3
+      var li = $('<li></li>');
+      var h3 = frame.children('h3');
+      li.html(h3.html());
+      h3.remove();
+      ul.append(li);
+
+      // extract commentary
+      var hr = frame.children('hr');
+      if (hr.length) {
+        var commentary = hr.nextAll().detach();
+        hr.remove();
+        var commentaryFrame = $('<div class="sbframe-commentary"></div>');
+        commentaryFrame.addClass('flowing-content-shim');
+        commentaryFrame.addClass('flowing-content-container');
+        commentaryFrame.append(commentary);
+        $(this).append(commentaryFrame);
+
+        // look for a data-commentary-width attribute
+        var commentaryWidth = $(this).attr('data-commentary-width');
+        if (commentaryWidth)
+          commentaryFrame.css('width', commentaryWidth + 'px');
+      }
+
+      // layout the chart (force flex)
+      var result = layoutChart(frame, true);
+
+      // ice the notes if there are none
+      if (!result.notes)
+        frame.find('.chart-notes').remove();
+
+      // set flex on chart
+      setFlex(frame, 1);
+    });
+
+    // create a div to hold all the frames
+    var frameContent = $('<div class="sbframe-content"></div>');
+    frameContent.addClass('dashboard-row-orientation');
+    frameContent.append(frames.detach());
+
+    // row orientation to stack nav and frame content
+    page.addClass('dashboard-row-orientation');
+    page.append(nav);
+    page.append(frameContent);
+    setFlex(frameContent, 1);
+
+    // initialize sly
+    var sly = new Sly(frameList, {
+    		horizontal: true,
+    		itemNav: 'basic',
+    		smart: true,
+    		activateOn: 'click',
+    		startAt: 0,
+    		scrollBy: 1,
+    		activatePageOn: 'click',
+    		speed: 200,
+    		moveBy: 600,
+    		dragHandle: true,
+    		dynamicHandle: true,
+    		clickBar: true,
+    		keyboardNavBy: 'items',
+    		next: next,
+    		prev: prev
+    	}).init();
+
+    // make first frame active
+    frames.removeClass('active');
+    frames.first().addClass('active');
+
+    // subscribe to frame changed events
+    sly.on('active', function (eventName, itemIndex) {
+      frames.removeClass('active');
+      frames.eq(itemIndex).addClass('active')
+                          .trigger('shown');
+    });
+  }
+
+  function layoutPageByRows(page, fillPage) {
+
+    // row orientation
+    page.addClass('dashboard-row-orientation');
+
+    // find all the level2 sections (those are the rows)
+    var rows = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (rows.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      rows = page.find('div.section.level2');
+    }
+
+    rows.each(function () {
+
+      // flags
+      var haveNotes = false;
+      var haveFlexHeight = true;
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // give it row layout semantics if it's not a tabset
+      if (!isTabset)
+        $(this).addClass('dashboard-row');
+
+      // find all of the level 3 subheads
+      var columns = $(this).find('div.section.level3');
+
+      // determine figureSizes sizes
+      var figureSizes = chartFigureSizes(columns);
+
+      // fixup the columns
+      columns.each(function(index) {
+
+        // layout the chart (force flex if we are in a tabset)
+        var result = layoutChart($(this), isTabset);
+
+        // update flexHeight state
+        if (!result.flex)
+          haveFlexHeight = false;
+
+        // update state
+        if (result.notes)
+          haveNotes = true;
+
+        // set the column flex based on the figure width
+        // (value boxes will just get the default figure width)
+        var chartWidth = figureSizes[index].width;
+        setFlex($(this), chartWidth + ' ' + chartWidth + ' 0px');
+
+      });
+
+      // remove empty chart note divs
+      if (isTabset)
+        $(this).find('.chart-notes').filter(function() {
+            return $(this).html() === "&nbsp;";
+        }).remove();
+      if (!haveNotes)
+        $(this).find('.chart-notes').remove();
+
+       // make it a flexbox row
+      if (haveFlexHeight)
+        $(this).addClass('dashboard-row-flex');
+
+      // now we can set the height on all the wrappers (based on maximum
+      // figure height + room for title and notes, or data-height on the
+      // container if specified). However, don't do this if there is
+      // no flex on any of the constituent columns
+      var flexHeight = null;
+      var dataHeight = parseInt($(this).attr('data-height'));
+      if (dataHeight)
+        flexHeight = adjustedHeight(dataHeight, columns.first());
+      else if (haveFlexHeight)
+        flexHeight = maxChartHeight(figureSizes, columns);
+      if (flexHeight) {
+        if (fillPage)
+          setFlex($(this), flexHeight + ' ' + flexHeight + ' 0px');
+        else {
+          $(this).css('height', flexHeight + 'px');
+          setFlex($(this), '0 0 ' + flexHeight + 'px');
+        }
+      }
+
+    });
+  }
+
+  function layoutPageByColumns(page, fillPage) {
+
+    // column orientation
+    page.addClass('dashboard-column-orientation');
+
+    // find all the level2 sections (those are the columns)
+    var columns = page.find('div.section.level2');
+
+    // if there are no level2 sections then treat the
+    // entire page as if it's a level 2 section
+    if (columns.length === 0) {
+      page.wrapInner('<div class="section level2"></div>');
+      columns = page.find('div.section.level2');
+    }
+
+    // layout each column
+    columns.each(function (index) {
+
+      // remove the h2
+      $(this).children('h2').remove();
+
+      // make it a flexbox column
+      $(this).addClass('dashboard-column');
+
+      // check for a tabset
+      var isTabset = $(this).hasClass('tabset');
+      if (isTabset)
+        layoutTabset($(this));
+
+      // find all the h3 elements
+      var rows = $(this).find('div.section.level3');
+
+      // get the figure sizes for the rows
+      var figureSizes = chartFigureSizes(rows);
+
+      // column flex is the max row width (or data-width if specified)
+      var flexWidth;
+      var dataWidth = parseInt($(this).attr('data-width'));
+      if (dataWidth)
+        flexWidth = dataWidth;
+      else
+        flexWidth = maxChartWidth(figureSizes);
+      setFlex($(this), flexWidth + ' ' + flexWidth + ' 0px');
+
+      // layout each chart
+      rows.each(function(index) {
+
+        // perform the layout
+        var result = layoutChart($(this), false);
+
+        // ice the notes if there are none
+        if (!result.notes)
+          $(this).find('.chart-notes').remove();
+
+        // set flex height based on figHeight, then adjust
+        if (result.flex) {
+          var chartHeight = figureSizes[index].height;
+          chartHeight = adjustedHeight(chartHeight, $(this));
+          if (fillPage)
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' 0px');
+          else {
+            $(this).css('height', chartHeight + 'px');
+            setFlex($(this), chartHeight + ' ' + chartHeight + ' ' + chartHeight + 'px');
+          }
+        }
+      });
+    });
+  }
+
+  function chartFigureSizes(charts) {
+
+    // sizes
+    var figureSizes = new Array(charts.length);
+
+    // check each chart
+    charts.each(function(index) {
+
+      // start with default
+      figureSizes[index] = {
+        width: _options.defaultFigWidth,
+        height: _options.defaultFigHeight
+      };
+
+      // look for data-height or data-width then knit options
+      var dataWidth = parseInt($(this).attr('data-width'));
+      var dataHeight = parseInt($(this).attr('data-height'));
+      var knitrOptions = $(this).find('.knitr-options:first');
+      var knitrWidth, knitrHeight;
+      if (knitrOptions) {
+        knitrWidth = parseInt(knitrOptions.attr('data-fig-width'));
+        knitrHeight =  parseInt(knitrOptions.attr('data-fig-height'));
+      }
+
+      // width
+      if (dataWidth)
+        figureSizes[index].width = dataWidth;
+      else if (knitrWidth)
+        figureSizes[index].width = knitrWidth;
+
+      // height
+      if (dataHeight)
+        figureSizes[index].height = dataHeight;
+      else if (knitrHeight)
+        figureSizes[index].height = knitrHeight;
+    });
+
+    // return sizes
+    return figureSizes;
+  }
+
+  function maxChartHeight(figureSizes, charts) {
+
+    // first compute the maximum height
+    var maxHeight = _options.defaultFigHeight;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].height > maxHeight)
+        maxHeight = figureSizes[i].height;
+
+    // now add offests for chart title and chart notes
+    if (charts.length)
+      maxHeight = adjustedHeight(maxHeight, charts.first());
+
+    return maxHeight;
+  }
+
+  function adjustedHeight(height, chart) {
+    if (chart.length > 0) {
+      var chartTitle = chart.find('.chart-title');
+      if (chartTitle.length)
+        height += chartTitle.first().outerHeight();
+      var chartNotes = chart.find('.chart-notes');
+      if (chartNotes.length)
+        height += chartNotes.first().outerHeight();
+    }
+    return height;
+  }
+
+  function maxChartWidth(figureSizes) {
+    var maxWidth = _options.defaultFigWidth;
+    for (var i = 0; i<figureSizes.length; i++)
+      if (figureSizes[i].width > maxWidth)
+        maxWidth = figureSizes[i].width;
+    return maxWidth;
+  }
+
+  // layout a chart
+  function layoutChart(chart, forceFlex) {
+
+    // state to return
+    var result = {
+      notes: false,
+      flex: false
+    };
+
+    // extract the title
+    var title = extractTitle(chart);
+
+    // find components that apply to this container
+    var components = componentsFind(chart);
+
+    // if it's a custom component then call it and return
+    var customComponents = componentsCustom(components);
+    if (customComponents.length) {
+      componentsLayout(customComponents, title, chart);
+      result.notes = false;
+      result.flex = forceFlex || componentsFlex(customComponents);
+      return result;
+    }
+
+    // put all the content in a chart wrapper div
+    chart.addClass('chart-wrapper');
+    chart.wrapInner('<div class="chart-stage"></div>');
+    var chartContent = chart.children('.chart-stage');
+
+    // flex the content if appropriate
+    result.flex = forceFlex || componentsFlex(components);
+    if (result.flex) {
+      // add flex classes
+      chart.addClass('chart-wrapper-flex');
+      chartContent.addClass('chart-stage-flex');
+
+      // additional shim to break out of flexbox sizing
+      chartContent.wrapInner('<div class="chart-shim"></div>');
+      chartContent = chartContent.children('.chart-shim');
+    }
+
+    // set custom data-padding attribute
+    var pad = chart.attr('data-padding');
+    if (pad) {
+      if (pad === "0")
+        chart.addClass('no-padding');
+      else {
+        pad = pad + 'px';
+        chartContent.css('left', pad)
+                    .css('top', pad)
+                    .css('right', pad)
+                    .css('bottom', pad)
+      }
+    }
+
+    // call compoents
+    componentsLayout(components, title, chartContent);
+
+    // also activate components on shiny output
+    findShinyOutput(chartContent).on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+
+          // see if we opted out of flex based on our output (for shiny
+          // we can't tell what type of output we have until after the
+          // value is bound)
+          var components = componentsFind(element);
+          var flex = forceFlex || componentsFlex(components);
+          if (!flex) {
+            chart.css('height', "");
+            setFlex(chart, "");
+            chart.removeClass('chart-wrapper-flex');
+            chartContent.removeClass('chart-stage-flex');
+            chartContent.children().unwrap();
+          }
+
+          // perform layout
+          componentsLayout(components, title, element.parent());
+        }, 10);
+      });
+
+    // add the title
+    var chartTitle = $('<div class="chart-title"></div>');
+    chartTitle.html(title);
+    chart.prepend(chartTitle);
+
+    // add the notes section
+    var chartNotes = $('<div class="chart-notes"></div>');
+    chartNotes.html('&nbsp;');
+    chart.append(chartNotes);
+
+    // attempt to extract notes if we have a component
+    if (components.length)
+      result.notes = extractChartNotes(chartContent, chartNotes);
+
+    // return result
+    return result;
+  }
+
+  // build a tabset from a section div with the .tabset class
+  function layoutTabset(tabset) {
+
+    // check for fade option
+    var fade = tabset.hasClass("tabset-fade");
+    var navClass = "nav-tabs";
+
+    // determine the heading level of the tabset and tabs
+    var match = tabset.attr('class').match(/level(\d) /);
+    if (match === null)
+      return;
+    var tabsetLevel = Number(match[1]);
+    var tabLevel = tabsetLevel + 1;
+
+    // find all subheadings immediately below
+    var tabs = tabset.find("div.section.level" + tabLevel);
+    if (!tabs.length)
+      return;
+
+    // create tablist and tab-content elements
+    var tabList = $('<ul class="nav ' + navClass + '" role="tablist"></ul>');
+    $(tabs[0]).before(tabList);
+    var tabContent = $('<div class="tab-content"></div>');
+    $(tabs[0]).before(tabContent);
+
+    // build the tabset
+    tabs.each(function(i) {
+
+      // get the tab div
+      var tab = $(tabs[i]);
+
+      // get the id then sanitize it for use with bootstrap tabs
+      var id = tab.attr('id');
+
+      // sanitize the id for use with bootstrap tabs
+      id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
+      tab.attr('id', id);
+
+      // get the heading element within it and grab it's text
+      var heading = tab.find('h' + tabLevel + ':first');
+      var headingText = heading.html();
+
+      // build and append the tab list item
+      var a = $('<a role="tab" data-toggle="tab">' + headingText + '</a>');
+      a.attr('href', '#' + id);
+      a.attr('aria-controls', id);
+      var li = $('<li role="presentation"></li>');
+      li.append(a);
+      if (i === 0)
+        li.attr('class', 'active');
+      tabList.append(li);
+
+      // set it's attributes
+      tab.attr('role', 'tabpanel');
+      tab.addClass('tab-pane');
+      tab.addClass('tabbed-pane');
+      tab.addClass('no-title');
+      if (fade)
+        tab.addClass('fade');
+      if (i === 0) {
+        tab.addClass('active');
+        if (fade)
+          tab.addClass('in');
+      }
+
+      // move it into the tab content div
+      tab.detach().appendTo(tabContent);
+    });
+
+    // add nav-tabs-custom
+    tabset.addClass('nav-tabs-custom');
+
+    // internal layout is dashboard-column with tab-content flexing
+    tabset.addClass('dashboard-column');
+    setFlex(tabContent, 1);
+  }
+
+  // one time global initialization for components
+  function componentsInit(dashboardContainer) {
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.init)
+        component.init(dashboardContainer);
+    }
+  }
+
+  // find components that apply within a container
+  function componentsFind(container) {
+
+    // look for components
+    var components = [];
+    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
+      var component = window.FlexDashboardComponents[i];
+      if (component.find(container).length)
+        components.push(component);
+    }
+
+    // if there were none then use a special flowing content component
+    // that just adds a scrollbar in fillPage mode
+    if (components.length == 0) {
+      components.push({
+        find: function(container) {
+          return container;
+        },
+
+        flex: function(fillPage) {
+          return fillPage;
+        },
+
+        layout: function(title, container, element, fillPage) {
+          if (fillPage) {
+            container.addClass('flowing-content-shim');
+            container.addClass('flowing-content-container');
+          }
+        }
+      });
+    }
+
+    return components;
+  }
+
+  // if there is a custom component then pick it out
+  function componentsCustom(components) {
+    var customComponent = [];
+    for (var i=0; i<components.length; i++)
+      if (components[i].type === "custom") {
+        customComponent.push(components[i]);
+        break;
+      }
+    return customComponent;
+  }
+
+  // query all components for flex
+  function componentsFlex(components) {
+
+    // no components at all means no flex
+    if (components.length === 0)
+      return false;
+
+    // otherwise query components (assume true unless we see false)
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++)
+      if (components[i].flex && !components[i].flex(_options.fillPage))
+        return false;
+    return true;
+  }
+
+  // layout all components
+  function componentsLayout(components, title, container) {
+    var isMobile = isMobilePhone();
+    for (var i=0; i<components.length; i++) {
+      var element = components[i].find(container);
+      if (components[i].layout) {
+        // call layout (don't call other components if it returns false)
+        var result = components[i].layout(title, container, element, _options.fillPage);
+        if (result === false)
+          return;
+      }
+    }
+  }
+
+  // get a reference to the h3, discover it's inner html, and remove it
+  function extractTitle(container) {
+    var h3 = container.children('h3').first();
+    var title = '';
+    if (!container.hasClass('no-title'))
+      title = h3.html();
+    h3.remove();
+    return title;
+  }
+
+  // extract chart notes
+  function extractChartNotes(chartContent, chartNotes) {
+    // look for a terminating blockquote or image caption
+    var blockquote = chartContent.children('blockquote:last-child');
+    var caption = chartContent.children('div.image-container')
+                              .children('p.caption');
+    if (blockquote.length) {
+      chartNotes.html(blockquote.children('p:first-child').html());
+      blockquote.remove();
+      return true;
+    } else if (caption.length) {
+      chartNotes.html(caption.html());
+      caption.remove();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function findShinyOutput(chartContent) {
+    return chartContent.find('.shiny-text-output, .shiny-html-output');
+  }
+
+  // safely detect rendering on a mobile phone
+  function isMobilePhone() {
+    try
+    {
+      return ! window.matchMedia("only screen and (min-width: 768px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  function isFillPage() {
+    return _options.fillPage;
+  }
+
+  // detect portrait mode
+  function isPortrait() {
+    return ($(window).width() < $(window).height());
+  }
+
+  // safely detect rendering on a tablet
+  function isTablet() {
+    try
+    {
+      return window.matchMedia("only screen and (min-width: 769px) and (max-width: 992px)").matches;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
+  // test whether this is a shiny doc
+  function isShinyDoc() {
+    return (typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings);
+  }
+
+  // set flex using vendor specific prefixes
+  function setFlex(el, flex) {
+    el.css('-webkit-box-flex', flex)
+      .css('-webkit-flex', flex)
+      .css('-ms-flex', flex)
+      .css('flex', flex);
+  }
+
+  // support bookmarking of pages
+  function handleLocationHash() {
+
+    // restore tab/page from bookmark
+    var hash = window.location.hash;
+    if (hash.length > 0)
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    FlexDashboardUtils.manageActiveNavbarMenu();
+
+    // navigate to a tab when the history changes
+    window.addEventListener("popstate", function(e) {
+      var hash = window.location.hash;
+      var activeTab = $('ul.nav a[href="' + hash + '"]');
+      if (activeTab.length) {
+        activeTab.tab('show');
+      } else {
+        $('ul.nav a:first').tab('show');
+      }
+      FlexDashboardUtils.manageActiveNavbarMenu();
+    });
+
+    // add a hash to the URL when the user clicks on a tab/page
+    $('.navbar-nav a[data-toggle="tab"]').on('click', function(e) {
+      var baseUrl = FlexDashboardUtils.urlWithoutHash(window.location.href);
+      var hash = FlexDashboardUtils.urlHash($(this).attr('href'));
+      var href = baseUrl + hash;
+      FlexDashboardUtils.setLocation(href);
+    });
+
+    // handle clicks of other links that should activate pages
+    var navPages = $('ul.navbar-nav li a[data-toggle=tab]');
+    navPages.each(function() {
+      var href =  $(this).attr('href');
+      var links = $('a[href="' + href + '"][data-toggle!=tab]');
+      links.each(function() {
+        $(this).on('click', function(e) {
+          window.FlexDashboardUtils.showPage(href);
+        });
+      });
+    });
+  }
+
+  // tweak Prism highlighting
+  function initPrismHighlighting() {
+
+    if (window.Prism) {
+      Prism.languages.insertBefore('r', 'comment', {
+        'heading': [
+          {
+            // title 1
+        	  // =======
+
+        	  // title 2
+        	  // -------
+        	  pattern: /\w+.*(?:\r?\n|\r)(?:====+|----+)/,
+            alias: 'operator'
+          },
+          {
+            // ### title 3
+            pattern: /(^\s*)###[^#].+/m,
+            lookbehind: true,
+            alias: 'operator'
+          }
+        ]
+      });
+
+      // prism highlight
+      Prism.highlightAll();
+    }
+  }
+
+
+  // get theme color
+  var themeColors = {
+    bootstrap: {
+      primary: "rgba(51, 122, 183, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cerulean: {
+      primary: "rgb(47, 164, 231)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    journal: {
+      primary: "rgba(235, 104, 100, 0.70)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    flatly: {
+      primary: "rgba(44, 62, 80, 0.70)",
+      info: "rgba(52, 152, 219, 0.70)",
+      success: "rgba(24, 188, 156, 0.70)",
+      warning: "rgba(243, 156, 18, 0.70)",
+      danger: "rgba(231, 76, 60, 0.70)"
+    },
+    readable: {
+      primary: "rgba(69, 130, 236, 0.4)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    spacelab: {
+      primary: "rgba(68, 110, 155, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    united: {
+      primary: "rgba(221, 72, 20, 0.30)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    cosmo: {
+      primary: "rgba(39, 128, 227, 0.7)",
+      info: "rgba(153, 84, 187, 0.7)",
+      success: "rgba(63, 182, 24, 0.7)",
+      warning: "rgba(255, 117, 24, 0.7)",
+      danger: "rgba(255, 0, 57, 0.7)"
+    },
+    lumen: {
+      primary: "rgba(21, 140, 186, 0.70)",
+      info: "rgba(117, 202, 235, 0.90)",
+      success: "rgba(40, 182, 44, 0.70)",
+      warning: "rgba(255, 133, 27, 0.70)",
+      danger: "rgba(255, 65, 54, 0.70)"
+    },
+    paper: {
+      primary: "rgba(33, 150, 243, 0.35)",
+      info: "rgb(225, 190, 231)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(255, 224, 178)",
+      danger: "rgb(249, 189, 187)"
+    },
+    sandstone: {
+      primary: "rgba(50, 93, 136, 0.3)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    simplex: {
+      primary: "rgba(217, 35, 15, 0.25)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    },
+    yeti: {
+      primary: "rgba(0, 140, 186, 0.298039)",
+      info: "rgb(217, 237, 247)",
+      success: "rgb(223, 240, 216)",
+      warning: "rgb(252, 248, 227)",
+      danger: "rgb(242, 222, 222)"
+    }
+  }
+  function themeColor(color) {
+    return themeColors[_options.theme][color];
+  }
+
+  FlexDashboard.prototype = {
+    constructor: FlexDashboard,
+    init: init,
+    isMobilePhone: isMobilePhone,
+    isFillPage: isFillPage,
+    themeColor: themeColor
+  };
+
+  return FlexDashboard;
+
+})();
+
+// utils
+window.FlexDashboardUtils = {
+  resizableImage: function(img) {
+    var src = img.attr('src');
+    var url = 'url("' + src + '")';
+    img.parent().css('background', url)
+                .css('background-size', 'contain')
+                .css('background-repeat', 'no-repeat')
+                .css('background-position', 'center')
+                .addClass('image-container');
+  },
+  setLocation: function(href) {
+    if (history && history.pushState) {
+      history.pushState(null, null, href);
+    } else {
+      window.location.replace(href);
+    }
+    setTimeout(function() {
+        window.scrollTo(0, 0);
+    }, 10);
+    this.manageActiveNavbarMenu();
+  },
+  showPage: function(href) {
+    $('ul.navbar-nav li a[href="' + href + '"]').tab('show');
+    var baseUrl = this.urlWithoutHash(window.location.href);
+    var loc = baseUrl + href;
+    this.setLocation(loc);
+  },
+  showLinkedValue: function(href) {
+    // check for a page link
+    if ($('ul.navbar-nav li a[data-toggle=tab][href="' + href + '"]').length > 0)
+      this.showPage(href);
+    else
+      window.open(href);
+  },
+  urlWithoutHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(0, hashLoc);
+    else
+      return url;
+  },
+  urlHash: function(url) {
+    var hashLoc = url.indexOf('#');
+    if (hashLoc != -1)
+      return url.substring(hashLoc);
+    else
+      return "";
+  },
+  manageActiveNavbarMenu: function () {
+    // remove active from anyone currently active
+    $('.navbar ul.nav').find('li').removeClass('active');
+    // find the active tab
+    var activeTab = $('.dashboard-page-wrapper.tab-pane.active');
+    if (activeTab.length > 0) {
+      var tabId = activeTab.attr('id');
+      if (tabId)
+        $(".navbar ul.nav a[href='#" + tabId + "']").parents('li').addClass('active');
+    }
+  }
+};
+
+window.FlexDashboard = new FlexDashboard();
+
+// empty content
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    if (container.find('p').length == 0)
+      return container;
+    else
+      return $();
+  }
+})
+
+// plot image
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('p')
+                    .children('img:only-child');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// plot image (figure style)
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.figure').children('img');
+  },
+
+  layout: function(title, container, element, fillPage) {
+    FlexDashboardUtils.resizableImage(element);
+  }
+});
+
+// htmlwidget
+window.FlexDashboardComponents.push({
+
+  init: function(dashboardContainer) {
+    // trigger "shown" after initial layout to force static htmlwidgets
+    // in runtime: shiny to be resized after the dom has been transformed
+    dashboardContainer.on('flexdashboard:layoutcomplete', function(event) {
+      setTimeout(function() {
+        dashboardContainer.trigger('shown');
+      }, 200);
+    });
+  },
+
+  find: function(container) {
+    return container.children('div[id^="htmlwidget-"],div.html-widget');
+  }
+});
+
+// gauge
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.children('div.html-widget.gauge');
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+
+  }
+
+});
+
+// shiny output
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.children('div[class^="shiny-"]');
+  }
+});
+
+// datatables
+window.FlexDashboardComponents.push({
+  find: function(container) {
+    return container.find('.datatables');
+  },
+  flex: function(fillPage) {
+    return fillPage;
+  }
+});
+
+// bootstrap table
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    var bsTable = container.find('table.table');
+    if (bsTable.length !== 0)
+      return bsTable;
+    else
+      return container.find('tr.header').parent('thead').parent('table');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var bsTable = element;
+
+    // fixup xtable generated tables with a proper thead
+    var headerRow = bsTable.find('tbody > tr:first-child > th').parent();
+    if (headerRow.length > 0) {
+      var thead = $('<thead></thead>');
+      bsTable.prepend(thead);
+      headerRow.detach().appendTo(thead);
+    }
+
+    // improve appearance
+    container.addClass('bootstrap-table');
+
+    // for fill page provide scrolling w/ sticky headers
+    if (fillPage) {
+      // force scrollbar on overflow
+      container.addClass('flowing-content-shim');
+
+      // stable table headers when scrolling
+      bsTable.stickyTableHeaders({
+        scrollableArea: container
+      });
+    }
+  }
+});
+
+// embedded shiny app
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('iframe.shiny-frame');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage) {
+      element.attr('height', '100%');
+    } else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (!height)
+        height = element.attr('height');
+      if (!height)
+        element.attr('height', 500);
+    }
+  }
+});
+
+// shiny fillRow or fillCol
+window.FlexDashboardComponents.push({
+
+  find: function(container) {
+    return container.find('.flexfill-container');
+  },
+
+  flex: function(fillPage) {
+    return fillPage;
+  },
+
+  layout: function(title, container, element, fillPage) {
+    if (fillPage)
+      element.css('height', '100%');
+    else {
+      // provide default height if necessary
+      var height = element.get(0).style.height;
+      if (height === "100%" || height === "auto" || height === "initial" ||
+          height === "inherit" || !height) {
+        element.css('height', 500);
+      }
+    }
+  }
+});
+
+// valueBox
+window.FlexDashboardComponents.push({
+
+  type: "custom",
+
+  find: function(container) {
+    if (container.find('span.value-output, .shiny-valuebox-output').length)
+      return container;
+    else
+      return $();
+  },
+
+  flex: function(fillPage) {
+    return false;
+  },
+
+  layout: function(title, container, element, fillPage) {
+
+    // alias variables
+    var chartTitle = title;
+    var valueBox = element;
+
+    // add value-box class to container
+    container.addClass('value-box');
+
+    // value paragraph
+    var value = $('<p class="value"></p>');
+
+    // if we have shiny-text-output then just move it in
+    var valueOutputSpan = [];
+    var shinyOutput = valueBox.find('.shiny-valuebox-output').detach();
+    if (shinyOutput.length) {
+      valueBox.children().remove();
+      shinyOutput.html("&mdash;");
+      value.append(shinyOutput);
+    } else {
+      // extract the value (remove leading vector index)
+      var chartValue = valueBox.text().trim();
+      chartValue = chartValue.replace("[1] ", "");
+      valueOutputSpan = valueBox.find('span.value-output').detach();
+      valueBox.children().remove();
+      value.text(chartValue);
+    }
+
+    // caption
+    var caption = $('<p class="caption"></p>');
+    caption.html(chartTitle);
+
+    // build inner div for value box and add it
+    var inner = $('<div class="inner"></div>');
+    inner.append(value);
+    inner.append(caption);
+    valueBox.append(inner);
+
+    // add icon if specified
+    var icon = $('<div class="icon"><i></i></div>');
+    valueBox.append(icon);
+    function setIcon(chartIcon) {
+      var iconLib = "";
+      var components = chartIcon.split("-");
+      if (components.length > 1)
+        iconLib = components[0];
+      icon.children('i').attr('class', iconLib + ' ' + chartIcon);
+    }
+    var chartIcon = valueBox.attr('data-icon');
+    if (chartIcon)
+      setIcon(chartIcon);
+
+    // set color based on data-background if necessary
+    var dataBackground = valueBox.attr('data-background');
+    if (dataBackground)
+      valueBox.css('background-color', bgColor);
+    else {
+      // default to bg-primary if no other background is specified
+      if (!valueBox.hasClass('bg-primary') &&
+          !valueBox.hasClass('bg-info') &&
+          !valueBox.hasClass('bg-warning') &&
+          !valueBox.hasClass('bg-success') &&
+          !valueBox.hasClass('bg-danger')) {
+        valueBox.addClass('bg-primary');
+      }
+    }
+
+    // handle data attributes in valueOutputSpan
+    function handleValueOutput(valueOutput) {
+
+      // caption
+      var dataCaption = valueOutput.attr('data-caption');
+      if (dataCaption)
+        caption.html(dataCaption);
+
+      // icon
+      var dataIcon = valueOutput.attr('data-icon');
+      if (dataIcon)
+        setIcon(dataIcon);
+
+      // color
+      var dataColor = valueOutput.attr('data-color');
+      if (dataColor) {
+        if (dataColor.indexOf('bg-') === 0) {
+          valueBox.css('background-color', '');
+          if (!valueBox.hasClass(dataColor)) {
+             valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+             valueBox.addClass(dataColor);
+          }
+        } else {
+          valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
+          valueBox.css('background-color', dataColor);
+        }
+      }
+
+      // url
+      var dataHref = valueOutput.attr('data-href');
+      if (dataHref) {
+        valueBox.addClass('linked-value');
+        valueBox.off('click.value-box');
+        valueBox.on('click.value-box', function(e) {
+          window.FlexDashboardUtils.showLinkedValue(dataHref);
+        });
+      }
+    }
+
+    // check for a valueOutputSpan
+    if (valueOutputSpan.length > 0) {
+      handleValueOutput(valueOutputSpan);
+    }
+
+    // if we have a shinyOutput then bind a listener to handle
+    // new valueOutputSpan values
+    shinyOutput.on('shiny:value',
+      function(event) {
+        var element = $(event.target);
+        setTimeout(function() {
+          var valueOutputSpan = element.find('span.value-output');
+          if (valueOutputSpan.length > 0)
+            handleValueOutput(valueOutputSpan);
+        }, 10);
+      }
+    );
+  }
+});
+
+
+</script>
+
+<div id="dashboard-container">
+
+
+<div id="sidebar" class="section level1 sidebar">
+<h1>Sidebar</h1>
+<div id="table-of-contents" class="section level3">
+<h3>Table of Contents</h3>
+<div id="identities" class="section level4">
+<h4>Identities</h4>
+<ul>
+<li><a href="#traces">Traces</a></li>
+<li><a href="#transpose">Transpose</a></li>
+<li><a href="#inverses">Inverses</a></li>
+<li><a href="#rank">Rank</a></li>
+<li><a href="#determinants">Determinants</a></li>
+<li>[Orthogonality]</li>
+<li><a href="#derivatives">Derivatives</a></li>
+<li><a href="#partitioned-matrix">Partitioned Matrix</a></li>
+<li><a href="#matrix-factorisation">Matrix Factorisation</a></li>
+<li><a href="#solving-linear-equations">Solving Linear Equations</a></li>
+<li><a href="#direct-sum">Direct Sum</a></li>
+<li><a href="#direct-product">Direct Product</a></li>
+</ul>
+</div>
+<div id="special-matrices" class="section level4">
+<h4>Special Matrices</h4>
+<ul>
+<li><a href="#non-negative-definite-matrices">Non-negative definite matrices</a></li>
+<li><a href="#symmetric-matrices">Symmetric matrices</a></li>
+<li><a href="#diagonal-matrix">Diagonal Matrix</a></li>
+<li><a href="#matrices-with-all-element-equal">Matrices with all element equal</a></li>
+</ul>
+</div>
+<div id="definitions" class="section level4">
+<h4>Definitions</h4>
+<ul>
+<li><a href="#notations">Notations</a></li>
+<li><a href="#projection-matrix">Projection matrix</a></li>
+<li><a href="#rangespancolumn-space">Range/Span/Column Space</a></li>
+<li><a href="#orthogonal-complement">Orthogonal complement</a></li>
+<li><a href="#vectormatrix-operations">Vector/Matrix operations</a></li>
+<li><a href="#quadratic-form">Quadratic Form</a></li>
+<li><a href="#vector-space">Vector Space</a></li>
+</ul>
+</div>
+<div id="applications" class="section level4">
+<h4>Applications</h4>
+</div>
+</div>
+</div>
+<div id="cheat-sheet" class="section level1" data-orientation="rows">
+<h1>Cheat Sheet</h1>
+<div id="row" class="section level2">
+<h2>Row</h2>
+<div id="traces" class="section level3">
+<h3>Traces</h3>
+<p>The <strong>trace</strong> of a square <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span> is the sum of the diagonal elements and denoted <span class="math inline">\({\rm tr}\left(\mathbf{A}\right)\)</span>. The trace is not defined for a matrix that is not a square.</p>
+<p>Let <span class="math inline">\(\lambda_1, \lambda_2, ..., \lambda_n\)</span> be the eigenvalues of <span class="math inline">\(\mathbf{A}\)</span>; <span class="math inline">\(\mathbf{B}\)</span> and <span class="math inline">\(\mathbf{C}\)</span> are <span class="math inline">\(n\times n\)</span> matrices; and <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> are vector of length <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\right) = {\rm tr}\left(\mathbf{A}^{\scriptscriptstyle \top}\right)\)</span></li>
+<li>If <span class="math inline">\(a\)</span> is a scalar, then <span class="math inline">\({\rm tr}\left(a\right)=a\)</span>.</li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}+ \mathbf{B}\right) = {\rm tr}\left(\mathbf{A}\right) + {\rm tr}\left(\mathbf{B}\right)\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\mathbf{B}\right) = {\rm tr}\left(\mathbf{B}\mathbf{A}\right) = \sum_{i=1}^r\sum_{j=1}^c a_{ij}b_{ji}\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}\right) = {\rm tr}\left(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}\right) = \sum_{i=1}^r\sum_{j=1}^c a_{ij}^2\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\mathbf{B}\mathbf{C}\right) = {\rm tr}\left(\mathbf{B}\mathbf{C}\mathbf{A}\right) = {\rm tr}\left(\mathbf{C}\mathbf{A}\mathbf{B}\right)\)</span>. Note these are note equal to <span class="math inline">\({\rm tr}\left(\mathbf{C}\mathbf{B}\mathbf{A}\right)\)</span>.</li>
+<li><span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{y}= {\rm tr}\left(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{y}\right) = {\rm tr}\left(\mathbf{A}\boldsymbol{y}\boldsymbol{x}^{\scriptscriptstyle \top}\right)\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\right) = \sum_i^n \lambda_i\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}^k\right) = \sum_i^n \lambda_i^k\)</span></li>
+</ul>
+</div>
+<div id="transpose" class="section level3">
+<h3>Transpose</h3>
+<ul>
+<li>If <span class="math inline">\(a_{ij}\)</span> is the <span class="math inline">\((i,j)\)</span>-th element of <span class="math inline">\(\mathbf{A}\)</span> then <span class="math inline">\(a_{ij}\)</span> is the <span class="math inline">\((j,i)\)</span>-th element of <span class="math inline">\(\mathbf{A}^\top\)</span>.</li>
+<li>The transpose operation is reflexive: <span class="math inline">\((\mathbf{A}^{\scriptscriptstyle \top})^{\scriptscriptstyle \top}= \mathbf{A}\)</span>.</li>
+<li><span class="math inline">\((\mathbf{A}+ \mathbf{B})^{\scriptscriptstyle \top}= \mathbf{A}^{\scriptscriptstyle \top}+ \mathbf{B}^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\mathbf{B})^{\scriptscriptstyle \top}= \mathbf{B}^{\scriptscriptstyle \top}\mathbf{A}^{\scriptscriptstyle \top}\)</span></li>
+<li>Transposing a partitioned matrix: <span class="math display">\[\begin{bmatrix}
+      \mathbf{A}&amp; \mathbf{B}&amp; \mathbf{C}\\    
+      \mathbf{D} &amp; \mathbf{E} &amp; \mathbf{F} 
+      \end{bmatrix}^{\scriptscriptstyle \top}= \begin{bmatrix}
+      \mathbf{A}^{\scriptscriptstyle \top}&amp; \mathbf{D}^{\scriptscriptstyle \top}\\
+      \mathbf{B}^{\scriptscriptstyle \top}&amp; \mathbf{E}^{\scriptscriptstyle \top}\\
+      \mathbf{C}^{\scriptscriptstyle \top}&amp; \mathbf{F}^{\scriptscriptstyle \top}
+      \end{bmatrix}\]</span></li>
+<li><span class="math inline">\(\left(\mathbf{A}^{-1}\right)^{\scriptscriptstyle \top}= \left(\mathbf{A}^{\scriptscriptstyle \top}\right)^{-1}\)</span></li>
+</ul>
+</div>
+</div>
+<div id="row-1" class="section level2">
+<h2>Row</h2>
+<div id="inverses" class="section level3">
+<h3>Inverses</h3>
+<ul>
+<li>The <strong>inverse</strong> of a square matrix <span class="math inline">\(\mathbf{A}\)</span> is the unique matrix <span class="math inline">\(\mathbf{A}^{-1}\)</span> such that <span class="math inline">\(\mathbf{A}^{-1}\mathbf{A}=\mathbf{A}\mathbf{A}^{-1}=\mathbf{I}.\)</span> Note that <span class="math inline">\(\mathbf{A}^{-1}\)</span> does not always exist.</li>
+<li><span class="math inline">\(\mathbf{A}^{-1} = |\mathbf{A}|^{-1}\text{adj}\mathbf{A}\)</span> where <span class="math inline">\(\text{adj}\mathbf{A}\)</span> is the <strong>adjugate</strong> (or adjoint) matrix of <span class="math inline">\(\mathbf{A}\)</span> (the transpose of the matrix of co-factors).</li>
+<li>Inverse of a matrix <span class="math inline">\(\mathbf{A}\)</span> does not exist if <span class="math inline">\(|\mathbf{A}| = 0\)</span> and <span class="math inline">\(\mathbf{A}\)</span> is said to be <em>singular</em>.</li>
+<li><span class="math inline">\((\mathbf{A}^{\scriptscriptstyle \top})^{-1} = (\mathbf{A}^{-1})^{\scriptscriptstyle \top}\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{A}\)</span> is symmetric so is its inverse: if <span class="math inline">\(\mathbf{A}^{\scriptscriptstyle \top}= \mathbf{A}\)</span> then <span class="math inline">\((\mathbf{A}^{-1})^{\scriptscriptstyle \top}= \mathbf{A}^{-1}\)</span>.</li>
+<li><span class="math inline">\((\mathbf{A}\otimes \mathbf{B})^{-1} = \mathbf{A}^{-1}\otimes \mathbf{B}^{-1}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\oplus \mathbf{B})^{-1} = \mathbf{A}^{-1}\oplus \mathbf{B}^{-1}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}\)</span>.</li>
+<li><span class="math inline">\((a\mathbf{I}_n + b\mathbf{J}_n)^{-1} = \dfrac{1}{a}\left(\mathbf{I}_n - \dfrac{b}{a+nb}\mathbf{J}_n\right)\)</span> if <span class="math inline">\(a\neq =0\)</span> and <span class="math inline">\(a + nb \neq 0\)</span>.</li>
+<li><span class="math display">\[\begin{bmatrix}
+      \mathbf{R} &amp; \boldsymbol{0} \\
+      \mathbf{X}&amp; \mathbf{S} 
+      \end{bmatrix}^{-1} = \begin{bmatrix}
+      \mathbf{R}^{-1} &amp; \boldsymbol{0} \\
+      -\mathbf{S}^{-1}\mathbf{X}\mathbf{R}^{-1} &amp; \mathbf{S}^{-1} 
+      \end{bmatrix}\]</span></li>
+<li><span class="math inline">\(\displaystyle \mathbf{A}= \begin{bmatrix}  a &amp; b \\  c &amp; d  \end{bmatrix}\)</span> then <span class="math inline">\(\mathbf{A}^{-1} = \dfrac{1}{ab - cd} \begin{bmatrix}  d &amp; -b \\  -c &amp; a  \end{bmatrix}\)</span>.</li>
+<li>Suppose we have the partitioned matrix <span class="math inline">\(\mathbf{A}= \begin{bmatrix}  \mathbf{A}_{11} &amp; \mathbf{A}_{12} \\  \mathbf{A}_{21} &amp; \mathbf{A}_{22}  \end{bmatrix}\)</span> then <span class="math inline">\(\mathbf{A}^{-1}\)</span> <span class="math display">\[\begin{bmatrix}
+      (\mathbf{A}_{11} - \mathbf{A}_{12}\mathbf{A}_{22}^{-1}\mathbf{A}_{21})^{-1} &amp; -\mathbf{A}_{11}^{-1}\mathbf{A}_{12}(\mathbf{A}_{22} - \mathbf{A}_{21}\mathbf{A}_{11}^{-1}\mathbf{A}_{12})^{-1} \\
+      -\mathbf{A}_{22}^{-1}\mathbf{A}_{21}(\mathbf{A}_{11} - \mathbf{A}_{12}\mathbf{A}_{22}^{-1}\mathbf{A}_{21})^{-1} &amp; (\mathbf{A}_{22} - \mathbf{A}_{21}\mathbf{A}_{11}^{-1}\mathbf{A}_{12})^{-1}
+      \end{bmatrix}\]</span> <span class="math display">\[\begin{bmatrix}
+      (\mathbf{A}_{11} - \mathbf{A}_{12}\mathbf{A}_{22}^{-1}\mathbf{A}_{21})^{-1} &amp; -(\mathbf{A}_{11} - \mathbf{A}_{12}\mathbf{A}_{22}^{-1}\mathbf{A}_{21})^{-1}\mathbf{A}_{12}\mathbf{A}_{22}^{-1} \\
+      -(\mathbf{A}_{22} - \mathbf{A}_{21}\mathbf{A}_{11}^{-1}\mathbf{A}_{12})^{-1}\mathbf{A}_{21}\mathbf{A}_{11}^{-1} &amp; (\mathbf{A}_{22} - \mathbf{A}_{21}\mathbf{A}_{11}^{-1}\mathbf{A}_{12})^{-1}
+      \end{bmatrix}\]</span></li>
+</ul>
+<div id="woodbury-matrix-identity" class="section level4">
+<h4>Woodbury matrix identity</h4>
+<p><span class="math display">\[\left(\mathbf{A}+ \mathbf{U}\mathbf{B}\mathbf{V}\right)^{-1} = \mathbf{A}^{-1} - \mathbf{A}^{-1}\mathbf{U}(\mathbf{B}^{-1} + \mathbf{V}\mathbf{A}^{-1}\mathbf{U})^{-1}\mathbf{V}\mathbf{A}^{-1}.\]</span> Alternatively,  deal with <span class="math display">\[\left(\mathbf{A}+ \mathbf{U}\mathbf{B}\mathbf{V}\right)^{-1} = \mathbf{A}^{-1} - \mathbf{A}^{-1}\mathbf{U}\mathbf{B}\boldsymbol{V}(\mathbf{I} + \mathbf{A}^{-1}\mathbf{U}\mathbf{B}\mathbf{V})^{-1}\mathbf{A}^{-1}.\]</span> Special case: <span class="math display">\[(\mathbf{A}+ \vecu\boldsymbol{v}^{\scriptscriptstyle \top})^{-1} = \mathbf{A}^{-1} - \dfrac{\mathbf{A}^{-1}\vecu\boldsymbol{v}^{\scriptscriptstyle \top}\mathbf{A}^{-1}}{1 + \boldsymbol{v}^{\scriptscriptstyle \top}\mathbf{A}^{-1}\vecu}\]</span></p>
+</div>
+<div id="generalised-inverse" class="section level4">
+<h4>Generalised inverse</h4>
+<ul>
+<li>For a given matrix <span class="math inline">\(\mathbf{A}\in \mathbb{R}^{n \times m}\)</span>, if <span class="math inline">\(\mathbf{A}^{-} \in \mathbb{R}^{m \times n}\)</span> is such that <span class="math display">\[\boldsymbol{AA}^{-}\mathbf{A}= \mathbf{A}\]</span> then <span class="math inline">\(\mathbf{A}^{-}\)</span> is a <strong>generalised inverse</strong> of <span class="math inline">\(\mathbf{A}\)</span>. If <span class="math inline">\(\mathbf{A}^{-}\)</span> also satisfies <span class="math display">\[\mathbf{A}^{-}\mathbf{A}\mathbf{A}^{-} = \mathbf{A}^{-}\]</span> then <span class="math inline">\(\mathbf{A}^{-}\)</span> is a <strong>generalised reflexive inverse</strong> of .</li>
+</ul>
+<p>If <span class="math inline">\(\mathbf{A}^{-}\)</span> satisfies the above two conditions and also <span class="math display">\[ (\mathbf{A}\mathbf{A}^{-})^{\scriptscriptstyle \top}= \mathbf{A}\mathbf{A}^{-}\quad\text{ and }\quad (\mathbf{A}^{-}\mathbf{A})^{\scriptscriptstyle \top}= \mathbf{A}^{-}\mathbf{A},\]</span> then <span class="math inline">\(\mathbf{A}^{-}\)</span> is the <strong>Moore-Penrose pseudoinverse</strong> of <span class="math inline">\(\mathbf{A}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\mathbf{A}^-\)</span> is generally not unique (as opposed to <span class="math inline">\(\mathbf{A}^{-1}\)</span>) although the Moore-Penrose pseudoinverse exists and unique for any matrix.</li>
+<li>For symmetric matrix <span class="math inline">\(\mathbf{A}\)</span>, <span class="math inline">\(\mathbf{G}=\mathbf{A}^-\)</span> may not be symmetric although <span class="math inline">\(\mathbf{G}^{\scriptscriptstyle \top}\)</span> is still a generalised inverse.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-2" class="section level2">
+<h2>Row</h2>
+<div id="derivatives" class="section level3">
+<h3>Derivatives</h3>
+<p>Let <span class="math inline">\(a\)</span> be a constant that is not a function of <span class="math inline">\(\boldsymbol{x}\)</span>; <span class="math inline">\(b\)</span> a constant that is a function of <span class="math inline">\(\boldsymbol{x}\)</span>; vectors <span class="math inline">\(\boldsymbol{u}\)</span> and <span class="math inline">\(\boldsymbol{v}\)</span> functions of <span class="math inline">\(\boldsymbol{x}\)</span>, and a matrix <span class="math inline">\(\mathbf{A}\)</span> that is not a function of <span class="math inline">\(\boldsymbol{x}\)</span> and a non-singular matrix <span class="math inline">\(\mathbf{B}\)</span> that is a function of the scalar <span class="math inline">\(s\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\displaystyle \frac{\partial a}{\partial \boldsymbol{x}} = \boldsymbol{0}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \boldsymbol{x}}{\partial \boldsymbol{x}} = \mathbf{I}_m\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \boldsymbol{Ax}}{\partial \boldsymbol{x}} = \mathbf{A}^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}}{\partial \boldsymbol{x}} = \mathbf{A}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial a\boldsymbol{u}}{\partial \boldsymbol{x}} = a\frac{\partial \boldsymbol{u}}{\partial \boldsymbol{x}}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial b\boldsymbol{u}}{\partial \boldsymbol{x}} = b\frac{\partial \boldsymbol{u}}{\partial \boldsymbol{x}} + \frac{\partial b}{\partial \boldsymbol{x}}\boldsymbol{u}^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \boldsymbol{Au}}{\partial \boldsymbol{x}} = \frac{\partial \boldsymbol{u}}{\partial \boldsymbol{x}}\mathbf{A}^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial (\boldsymbol{u} + \boldsymbol{v})}{\partial \boldsymbol{x}} = \frac{\partial \boldsymbol{u}}{\partial \boldsymbol{x}} + \frac{\partial \boldsymbol{v}}{\partial \boldsymbol{x}}\)</span></li>
+<li>$ =  $</li>
+<li>$ =  +  $</li>
+<li>$ =  + ^ $</li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \mathbf{B}^{-1}}{\partial s} = -\mathbf{B}^{-1} \frac{\partial \mathbf{B}}{\partial s} \mathbf{B}^{-1}\)</span></li>
+<li><span class="math inline">\(\displaystyle \frac{\partial \log|\mathbf{B}|}{\partial s} = {\rm tr}\left(\mathbf{B}^{-1}\frac{\partial \mathbf{B}}{\partial s}\right)\)</span></li>
+</ul>
+</div>
+<div id="determinants" class="section level3">
+<h3>Determinants</h3>
+<ul>
+<li>Determinants of non-square matrix are undefined.</li>
+<li>For a <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\mathbf{A}= \{a_{ij}\}\)</span> the determinant can be obtained by expanding by elements of a row: <span class="math display">\[|\mathbf{A}| = \sum_{j=1}^n a_{ij} (-1)^{i + j} |\mathbf{M}_{ij}|\]</span> for any <span class="math inline">\(i = 1, ..., n\)</span> where the <strong>minor</strong> of <span class="math inline">\(a_{ij}\)</span>, <span class="math inline">\(|\mathbf{M}_{ij}|\)</span>, is the determinant of <span class="math inline">\(\mathbf{A}\)</span> with rows <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> removed. The determinant can also be obtained by expanding elements of a column in a similar fashion.</li>
+<li>The signed minor <span class="math inline">\((-1)^{i + j} |\mathbf{M}_{ij}|\)</span> is referred to as <strong>cofactor</strong>.</li>
+<li><span class="math inline">\(|\mathbf{A}\mathbf{B}| = |\mathbf{B}\mathbf{A}|= |\mathbf{A}||\mathbf{B}|\)</span> if <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{B}\)</span> are square matrices.</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is obtained from <span class="math inline">\(\mathbf{A}\)</span> by swapping two rows then <span class="math inline">\(|\mathbf{A}| = -|\mathbf{B}|\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is obtained from <span class="math inline">\(\mathbf{A}\)</span> by adding a multiple of a row (column) to a row (column) then <span class="math inline">\(|\mathbf{A}| = |\mathbf{B}|\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is obtained from <span class="math inline">\(\mathbf{A}\)</span> by taking out a common factor <span class="math inline">\(\lambda\)</span> from each entry in a row of <span class="math inline">\(\mathbf{A}\)</span> then <span class="math inline">\(|\mathbf{A}| = \lambda |\mathbf{B}|\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{A}\)</span> is a triangular matrix then <span class="math inline">\(|\mathbf{A}| = a_{11}a_{22}...a_{nn}\)</span>.</li>
+<li><span class="math inline">\(|\mathbf{A}| = |\mathbf{A}^{\scriptscriptstyle \top}|\)</span>.</li>
+<li><span class="math inline">\(|\mathbf{A}^k| = |\mathbf{A}|^k\)</span>.</li>
+<li><span class="math inline">\(|\mathbf{A}^{-1}| = |\mathbf{A}|^{-1}\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{A}\)</span> is an <span class="math inline">\(n\times n\)</span> matrix then <span class="math inline">\(|k\mathbf{A}| = k^n|\mathbf{A}|\)</span> where <span class="math inline">\(k \in \mathbb{R}\)</span>.</li>
+<li>If two rows of <span class="math inline">\(\mathbf{A}\)</span> are the same, <span class="math inline">\(|\mathbf{A}| = 0\)</span>.</li>
+<li>If a row of <span class="math inline">\(\mathbf{A}\)</span> has zero for every element then <span class="math inline">\(|\mathbf{A}| = 0\)</span>.</li>
+<li>For orthogonal <span class="math inline">\(\mathbf{A}\)</span>, <span class="math inline">\(|\mathbf{A}|=\pm 1\)</span> since <span class="math inline">\(\mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}= \mathbf{I}\)</span> implies <span class="math inline">\(|\mathbf{A}|^2 = 1\)</span>.</li>
+<li>For idempotent <span class="math inline">\(\mathbf{A}\)</span>, <span class="math inline">\(|\mathbf{A}|=0\)</span> or 1 because <span class="math inline">\(|\mathbf{A}|^2 = |\mathbf{A}|\)</span>.</li>
+<li><span class="math inline">\(|\mathbf{A}| = \prod_{i=1}^{n} \lambda_i\)</span></li>
+<li><span class="math inline">\(|\mathbf{A}\otimes \mathbf{B}| = |\mathbf{A}|^m |\mathbf{B}|^n\)</span> where <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{B}\)</span> are square matrices of size <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>, respectively.</li>
+<li><p>For square matrices of the same dimension <span class="math inline">\(\mathbf{A}, \mathbf{B}, \mathbf{C}\)</span>: <span class="math display">\[\begin{vmatrix}
+\mathbf{A}&amp; \mathbf{0} \\
+\mathbf{B}&amp; \mathbf{C}
+\end{vmatrix} = |\mathbf{A}||\mathbf{C}|\quad\text{and}\quad\begin{vmatrix}\mathbf{0} &amp; \mathbf{A}\\
+-\mathbf{I} &amp; \mathbf{B}
+\end{vmatrix} = |\mathbf{A}|.\]</span></p></li>
+<li><p><strong>Sylvestor’s theorem for determinants</strong> <span class="math display">\[|\mathbf{A}+ \mathbf{B}\mathbf{C}\mathbf{D}^{\scriptscriptstyle \top}| = |\mathbf{C}^{-1} + \mathbf{D}^{\scriptscriptstyle \top}\mathbf{A}^{-1}\mathbf{B}||\mathbf{A}||\mathbf{C}|\]</span></p></li>
+</ul>
+</div>
+</div>
+<div id="row-3" class="section level2">
+<h2>Row</h2>
+<div id="eigen-decomposition" class="section level3">
+<h3>Eigen-Decomposition</h3>
+<p>If <span class="math inline">\(\mathbf{A}\)</span> is an <span class="math inline">\(n\times n\)</span> matrix, <span class="math inline">\(\boldsymbol{x}\)</span> a non-zero <span class="math inline">\(n\times 1\)</span> column vector and <span class="math inline">\(\lambda\)</span> is a scalar such that <span class="math inline">\(\mathbf{A}\boldsymbol{x}= \lambda \boldsymbol{x}\)</span>, we call <span class="math inline">\(\boldsymbol{x}\)</span> an <strong>eigenvector</strong> of <span class="math inline">\(\mathbf{A}\)</span>, and <span class="math inline">\(\lambda\)</span> the corresponding <strong>eigenvalue</strong> (or <span class="math inline">\(\lambda\)</span>-eigenvector of <span class="math inline">\(A\)</span>). The set <span class="math inline">\(\{\boldsymbol{x}\in \mathbb{R}^{n} | \mathbf{A}\boldsymbol{x}= \lambda \boldsymbol{x}\}\)</span> is called the <span class="math inline">\(\lambda\)</span>-<strong>eigenspace</strong> of <span class="math inline">\(\mathbf{A}\)</span> and comprises of the <span class="math inline">\(\lambda\)</span>-eigenvectors and <span class="math inline">\(\boldsymbol{0}\)</span>.</p>
+<ul>
+<li>A number <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(\mathbf{A}\)</span> if and only if <span class="math inline">\(|\mathbf{A}-\lambda \mathbf{I}_n| = 0\)</span>.</li>
+</ul>
+<div id="diagonalizable" class="section level4">
+<h4>Diagonalizable</h4>
+<p><strong>Diagonalizable Theorem</strong>: If <span class="math inline">\(\mathbb{R}^n\)</span> is a basis of <span class="math inline">\(\{\boldsymbol{v}_1, \boldsymbol{v}_2, ..., \boldsymbol{v}_n \}\)</span> consisting of eigenvectors of an <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\mathbf{A}\)</span> then there exists an invertible matrix <span class="math inline">\(\mathbf{P}\)</span> and a diagonal matrix <span class="math inline">\(\mathbf{D}\)</span> such that <span class="math inline">\(\mathbf{D} = \mathbf{P}^{-1}\mathbf{A}\mathbf{P}\)</span>. And so <span class="math inline">\(\mathbf{A}^n = \mathbf{P}\mathbf{D}^{n}\mathbf{P}^{-1}\)</span>.</p>
+<ul>
+<li>Projection matrix are diagonalizable with 0s and 1s on the diagonal.</li>
+<li>Real symmetric matrices are (orthogonally) diagonalizable by orthogonal matrices so <span class="math inline">\(\mathbf{D} = \mathbf{Q}^{\scriptscriptstyle \top}\mathbf{A}\mathbf{Q}\)</span> where <span class="math inline">\(\mathbf{Q}\)</span> is an orthogonal matrix.</li>
+<li><span class="math inline">\(\mathbf{A}\)</span> is diagonalizable if and only if the sum of the dimensions of its eigenspaces is equal to <span class="math inline">\(n\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-4" class="section level2">
+<h2>Row</h2>
+<div id="illustrations" class="section level3">
+<h3>Illustrations</h3>
+<ul>
+<li><strong>Generation matrix</strong> <span class="math inline">\(\mathbf{A}\)</span>: relating the frequencies of mating types in one generation to those in another <span class="math inline">\(f^{(i+1)} = \matAf^{(i)}\)</span>.</li>
+<li><strong>Markov Chain</strong>: <span class="math inline">\(\boldsymbol{x}\)</span> is a <em>state probability vector</em> and <span class="math inline">\(\mathbf{P}\)</span> is the transition probability matrix which is related by <span class="math inline">\(\boldsymbol{x}_{n+1}^{\scriptscriptstyle \top}= \boldsymbol{x}_n^{\scriptscriptstyle \top}\mathbf{P} = \boldsymbol{x}_0^{\scriptscriptstyle \top}\mathbf{P}^{n+1}\)</span>. Note <span class="math inline">\(\mathbf{P}^n\boldsymbol{1} = \boldsymbol{1}\)</span>.</li>
+<li><strong>Linear Programming</strong>: below are equivalent.
+<ol style="list-style-type: decimal">
+<li>minimise <span class="math inline">\(f=\boldsymbol{c}^{\scriptscriptstyle \top}\boldsymbol{x}\)</span> subject to <span class="math inline">\(\mathbf{A}\boldsymbol{x}\geq \boldsymbol{r}\)</span> and <span class="math inline">\(\boldsymbol{x}\geq \boldsymbol{0}\)</span></li>
+<li>maximise <span class="math inline">\(g=\boldsymbol{r}^{\scriptscriptstyle \top}\boldsymbol{z}\)</span> subject to <span class="math inline">\(\mathbf{A}\boldsymbol{z} \leq \boldsymbol{r}\)</span> and <span class="math inline">\(\boldsymbol{z} \geq \boldsymbol{0}\)</span></li>
+</ol></li>
+<li><strong>Graph Theory</strong>: Suppose a set of communication stations <span class="math inline">\(\{S_i\}\)</span>. <span class="math inline">\(\mathbf{T} = \{t_{ij}\}\)</span> where <span class="math inline">\(t_{ij} = 0\)</span> except <span class="math inline">\(t_{ij}=1\)</span> if a message can be sent from <span class="math inline">\(S_i\)</span> to <span class="math inline">\(S_j\)</span>. Then <span class="math inline">\(\mathbf{T}^r = \{t_{ij}^{(r)}\}\)</span>, the element <span class="math inline">\(t_{ij}^{(r)}\)</span> is then the number of ways of getting a message from station <span class="math inline">\(i\)</span> to station <span class="math inline">\(j\)</span> in exactly <span class="math inline">\(r\)</span> steps.</li>
+</ul>
+</div>
+</div>
+<div id="row-5" class="section level2">
+<h2>Row</h2>
+<div id="partitioned-matrix" class="section level3">
+<h3>Partitioned Matrix</h3>
+<ul>
+<li>If <span class="math inline">\(\mathbf{A}_{r\times c} = \begin{bmatrix} \boldsymbol{\alpha}^{\scriptscriptstyle \top}_1 \\ \vdots \\ \boldsymbol{\alpha}^{\scriptscriptstyle \top}_r \\ \end{bmatrix}\)</span> and <span class="math inline">\(\mathbf{B}_{c\times s} = \begin{bmatrix} \boldsymbol{b}_1 &amp; \cdots &amp; \boldsymbol{b}_s \end{bmatrix}\)</span>: <span class="math display">\[\mathbf{A}\mathbf{B}= \{\boldsymbol{\alpha}^{\scriptscriptstyle \top}_i \boldsymbol{b}_j\} = \left\{\sum_{k=1}^c a_{ik}b_{kj}\right\}\]</span></li>
+<li>If <span class="math inline">\(\mathbf{A}= \begin{bmatrix} \mathbf{A}_{11} &amp; \mathbf{A}_{12} \\ \mathbf{A}_{21} &amp; \mathbf{A}_{22} \end{bmatrix}\)</span> and <span class="math inline">\(\mathbf{B}= \begin{bmatrix} \mathbf{B}_{11}\\ \mathbf{B}_{21} \end{bmatrix}\)</span> then <span class="math display">\[\mathbf{A}\mathbf{B}= \begin{bmatrix}\mathbf{A}_{11}\mathbf{B}_{11} + \mathbf{A}_{12}\mathbf{B}_{21}\\
+\mathbf{A}_{21}\mathbf{B}_{11} + \mathbf{A}_{22}\mathbf{B}_{21}
+\end{bmatrix}\]</span></li>
+</ul>
+</div>
+</div>
+<div id="row-6" class="section level2">
+<h2>Row</h2>
+<div id="non-negative-definite-matrices" class="section level3">
+<h3>Non-negative definite matrices</h3>
+<div id="positive-definite-matrices" class="section level4">
+<h4>Positive definite matrices</h4>
+<p>A symmetric <span class="math inline">\(n\times n\)</span> real matrix <span class="math inline">\(\mathbf{A}\)</span> is said to be <strong>positive definite</strong> if $^&gt; 0 $ is positive for every non-zero column vector <span class="math inline">\(\boldsymbol{x}\)</span>.</p>
+<p>A positive definite matrix holds the following properties:</p>
+<ul>
+<li>all its eigenvalues are positive</li>
+<li>every positive definite matrix is invertible and its inverse is also positive definite.</li>
+<li>it has a unique <strong>Cholesky decomposition</strong>: the matrix <span class="math inline">\(\mathbf{A}\)</span> is positive definite if and only if there exists a unique lower triangular matrix <span class="math inline">\(\boldsymbol{L}\)</span>, with real and strictly positive diagonal elements, such that <span class="math inline">\(\mathbf{A}= \boldsymbol{L}\boldsymbol{L}^{\scriptscriptstyle \top}\)</span>.</li>
+<li><span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{A}\mathbf{X}\)</span> is positive-semidefinite. If <span class="math inline">\(\mathbf{X}\)</span> is invertible, then <span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{A}\mathbf{X}\)</span> is positive definite. Note that <span class="math inline">\(\mathbf{X}^{-1}\mathbf{A}\mathbf{X}\)</span> does not need to be positive definite.</li>
+</ul>
+</div>
+<div id="positive-semi-definite-matrices" class="section level4">
+<h4>Positive semi-definite matrices</h4>
+<p>A symmetric matrix <span class="math inline">\(\mathbf{A}\)</span> is <strong>positive semi-definite</strong> if <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{x}\geq 0\)</span> for all <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{x}=0\)</span> for some <span class="math inline">\(\boldsymbol{x}\neq \boldsymbol{0}\)</span>.</p>
+<ul>
+<li>When <span class="math inline">\(\mathbf{A}\)</span> is p.(s.)d. so is <span class="math inline">\(\mathbf{P}\mathbf{A}\mathbf{P}^{\scriptscriptstyle \top}\)</span> for nonsingular <span class="math inline">\(\mathbf{P}\)</span>.</li>
+<li>For real <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\)</span> is n.n.d. It is p.d. when <span class="math inline">\(\mathbf{X}\)</span> has full rank or else it is p.s.d.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-7" class="section level2">
+<h2>Row</h2>
+<div id="quadratic-form" class="section level3">
+<h3>Quadratic Form</h3>
+<ul>
+<li>The <strong>quadratic form</strong> of a matrix is given as <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{x}= \sum_i \sum_j x_i x_j a_{ij}\)</span>.</li>
+<li>For any particular quadratic form, there is a unique symmetric matrix <span class="math inline">\(\mathbf{A}\)</span> for which the quadratic form can be expressed as <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{x}\)</span>.</li>
+<li>If we have the quadratic form <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{A}\boldsymbol{x}\)</span> where <span class="math inline">\(\mathbf{A}\)</span> is not symmetric then we can rewrite it as <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\left[\frac{1}{2}(\mathbf{A}+ \mathbf{A}^{\scriptscriptstyle \top})\right]\boldsymbol{x}\)</span> where <span class="math inline">\(\frac{1}{2}(\mathbf{A}+ \mathbf{A}^{\scriptscriptstyle \top})\)</span> is a unique symmetric matrix.</li>
+</ul>
+</div>
+</div>
+<div id="row-8" class="section level2">
+<h2>Row</h2>
+<div id="elementary-operator-matrix" class="section level3">
+<h3>Elementary operator matrix</h3>
+<p>There are three types of elementary operator matrices: * <em>Adding multiple of a row to another row</em>. Let <span class="math inline">\(\mathbf{E}_{ij}(k)\)</span> be an identity matrix where the off-diagonal element <span class="math inline">\((i,j)\)</span> is <span class="math inline">\(k\)</span>. Then <span class="math inline">\(\mathbf{E}_{ij}(k)\mathbf{A}\)</span> is the operation on <span class="math inline">\(\mathbf{A}\)</span> of adding to its <span class="math inline">\(i\)</span>-th row <span class="math inline">\(k\)</span> times its <span class="math inline">\(j\)</span>-th row. Note <span class="math inline">\(|\mathbf{E}_{ij}(k)| = 1\)</span>. * <em>Interchanging two rows of a matrix</em>. Let <span class="math inline">\(\mathbf{P}_{ij}\)</span> be an identity matrix with <span class="math inline">\(i\)</span>-th and <span class="math inline">\(j\)</span>-th rows interchanged. Note <span class="math inline">\(|\mathbf{P}_{ij}| = -1\)</span>. * <em>Multiplying a row by a scalar <span class="math inline">\(k\)</span></em>. Let <span class="math inline">\(\mathbf{R}_{ii}(k)\)</span> be an identity matrix with <span class="math inline">\(i\)</span>-th diagional element replaced by <span class="math inline">\(k\)</span>. Note <span class="math inline">\(|\mathbf{R}_{ii}(k)| = k\)</span>.</p>
+</div>
+</div>
+<div id="row-9" class="section level2">
+<h2>Row</h2>
+<div id="matrices-with-all-element-equal" class="section level3">
+<h3>Matrices with all element equal</h3>
+<ul>
+<li><span class="math inline">\(\boldsymbol{1}_n\)</span> is a vector of length <span class="math inline">\(n\)</span> with all elements are unity.</li>
+<li><span class="math inline">\(\mathbf{J}_{r\times s}\)</span> is a <span class="math inline">\(r\times s\)</span> matrix with all elements unity.</li>
+<li>Pre (post) multiplication of a matrix <span class="math inline">\(\mathbf{A}\)</span> by <span class="math inline">\(\boldsymbol{1}_n^{\scriptscriptstyle \top}\)</span> results in a row (column) vector with <span class="math inline">\(i\)</span>-th element equal to the sum of the elements of <span class="math inline">\(i\)</span>-th column (row) of <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li><span class="math inline">\(\boldsymbol{1}_n^{\scriptscriptstyle \top}\boldsymbol{1}_n = n\)</span></li>
+<li><span class="math inline">\(\boldsymbol{1}_r\boldsymbol{1}_s^{\scriptscriptstyle \top}= \mathbf{J}_{r\times s}\)</span></li>
+<li><span class="math inline">\(\mathbf{J}_{r\times s}\mathbf{J}_{s\times t} = s\mathbf{J}_{r\times t}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{1}^{\scriptscriptstyle \top}_r \mathbf{J}_{r\times s} = r\boldsymbol{1}_s^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\mathbf{J}_{r\times s}\boldsymbol{1}_s = s\boldsymbol{1}_r\)</span></li>
+<li><span class="math inline">\(\mathbf{J}_n=\boldsymbol{1}_n\boldsymbol{1}_n^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\mathbf{J}_n^2 = n\mathbf{J}_n\)</span></li>
+<li><span class="math inline">\(\bar{\mathbf{J}}_n = \frac{1}{n} \mathbf{J}_n\)</span></li>
+<li><span class="math inline">\(\bar{\mathbf{J}}_n^2 = \bar{\mathbf{J}}_n\)</span></li>
+</ul>
+<div id="centering-matrix" class="section level4">
+<h4>Centering matrix</h4>
+<ul>
+<li><span class="math inline">\(\mathbf{C}_n = \mathbf{I} - \bar{\mathbf{J}}_n\)</span></li>
+<li><span class="math inline">\(\mathbf{C} = \mathbf{C}^{\scriptscriptstyle \top}= \mathbf{C}^2\)</span></li>
+<li><span class="math inline">\(\mathbf{C}\boldsymbol{1} = \boldsymbol{0}\)</span></li>
+<li><span class="math inline">\(\mathbf{C}\mathbf{J} = \mathbf{J}\mathbf{C} = \boldsymbol{0}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\mathbf{C}\boldsymbol{x}= \sum_{i=1}^n (x_i - \bar{x})^2\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-10" class="section level2">
+<h2>Row</h2>
+<div id="vector-space" class="section level3">
+<h3>Vector Space</h3>
+<p>A <strong>vector space</strong> over <span class="math inline">\(\mathbb{R}\)</span> is a non-empty set <span class="math inline">\(V\)</span> whose elements are called vectors on which two operations are defined, namely <em>addition of vectors</em> and <em>multiplication of a vector by a scalar</em> satisfying the 10 axioms below.</p>
+<div id="axioms-of-vector-space" class="section level4">
+<h4>Axioms of vector space:</h4>
+<p>For all <span class="math inline">\(\boldsymbol{u}, \boldsymbol{v}, \boldsymbol{w} \in V\)</span> and <span class="math inline">\(k\)</span>, <span class="math inline">\(k1\)</span>, <span class="math inline">\(k2\)</span> <span class="math inline">\(\in \mathbb{R}\)</span>,</p>
+<ul>
+<li>[A1] <span class="math inline">\(\boldsymbol{u} + \boldsymbol{v} \in V\)</span>. This property is called <em>closure under addition</em>.</li>
+<li>[A2] <span class="math inline">\((\boldsymbol{u} + \boldsymbol{v}) + \boldsymbol{w} = \boldsymbol{u} + (\boldsymbol{v} + \boldsymbol{w})\)</span>. This is called .</li>
+<li>[A3] <span class="math inline">\(\boldsymbol{u} + \boldsymbol{v} = \boldsymbol{v} + \boldsymbol{u}\)</span>. That is, addition is <em>commutative</em>.</li>
+<li>[A4] There is a <em>zero vector</em> <span class="math inline">\(\boldsymbol{0} \in V\)</span> with <span class="math inline">\(\boldsymbol{v} + \boldsymbol{0} = \boldsymbol{0} + \boldsymbol{v} = \boldsymbol{v}\)</span>.</li>
+<li>[A5] There is a vector which we write as <span class="math inline">\(-\boldsymbol{v}\)</span> and call a negative of , such that <span class="math inline">\(\boldsymbol{v} + -\boldsymbol{v} = \boldsymbol{0}\)</span>.</li>
+<li>[S1] <span class="math inline">\(k\boldsymbol{v} \in V\)</span>. This property is called <em>closure under multiplication by a scalar</em>.</li>
+<li>[S2] <span class="math inline">\(k(\boldsymbol{u} + \boldsymbol{v}) = k\boldsymbol{u} + k\boldsymbol{v}\)</span>.</li>
+<li>[S3] <span class="math inline">\((k_1 + k_2) \boldsymbol{v} = k_1\boldsymbol{v} + k_2 \boldsymbol{v}\)</span>.</li>
+<li>[S4] <span class="math inline">\((k_1 k_2)\boldsymbol{v} = k_1(k_2\boldsymbol{v})\)</span>.</li>
+<li>[S5] <span class="math inline">\(1\boldsymbol{v} = \boldsymbol{v}\)</span>.</li>
+</ul>
+</div>
+<div id="special-set-of-vectors" class="section level4">
+<h4>Special set of vectors</h4>
+<p>The set of vectors <span class="math inline">\(X=\{\boldsymbol{v}_1, \boldsymbol{v}_2, ..., \boldsymbol{v}_n \}\)</span> in a vector space <span class="math inline">\(V\)</span> is called a <strong>linearly independent</strong> set if the only scalars that satisfy <span class="math inline">\(\sum_{i=1}^n a_i\boldsymbol{v}_i = \boldsymbol{0}\)</span> are <span class="math inline">\(a_1 = a_2 = ... = a_n = 0\)</span>, otherwise it is called a <strong>linearly dependent</strong> set. <span class="math inline">\(\mathcal{R}(X)\)</span> is a subspace of <span class="math inline">\(V\)</span> and is the smallest subspace of <span class="math inline">\(V\)</span> containing the set <span class="math inline">\(X\)</span>.</p>
+</div>
+<div id="basis" class="section level4">
+<h4>Basis</h4>
+<p>A set of vectors <span class="math inline">\(X\)</span> in a vector space <span class="math inline">\(V\)</span> is called a <strong>basis</strong> of <span class="math inline">\(V\)</span> if <span class="math inline">\(\{\boldsymbol{v}_1, \boldsymbol{v}_2, ..., \boldsymbol{v}_n \}\)</span> is a linearly independent set and <span class="math inline">\(\mathcal{R}(X) = V\)</span>.</p>
+<ul>
+<li>If an <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\boldsymbol{M}\)</span> has <span class="math inline">\(n\)</span> distinct eigenvalues then the set of <span class="math inline">\(n\)</span> eigenvectors formed by selecting a non-zero vector from each eigenspace is a basis of <span class="math inline">\(\mathbb{R}^n\)</span>.</li>
+<li>If <span class="math inline">\(\{\boldsymbol{v}_1, \boldsymbol{v}_2, ..., \boldsymbol{v}_n \}\)</span> is a basis of a vector space <span class="math inline">\(V\)</span> then each vector <span class="math inline">\(\boldsymbol{v}\)</span> in <span class="math inline">\(V\)</span> can be expressed as a linear combination of the basis in .</li>
+<li>If one basis of a vector space <span class="math inline">\(V\)</span> contains <span class="math inline">\(n\)</span> vectors then every basis of <span class="math inline">\(V\)</span> contains <span class="math inline">\(n\)</span> vectors.</li>
+<li>If <span class="math inline">\(W\)</span> is a non-zero subspace of <span class="math inline">\(V\)</span> and <span class="math inline">\(V\)</span> has dimension <span class="math inline">\(n\)</span> then <span class="math inline">\({\rm dim}\left(W\right)\)</span> <span class="math inline">\(\leq n\)</span> with <span class="math inline">\({\rm dim}\left(W\right)\)</span> <span class="math inline">\(=n\)</span> if and only if <span class="math inline">\(W=V\)</span>.</li>
+<li>In a vector space <span class="math inline">\(V\)</span> of dimension <span class="math inline">\(n\)</span>, every linearly independent set containing fewer than <span class="math inline">\(n\)</span> vectors can be extended to a basis of <span class="math inline">\(V\)</span>, and every spanning set of <span class="math inline">\(V\)</span> with more than <span class="math inline">\(n\)</span> vectors contains a basis of <span class="math inline">\(V\)</span> where a spanning set is the span of the set of vectors in <span class="math inline">\(V\)</span>. Moreover, every linearly independent set of <span class="math inline">\(n\)</span> vectors is a basis of <span class="math inline">\(V\)</span> and every set of <span class="math inline">\(n\)</span> vectors which spans <span class="math inline">\(V\)</span> is a basis of <span class="math inline">\(V\)</span>. \end{itemize}</li>
+</ul>
+</div>
+<div id="vector-subspaces" class="section level4">
+<h4>Vector subspaces</h4>
+<p>Let <span class="math inline">\(S\)</span> be a non-empty subset of a vector space <span class="math inline">\(V\)</span>. If <span class="math inline">\(S\)</span> itself satisfies the 10 vector space axioms with the same operations of addition and multiplication by a scalar then <span class="math inline">\(S\)</span> is called a <em>subspace</em> of <span class="math inline">\(V\)</span>.</p>
+<p>A subset <span class="math inline">\(S\)</span> of a vector space <span class="math inline">\(V\)</span> is a subspace of <span class="math inline">\(V\)</span> if <span class="math inline">\(S\)</span> is not empty and <span class="math inline">\(S\)</span> satisfies A1 and S1. If the zero vector of <span class="math inline">\(V\)</span> is <em>not</em> in <span class="math inline">\(S\)</span> then <span class="math inline">\(S\)</span> is not a subspace.</p>
+<p>The addition of vector spaces is defined below: <span class="math display">\[V + U = \{\boldsymbol{v} + \boldsymbol{u}: \boldsymbol{v}\in V,\boldsymbol{w}\in U\}.\]</span> A decomposition of a vector space <span class="math inline">\(W\)</span> to <span class="math inline">\(V\)</span> and <span class="math inline">\(U\)</span> is written as <span class="math display">\[  W = V \oplus U\]</span> where <span class="math inline">\(V \cap U = \{\boldsymbol{0}\}\)</span>. We also say <span class="math inline">\(W\)</span> is the direct sum of <span class="math inline">\(V\)</span> and <span class="math inline">\(U\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="row-11" class="section level2">
+<h2>Row</h2>
+<div id="diagonal-matrix" class="section level3">
+<h3>Diagonal Matrix</h3>
+<ul>
+<li><span class="math inline">\(\mathbf{D}\mathbf{A}\)</span> (or <span class="math inline">\(\mathbf{A}\mathbf{D}\)</span>) gives a matrix whose <em>rows</em> (or <em>columns</em>) are those of <span class="math inline">\(\mathbf{A}\)</span> multiplied by the respective diagonal elements of <span class="math inline">\(\mathbf{D}\)</span></li>
+</ul>
+</div>
+<div id="triangular-matrix" class="section level3">
+<h3>Triangular Matrix</h3>
+<ul>
+<li>A square matrix with all elements above (or below) the diagonal are zero is called a <em>lower (upper) triangular matrix</em>.</li>
+</ul>
+</div>
+<div id="transition-probability-matrix" class="section level3">
+<h3>Transition Probability Matrix</h3>
+<ul>
+<li>The <span class="math inline">\((i,j)\)</span>-th element of a transition probability matirx, <span class="math inline">\(p_ij\)</span>, is the probability of the probability of transitioning from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span> in a pre-defined time period.</li>
+<li>The sum of the elements of each row is 1.</li>
+<li>For a transition probability matrix <span class="math inline">\(\mathbf{P}\)</span>, <span class="math inline">\(\mathbf{P}^k\)</span> is also a transition proability matrix with the elements correspond to the transition from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span> in <span class="math inline">\(k\)</span> time periods.</li>
+</ul>
+<div id="examples" class="section level4">
+<h4>Examples</h4>
+<ul>
+<li>Feller (1968, p. 439) for a transition proability matrix <span class="math display">\[\mathbf{P} = \begin{bmatrix}
+\mathbf{A}&amp; \mathbf{0} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{B}&amp; \mathbf{0} \\
+\mathbf{U}_1 &amp; \mathbf{V}_1 &amp; \mathbf{T}
+\end{bmatrix}\]</span> where <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{B}\)</span> are also transition probality matrices. Then for <span class="math inline">\(\mathbf{U}_n = \mathbf{U}_1\mathbf{A}^{n - 1} + \mathbf{T}\mathbf{U}_{n-1}\)</span> and <span class="math inline">\(\mathbf{V}_n = \mathbf{V}_1\mathbf{B}^{n - 1} + \mathbf{T}\mathbf{V}_{n-1}\)</span>, we have <span class="math display">\[\mathbf{P}^n = \begin{bmatrix}\mathbf{A}^n &amp; \mathbf{0} &amp; \mathbf{0}\\
+\mathbf{0} &amp; \mathbf{B}^n &amp; \mathbf{0} \\
+\mathbf{U}_n &amp; \mathbf{V}_n &amp; \mathbf{T}^n \end{bmatrix}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-12" class="section level2">
+<h2>Row</h2>
+<div id="orthogonal-matrix" class="section level3">
+<h3>Orthogonal Matrix</h3>
+<ul>
+<li>If any two of the following conditions are satisfied then the matrix <span class="math inline">\(\mathbf{A}\)</span> is an <strong>orthogonal matrix</strong>:
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\mathbf{A}\)</span> is square</li>
+<li><span class="math inline">\(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}= \mathbf{I}\)</span></li>
+<li><span class="math inline">\(\mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}= \mathbf{I}\)</span></li>
+<li><span class="math inline">\(|\mathbf{A}| = \pm 1\)</span></li>
+</ol></li>
+<li><span class="math inline">\(\mathbf{A}^{-1} = \mathbf{A}^{\scriptscriptstyle \top}\)</span></li>
+</ul>
+<div id="special-cases" class="section level4">
+<h4>Special Cases</h4>
+<ul>
+<li>Helmert matrix <span class="math inline">\(\mathbf{H}_n\)</span> of order <span class="math inline">\(n\)</span> has <span class="math inline">\(n^{-\frac{1}{2}}\boldsymbol{1}_n^{\scriptscriptstyle \top}\)</span> for its first row and the other <span class="math inline">\(i\)</span>-th row is given by <span class="math display">\[\left(i(i-1)\right)^{-\frac{1}{2}}\begin{bmatrix}\boldsymbol{1}_{i - 1}^{\scriptscriptstyle \top}&amp; -(i-1) &amp; \boldsymbol{0}_{1\times (n-i)}\end{bmatrix}.\]</span>
+<details>
+<summary>Example</summary> <span class="math display">\[\mathbf{H}_4 = \begin{bmatrix}
+1/\sqrt{4} &amp; 1/\sqrt{4} &amp; 1/\sqrt{4} &amp; 1/\sqrt{4}\\
+1/\sqrt{2} &amp; -1/\sqrt{2} &amp; 0          &amp; 0\\
+1/\sqrt{6} &amp; 1/\sqrt{6} &amp; -2/\sqrt{6} &amp; 0 \\
+1/\sqrt{12} &amp; 1/\sqrt{12} &amp; 1/\sqrt{12} &amp; -3/\sqrt{12}
+\end{bmatrix}\]</span>
+</details></li>
+<li>Givens matrices <span class="math inline">\(\mathbf{G}_{rs}\)</span> or order <span class="math inline">\(n\)</span> is an identity matrix except for four elements: <span class="math inline">\(g_{rr}=g_{ss}=\cos\theta_{rs}\)</span> and for <span class="math inline">\(r &gt; s\)</span>, <span class="math inline">\(-g_{rs}=g_{sr} = \sin\theta_{rs}\)</span>.
+<details>
+<summary>Examples</summary> Givens matrix of order 2 <span class="math display">\[\begin{bmatrix}
+\cos\theta &amp; \sin\theta \\
+-\sin\theta &amp; \cos\theta
+\end{bmatrix}\]</span> Givens matrix of order 3 <span class="math display">\[
+\mathbf{G}_{12} = \begin{bmatrix}
+\cos \alpha &amp; \sin \alpha &amp; 0 \\
+-\sin \alpha &amp; \cos\alpha &amp; 0 \\
+0 &amp; 0 &amp; 1\end{bmatrix}\quad
+\mathbf{G}_{13} = \begin{bmatrix}
+\cos\beta &amp; 0 &amp; \sin\beta\\
+0 &amp; 1 &amp; 0 \\
+-\sin\beta &amp; 0 &amp; \cos\beta
+\end{bmatrix}\quad 
+\mathbf{G}_{23}= \begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; \cos \gamma &amp; \sin\gamma\\
+0 &amp; -\sin\gamma &amp; \cos\gamma
+\end{bmatrix}
+\]</span>
+</details></li>
+<li>Premultiplying by a Givens matrix will make the result an upper triangle. Postmultiplying by a Givens matrix will make the result a lower triangle. These tranformations are sometimes referred to as a <em>Givens transformation</em>.</li>
+<li>*Household matrices** are orthogonal matrices such that <span class="math display">\[\mathbf{H} = \mathbf{I} - 2\boldsymbol{h}\boldsymbol{h}^{\scriptscriptstyle \top}\quad\text{for }\boldsymbol{h}^{\scriptscriptstyle \top}\boldsymbol{h}=1.\]</span> For any non-null vector <span class="math inline">\(\boldsymbol{x}\)</span> there exists <span class="math inline">\(\boldsymbol{h}\)</span> such that <span class="math inline">\(\mathbf{H}\boldsymbol{x} = (\lambda, 0, ..., 0)^{\scriptscriptstyle \top}\)</span> for <span class="math inline">\(\lambda = -(\text{sign of }x_1)\sqrt{\boldsymbol{x}^{\scriptscriptstyle \top}\boldsymbol{x}}\)</span>, <span class="math inline">\(h_1=\sqrt{\frac{1}{2}(1 - x_1/\lambda)}\)</span> and <span class="math inline">\(h_i=-x_i/(2h_1\lambda)\)</span> for <span class="math inline">\(i=2, ..., n\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-13" class="section level2">
+<h2>Row</h2>
+<div id="null-or-zero-matrices" class="section level3">
+<h3>Null or Zero Matrices</h3>
+<p>A matrix is a null or zero matrix if every element is zero.</p>
+</div>
+<div id="identity-matrices" class="section level3">
+<h3>Identity Matrices</h3>
+<ul>
+<li>A diagonal matrix with all diagonal elements equal to unity is called an <em>identity matrix</em>.</li>
+<li>An identity matrix is denoted with letter <span class="math inline">\(\mathbf{I}\)</span> with a subscript for its order.</li>
+<li><span class="math inline">\(\mathbf{I}_r\mathbf{A}_{r\times c} = \mathbf{A}_{r\times c} \mathbf{I}_c = \mathbf{A}_{r\times c}\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="row-14" class="section level2">
+<h2>Row</h2>
+<div id="symmetric-matrices" class="section level3">
+<h3>Symmetric Matrices</h3>
+<ul>
+<li><span class="math inline">\(\mathbf{A}\)</span> is symmetric if <span class="math inline">\(\mathbf{A}= \mathbf{A}^{\scriptscriptstyle \top}\)</span>.</li>
+<li><span class="math inline">\(\mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}\)</span> and <span class="math inline">\(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}\)</span> are symmetric.</li>
+<li><span class="math inline">\(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}= \boldsymbol{0}\)</span> implies <span class="math inline">\(\mathbf{A}= \boldsymbol{0}\)</span>.</li>
+<li><span class="math inline">\(\text{tr}\left(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}\right) = \boldsymbol{0}\)</span> implies <span class="math inline">\(\mathbf{A}= \boldsymbol{0}\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{B}\)</span> are symmetric matrices, then in general <span class="math inline">\(\mathbf{A}\mathbf{B}\)</span> is not a symmetric matrix.
+<details>
+<summary>Proof</summary> <span class="math display">\[(\mathbf{A}\mathbf{B})^{\scriptscriptstyle \top}= \mathbf{B}^{\scriptscriptstyle \top}\mathbf{A}^{\scriptscriptstyle \top}= \mathbf{B}\mathbf{A}.\]</span> Since <span class="math inline">\(\mathbf{B}\mathbf{A}\)</span> is generally not the same as <span class="math inline">\(\mathbf{A}\mathbf{B}\)</span>, this means <span class="math inline">\(\mathbf{A}\mathbf{B}\)</span> is generally not symmetric.
+</details></li>
+</ul>
+</div>
+<div id="skew-symmetric-matrices" class="section level3">
+<h3>Skew-symmetric matrices</h3>
+<ul>
+<li>If a matrix <span class="math inline">\(\mathbf{A}\)</span> is skew-symmetric, then <span class="math inline">\(\mathbf{A}^{\scriptscriptstyle \top}= - \mathbf{A}\)</span>.</li>
+<li>The diagonal elements of a skew-symmetric matrices is zero.</li>
+</ul>
+</div>
+</div>
+<div id="row-15" class="section level2">
+<h2>Row</h2>
+<div id="matrix-factorisation" class="section level3">
+<h3>Matrix Factorisation</h3>
+<ul>
+<li>Suppose a non-full rank matrix <span class="math inline">\(\mathbf{A}= \begin{bmatrix}  \mathbf{X}&amp; \mathbf{Y}\\  \mathbf{Z} &amp; \boldsymbol{W}  \end{bmatrix}\)</span> where <span class="math inline">\(\mathbf{X}\)</span> is full rank. Then <span class="math display">\[\mathbf{A}= \begin{bmatrix}
+  \mathbf{I} \\
+  \mathbf{Z}\mathbf{X}^{-1} 
+  \end{bmatrix} \mathbf{X}\begin{bmatrix}
+  \mathbf{I} &amp; \mathbf{X}^{-1}\mathbf{Y}
+  \end{bmatrix}\]</span></li>
+<li>If matrix <span class="math inline">\(\mathbf{A}\)</span> is not in above form then there exists permutation matrices <span class="math inline">\(\mathbf{P}\)</span> and <span class="math inline">\(\mathbf{Q}\)</span> such that <span class="math inline">\(\mathbf{P}\mathbf{A}\mathbf{Q}\)</span> is in the above form.</li>
+</ul>
+</div>
+</div>
+<div id="row-16" class="section level2">
+<h2>Row</h2>
+<div id="solving-linear-equations" class="section level3">
+<h3>Solving Linear Equations</h3>
+<ul>
+<li>The consistent equations <span class="math inline">\(\mathbf{A}\boldsymbol{x}= \boldsymbol{y}\)</span> for <span class="math inline">\(\boldsymbol{y}\neq \boldsymbol{0}\)</span> have a solution <span class="math inline">\(\boldsymbol{x}= \mathbf{G}\boldsymbol{y}\)</span> if and only if <span class="math inline">\(\mathbf{A}\mathbf{G}\mathbf{A}=\mathbf{A}\)</span>.</li>
+<li><span class="math inline">\(\mathbf{A}\boldsymbol{x}= \boldsymbol{y}\)</span> have solutions <span class="math display">\[\tilde{\boldsymbol{x}} = \mathbf{G}\boldsymbol{y}+ (\mathbf{G}\mathbf{A}- \mathbf{I})\boldsymbol{z} \]</span> for <span class="math inline">\(\mathbf{G}=\mathbf{A}^-\)</span> and any arbitrary vector <span class="math inline">\(\boldsymbol{z}\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="row-17" class="section level2">
+<h2>Row</h2>
+<div id="direct-sum" class="section level3">
+<h3>Direct Sum</h3>
+<ul>
+<li><span class="math inline">\(\mathbf{A}\oplus \mathbf{B}= \begin{bmatrix}  \mathbf{A}&amp; \boldsymbol{0} \\  \boldsymbol{0} &amp; \mathbf{B}\end{bmatrix}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\oplus \mathbf{B}) + (\mathbf{C} \oplus \mathbf{D}) = (\mathbf{A}+ \mathbf{C}) \oplus (\mathbf{B}+ \mathbf{D})\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\oplus \mathbf{B})(\mathbf{C} \oplus \mathbf{D}) = \mathbf{A}\mathbf{C} \oplus \mathbf{B}\mathbf{D}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\oplus \mathbf{B})^{-1} = \mathbf{A}^{-1}\oplus \mathbf{B}^{-1}\)</span></li>
+</ul>
+</div>
+</div>
+<div id="row-18" class="section level2">
+<h2>Row</h2>
+<div id="direct-product" class="section level3">
+<h3>Direct Product</h3>
+<ul>
+<li><span class="math inline">\((\mathbf{A}\otimes \mathbf{B})^{\scriptscriptstyle \top}= \mathbf{A}^{\scriptscriptstyle \top}\otimes \mathbf{B}^{\scriptscriptstyle \top}\)</span></li>
+<li>For vectors <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span>: <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\otimes \boldsymbol{y}= \boldsymbol{y}\boldsymbol{x}^{\scriptscriptstyle \top}= \boldsymbol{y}\otimes \boldsymbol{x}^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\begin{bmatrix}  \mathbf{A}_1 &amp; \mathbf{A}_2  \end{bmatrix} \otimes \mathbf{B}= \begin{bmatrix}  \mathbf{A}_1 \otimes \mathbf{B}&amp; \mathbf{A}_2 \otimes \mathbf{B}\end{bmatrix}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\otimes \mathbf{B})(\mathbf{X}\otimes \mathbf{Y}) = \mathbf{A}\mathbf{X}\otimes \mathbf{B}\mathbf{Y}\)</span></li>
+<li><span class="math inline">\((\mathbf{A}\otimes \mathbf{B})^{-1} = \mathbf{A}^{-1}\otimes \mathbf{B}^{-1}\)</span></li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\otimes \mathbf{B}\right) = {\rm tr}\left(\mathbf{A}\right){\rm tr}\left(\mathbf{B}\right)\)</span></li>
+<li><span class="math inline">\(|\mathbf{A}_{p\times p}\otimes \mathbf{B}_{m\times m }| = |\mathbf{A}|^m|\mathbf{B}|^p\)</span></li>
+<li>Eigenvalues of <span class="math inline">\(\mathbf{A}\otimes \mathbf{B}\)</span> are products of eigenvalues of <span class="math inline">\(\mathbf{A}\)</span> with those of <span class="math inline">\(\mathbf{B}\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="row-19" class="section level2">
+<h2>Row</h2>
+<div id="the-matrix-mathbfxscriptscriptstyle-topmathbfx" class="section level3">
+<h3>The matrix <span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\)</span></h3>
+<ul>
+<li><span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}\)</span> are symmetric matrices.</li>
+<li>If <span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}= \mathbf{0}\)</span> then <span class="math inline">\(\mathbf{A}= \mathbf{0}\)</span>.</li>
+<li><span class="math inline">\(\left((\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\right)^{\scriptscriptstyle \top}\)</span> is a generalised inverse of <span class="math inline">\(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{P}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}= \mathbf{Q}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}\)</span> then <span class="math inline">\(\mathbf{P}\mathbf{X}= \mathbf{Q}\mathbf{X}\)</span>.
+<details>
+<summary>Proof</summary> Observe that <span class="math display">\[(\mathbf{P}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}- \mathbf{Q}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top})(\mathbf{P}^{\scriptscriptstyle \top}- \mathbf{Q}^{\scriptscriptstyle \top}) \equiv (\mathbf{P}\mathbf{X}- \mathbf{Q}\mathbf{X})(\mathbf{P}\mathbf{X}- \mathbf{Q}\mathbf{X})^{\scriptscriptstyle \top}.\]</span> Hence if <span class="math inline">\(\mathbf{P}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}= \mathbf{Q}\mathbf{X}\mathbf{X}^{\scriptscriptstyle \top}\)</span>, then <span class="math inline">\(\mathbf{P}\mathbf{X}= \mathbf{Q}\mathbf{X}\)</span>.
+</details></li>
+<li><span class="math inline">\(\mathbf{X}(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}= \mathbf{X}\)</span>, i.e. <span class="math inline">\((\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\mathbf{X}^{\scriptscriptstyle \top}\)</span> is a generalised inverse of <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li><span class="math inline">\(\mathbf{X}(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\mathbf{X}^{\scriptscriptstyle \top}\)</span> is invariant to the choice of <span class="math inline">\((\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\)</span>.</li>
+<li><span class="math inline">\(\mathbf{X}(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\mathbf{X}^{\scriptscriptstyle \top}\)</span> is symmetric whether <span class="math inline">\((\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^-\)</span> is or not.</li>
+</ul>
+</div>
+<div id="least-squares-equations" class="section level3">
+<h3>Least Squares Equations</h3>
+<p>The following are invariant to the choice of <span class="math inline">\(\left(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\right)^-\)</span>:</p>
+<ul>
+<li>the vector of predicted values <span class="math inline">\(\hat{\boldsymbol{y}} = \mathbf{X}\left(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X}\right)^-\mathbf{X}^{\scriptscriptstyle \top}\boldsymbol{y}\)</span>;</li>
+<li>The residual sum of squares <span class="math inline">\((\boldsymbol{y}- \hat{\boldsymbol{y}})^{\scriptscriptstyle \top}(\boldsymbol{y}- \hat{\boldsymbol{y}})\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="row-20" class="section level2">
+<h2>Row</h2>
+<div id="notations" class="section level3">
+<h3>Notations</h3>
+<ul>
+<li>The following conventions are used unless stated otherwise:
+<ul>
+<li>An italic, non-bold lower-case letter is a <em>scalar</em>, e.g. <span class="math inline">\(a, b\)</span>.</li>
+<li>An italic, bold lower-case letter is a <em>vector</em>, e.g. <span class="math inline">\(\boldsymbol{v}, \boldsymbol{w}\)</span>.</li>
+<li>A non-italic, bold upper-case letter is a <em>matrix</em>, e.g. <span class="math inline">\(\mathbf{A}, \mathbf{B}\)</span>.</li>
+</ul></li>
+<li>Matrix is a rectangular (two-dimensional) array of numbers arranged in rows and columns, with individual entries in the array referred to as <em>elements</em> or <em>terms</em> of the matrix.</li>
+<li>A matrix <span class="math inline">\(\mathbf{A}\)</span> with 2 rows and 3 columns can be conveniently written as <span class="math inline">\(\mathbf{A}_{2\times 3}\)</span> with dimensions on the subscript, or <span class="math display">\[\begin{bmatrix}
+a_{11} &amp; a_{12} &amp; a_{13} \\
+a_{21} &amp; a_{22} &amp; a_{23} 
+\end{bmatrix} = \{a_{ij}\}\quad\text{for}\quad i=1,2;~j=1,2,3.\]</span></li>
+<li>A vector is a <em>column vector</em> (i.e. a matrix with a single column) in this cheatsheet.</li>
+<li>The elements of a matrix are usually scalar. A scalar can be thought of as a matrix with order <span class="math inline">\(1\times 1\)</span>.</li>
+</ul>
+<div id="operators" class="section level4">
+<h4>Operators</h4>
+<ul>
+<li><span class="math inline">\(\text{diag}\left(\mathbf{A}_{r\times r}\right) = (a_{11}, a_{22}, ..., a_{rr})^{\scriptscriptstyle \top}\)</span></li>
+<li><span class="math inline">\(\text{diag}\left(a_{11}, a_{22}, ..., a_{rr}\right) = \begin{bmatrix}a_{11} &amp; 0 &amp; \cdots &amp; 0\\ 0 &amp; a_{22} &amp; \ddots &amp; \vdots \\ \vdots &amp; \ddots &amp; \ddots &amp; 0 \\ 0 &amp; \cdots &amp; 0 &amp; a_{rr} \end{bmatrix}\)</span></li>
+<li>If <span class="math inline">\(\boldsymbol{a}=(a_{11}, a_{22}, ..., a_{rr})^{\scriptscriptstyle \top}\)</span>, then <span class="math display">\[\text{diag}(\boldsymbol{a})=\text{diag}\left(a_{11}, a_{22}, ..., a_{rr}\right).\]</span></li>
+<li><span class="math inline">\({\rm rank}\left(\mathbf{A}\right)\)</span> is the rank of a matrix <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\right)\)</span> is the trace of a matrix <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li><span class="math inline">\(\mathcal{R}(\mathbf{A})\)</span> is the range/span/column space of a matrix <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li><span class="math inline">\(\mathcal{N}(\mathbf{A})\)</span> is the kernel/null space of a matrix <span class="math inline">\(\mathbf{A}\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="elements-of-vectors" class="section level3">
+<h3>Elements of vectors</h3>
+<ul>
+<li>Inner product <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\boldsymbol{y}\)</span></li>
+<li>Outer product <span class="math inline">\(\boldsymbol{x}\boldsymbol{y}^{\scriptscriptstyle \top}\)</span></li>
+<li>Elementary vector of length <span class="math inline">\(n\)</span>, <span class="math inline">\(\boldsymbol{e}_i\)</span>, is the <span class="math inline">\(i\)</span>-th column of the identity matrix <span class="math inline">\(\mathbf{I}_n\)</span>.</li>
+<li><span class="math inline">\(\mathbf{I}_n = \sum_{i=1}^n \boldsymbol{e}_i\boldsymbol{e}_i^{\scriptscriptstyle \top}\)</span>.</li>
+<li><span class="math inline">\(\mathbf{E}_{12} = \boldsymbol{e}_1\boldsymbol{e}_2^{\scriptscriptstyle \top}= \begin{bmatrix}0 &amp; 1 &amp; 0 \\0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0\end{bmatrix}\)</span></li>
+<li>A norm of a vector <span class="math inline">\(\boldsymbol{x}\)</span> is given as <span class="math inline">\(\sqrt{\boldsymbol{x}^{\scriptscriptstyle \top}\boldsymbol{x}}\)</span>.</li>
+<li>A vector is said to be either <em>normal</em> or a <em>unit vector</em> if its norm is unity.</li>
+<li>Non-null vectors <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\vexy\)</span> are <em>orthogonal</em> if <span class="math inline">\(\boldsymbol{x}^{\scriptscriptstyle \top}\vexy = 0\)</span>.</li>
+<li>Two vectors are <em>orthonormal vectors</em> if they are orthogonal and normal.</li>
+</ul>
+</div>
+<div id="elements-of-matrices" class="section level3">
+<h3>Elements of matrices</h3>
+<div id="dimensionorder-of-a-matrix" class="section level4">
+<h4>Dimension/Order of a matrix</h4>
+<ul>
+<li><p>The dimension or order of a matrix refer to the size of the matrix (i.e. the number of rows and the number of columns).</p></li>
+<li><p>A matrix with <span class="math inline">\(r\)</span> rows and <span class="math inline">\(c\)</span> columns has order <span class="math inline">\(r\times c\)</span>. When <span class="math inline">\(r=c\)</span>, it can simply be said that the matrix has order <span class="math inline">\(r\)</span>.</p></li>
+</ul>
+</div>
+<div id="diagonal-and-off-diagonal-elements" class="section level4">
+<h4>Diagonal and off-diagonal elements</h4>
+<ul>
+<li>For a square matrix <span class="math inline">\(\mathbf{A}_{r\times r}\)</span>, the elements <span class="math inline">\(a_{11}, a_{22}, ..., a_{rr}\)</span> are referred to as <em>diagonal elements</em>.</li>
+<li>The elements of a square matrix that lie in a line parallel to and just below the diagonal, i.e. <span class="math inline">\(a_{1,2}, ...,a_{i,j+1}, ..., a_{r-1,r}\)</span> and <span class="math inline">\(a_{2,1}, ...,a_{i,j-1}, ..., a_{r,r-1}\)</span>, are referred to as <em>subdiagonal elements</em>.</li>
+<li>The elements of square matrix that are not diagonal elements are referred to as <em>off-diagonal</em> or <em>non-diagonal elements</em>.</li>
+</ul>
+</div>
+<div id="the-laws-of-algebra" class="section level4">
+<h4>The laws of algebra</h4>
+<p>Assume all matrices are conformable for the operations performed.</p>
+<ul>
+<li>Associative laws of addition: <span class="math inline">\((\mathbf{A}+ \mathbf{B}) + \mathbf{C}= \mathbf{A}+ (\mathbf{B}+ \mathbf{C})\)</span>.</li>
+<li>Associative laws of products: <span class="math inline">\((\mathbf{A}\mathbf{B})\mathbf{C}= \mathbf{A}(\mathbf{B}\mathbf{C})\)</span>.</li>
+<li>Distributive law: <span class="math inline">\(\mathbf{A}(\mathbf{B}+ \mathbf{C}) = \mathbf{A}\mathbf{B}+ \mathbf{A}\mathbf{C}\)</span>.</li>
+<li>Commutative law of addition: <span class="math inline">\(\mathbf{A}+ \mathbf{B}= \mathbf{B}+ \mathbf{A}\)</span>.</li>
+<li>Commutative law of products do not hold.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="row-21" class="section level2">
+<h2>Row</h2>
+<div id="rangespancolumn-space" class="section level3">
+<h3>Range/Span/Column Space</h3>
+<p>Range, span or column space of <span class="math inline">\(\mathbf{X}\)</span> is denoted <span class="math inline">\(\mathcal{R}(\mathbf{X})\)</span> is the space or set of all possible linear combinations of the columns of <span class="math inline">\(\mathbf{X}\)</span>. Thus <span class="math inline">\(\mathbf{A}\in \mathcal{R}(\mathbf{X})\)</span> if <span class="math inline">\(\mathbf{A}=\mathbf{X}\boldsymbol{b}\)</span> for some <span class="math inline">\(\boldsymbol{b}\)</span>.</p>
+</div>
+<div id="kernelnull-space" class="section level3">
+<h3>Kernel/Null space</h3>
+<p>Kernel or null space os a matrix <span class="math inline">\(\mathbf{X}\)</span> is denoted <span class="math inline">\(\mathcal{N}(\mathbf{X})\)</span> is the space of all possible linear combinations of vectors orthogonal to the columns of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+</div>
+</div>
+<div id="row-22" class="section level2">
+<h2>Row</h2>
+<div id="orthogonal-complement" class="section level3">
+<h3>Orthogonal complement</h3>
+<p>Let <span class="math inline">\(V\)</span> be a finite dimensional vector space and <span class="math inline">\(W\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then the orthogonal complement of <span class="math inline">\(W\)</span>, denoted <span class="math inline">\(W^\perp\)</span>, is the set of vectors <span class="math display">\[\{\boldsymbol{v}\in V: \boldsymbol{v}^{\scriptscriptstyle \top}\boldsymbol{w}=0 \text{ for all } \boldsymbol{w}\in W\}.\]</span></p>
+<ul>
+<li><span class="math inline">\(W^\perp\)</span> is also a subspace of <span class="math inline">\(V\)</span></li>
+<li><span class="math inline">\((W^\perp)^\perp = W\)</span></li>
+<li><span class="math inline">\(\text{dim}(W^\perp) = \text{dim} V - \text{dim} W\)</span></li>
+<li><span class="math inline">\(V=W \oplus W^\perp\)</span></li>
+</ul>
+</div>
+<div id="rank" class="section level3">
+<h3>Rank</h3>
+<p>The <strong>rank</strong> of the matrix <span class="math inline">\(\mathbf{X}\)</span> or the <strong>dimension</strong> of <span class="math inline">\(\mathcal{R}(\mathbf{X})\)</span>, written as <span class="math inline">\(\text{rank}\left(\mathbf{X}\right)\)</span> or <span class="math inline">\(\text{dim}\left(\mathcal{R}(\mathbf{X})\right)\)</span>, is the number in the minimal (linearly independent) set of columns of <span class="math inline">\(\mathbf{X}\)</span> that span <span class="math inline">\(\mathcal{R}(\mathbf{X})\)</span>. Similar definition applies to any vector space <span class="math inline">\(V\)</span>, where the dimension of <span class="math inline">\(V\)</span> is the number of the vectors in any basis of <span class="math inline">\(V\)</span>.</p>
+<p>Suppose that <span class="math inline">\(\mathbf{A}\)</span> is an <span class="math inline">\(m\times n\)</span> matrix then</p>
+<ul>
+<li><span class="math inline">\({\rm rank}\left(\mathbf{A}\right) \leq \min (m,n)\)</span></li>
+<li>If <span class="math inline">\({\rm rank}\left(\mathbf{A}\right) = \min (m,n)\)</span> then the matrix <span class="math inline">\(\mathbf{A}\)</span> is said to have .</li>
+<li>Only a zero matrix has rank zero.</li>
+<li>If <span class="math inline">\(\mathbf{A}\)</span> is a square matrix (<span class="math inline">\(m=n\)</span>) then <span class="math inline">\(\mathbf{A}\)</span> is invertible if and only if <span class="math inline">\(\mathbf{A}\)</span> has rank <span class="math inline">\(n\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is any <span class="math inline">\(n\times k\)</span> matrix, then <span class="math inline">\({\rm rank}\left(\mathbf{A}\mathbf{B}\right) \leq \min({\rm rank}\left(\mathbf{A}\right), {\rm rank}\left(\mathbf{B}\right))\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{B}\)</span> is any <span class="math inline">\(n\times k\)</span> matrix of rank <span class="math inline">\(n\)</span>, then <span class="math inline">\({\rm rank}\left(\mathbf{A}\mathbf{B}\right) = {\rm rank}\left(\mathbf{A}\right)\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{C}\)</span> is any <span class="math inline">\(l\times m\)</span> matrix of rank <span class="math inline">\(m\)</span>, then <span class="math inline">\({\rm rank}\left(\mathbf{C}\mathbf{A}\right) = {\rm rank}\left(\mathbf{A}\right)\)</span>.</li>
+<li>The <span class="math inline">\({\rm rank}\left(\mathbf{A}\right)=r\)</span> if and only if there exists an invertible <span class="math inline">\(m\times m\)</span> matrix <span class="math inline">\(\mathbf{X}\)</span> and an invertible <span class="math inline">\(n\times n\)</span> matrix <span class="math inline">\(\mathbf{Y}\)</span> such that <span class="math inline">\(\mathbf{X}\mathbf{A}\mathbf{Y}= \begin{bmatrix}  \mathbf{I}_r &amp; \mathbf{0} \\  \mathbf{0} &amp; \mathbf{0}  \end{bmatrix}\)</span>.</li>
+<li><span class="math inline">\({\rm rank}\left(\mathbf{A}+ \mathbf{B}\right) \leq {\rm rank}\left(\begin{bmatrix}  \mathbf{A}&amp; \mathbf{B}\end{bmatrix}\right) \leq {\rm rank}\left(\mathbf{A}\right) + {\rm rank}\left(\mathbf{B}\right)\)</span></li>
+<li><strong>Sylvestor’s rank of nullity</strong>: If <span class="math inline">\(\mathbf{A}\)</span> is an <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\mathbf{B}\)</span> is any <span class="math inline">\(n\times k\)</span> matrix, <span class="math inline">\({\rm rank}\left(A\right) + {\rm rank}\left(B\right) - n \leq {\rm rank}\left(AB\right)\)</span>.</li>
+<li>The inequality due to Frobenius: <span class="math inline">\({\rm rank}\left(AB\right) + {\rm rank}\left(BC\right) \leq {\rm rank}\left(B\right) + {\rm rank}\left(ABC\right)\)</span>.</li>
+<li>If <span class="math inline">\(\mathbf{A}\mathbf{B}\mathbf{A}= \mathbf{A}\)</span> then <span class="math inline">\({\rm rank}\left(\mathbf{B}\mathbf{A}\right) = {\rm rank}\left(\mathbf{A}\right)\)</span></li>
+<li><strong>Rank-nullity Theorem</strong>: The rank of a matrix plus the nullity of the matrix equals the number of columns of the matrix, i.e. <span class="math display">\[{\rm dim}\left(\mathcal{R}(\mathbf{A})\right) + {\rm dim}\left(\mathcal{N}(\mathbf{A})\right) = n.\]</span></li>
+<li><span class="math inline">\({\rm rank}\left(\mathbf{A}^{\scriptscriptstyle \top}\mathbf{A}\right) = {\rm rank}\left(\mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}\right) = {\rm rank}\left(\mathbf{A}\right) = {\rm rank}\left(\mathbf{A}^{\scriptscriptstyle \top}\right)\)</span></li>
+</ul>
+</div>
+</div>
+<div id="row-23" class="section level2">
+<h2>Row</h2>
+<div id="projection-matrix" class="section level3">
+<h3>Projection matrix</h3>
+<p>For any <span class="math inline">\(\boldsymbol{v}\in V\)</span>, there are unique vectors <span class="math inline">\(\boldsymbol{x}\in W\)</span> and <span class="math inline">\(\boldsymbol{z}\in W^\perp\)</span> such that <span class="math inline">\(\boldsymbol{v} = \boldsymbol{x}+ \boldsymbol{z}\)</span>. We call <span class="math inline">\(\boldsymbol{x}\)</span> the projection of <span class="math inline">\(\boldsymbol{v}\)</span> onto <span class="math inline">\(W\)</span> and write <span class="math inline">\(\boldsymbol{x}= \mathbf{P}_W(\boldsymbol{v})\)</span>. In fact, <span class="math inline">\(\boldsymbol{x}= \mathbf{P}_W\boldsymbol{v}\)</span> where <span class="math inline">\(\mathbf{P}_W\)</span> is the projection matrix that maps any <span class="math inline">\(\boldsymbol{v}\in V\)</span> onto <span class="math inline">\(W\)</span>. Similarly <span class="math inline">\(\boldsymbol{z}\)</span> is the projection of <span class="math inline">\(\boldsymbol{v}\)</span> onto <span class="math inline">\(W^\perp\)</span> and the corresponding projection matrix is referred to as the orthogonal projection matrix, <span class="math inline">\(\mathbf{P}_{W^\perp}\)</span>. Note <span class="math inline">\(\boldsymbol{z} = \boldsymbol{v} - \mathbf{P}_W\boldsymbol{v}=(\mathbf{I} - \mathbf{P}_W)\boldsymbol{v}\)</span>. So <span class="math inline">\(\mathbf{P}_{W^\perp} = \mathbf{I} - \mathbf{P}_W\)</span>.</p>
+<p>The projection matrix <span class="math inline">\(\mathbf{P}_W\)</span> has the following basic properties:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{P}_W\)</span> is idempotent, i.e. <span class="math inline">\(\mathbf{P}_W^2 = \mathbf{P}_W\)</span>,</li>
+<li><span class="math inline">\(\mathbf{P}_W\boldsymbol{x}= \boldsymbol{x}\)</span> for all <span class="math inline">\(\boldsymbol{x}\in W\)</span> (i.e. <span class="math inline">\(\mathbf{P}_W\)</span> is the identity operator on <span class="math inline">\(W\)</span>),</li>
+<li>Every vector <span class="math inline">\(\boldsymbol{x}\in V\)</span> may be decomposed uniquely as <span class="math inline">\(\boldsymbol{v} = \boldsymbol{x}+ \boldsymbol{z}\)</span> with <span class="math inline">\(\boldsymbol{x}= \mathbf{P}_W\boldsymbol{v}\)</span> and <span class="math inline">\(\boldsymbol{z} = \mathbf{P}_{W^\perp}\boldsymbol{v} = (\mathbf{I} - \mathbf{P}_W)\boldsymbol{v}\)</span>.</li>
+<li>There exists matrix <span class="math inline">\(\mathbf{A}\)</span> with columns corresponding to orthonormal basis of <span class="math inline">\(W\)</span> such that <span class="math inline">\(\mathbf{P}_W = \mathbf{A}\mathbf{A}^{\scriptscriptstyle \top}\)</span>.</li>
+</ul>
+<div id="projection-onto-the-range-of-a-matrix" class="section level4">
+<h4>Projection onto the range of a matrix</h4>
+<p>Suppose <span class="math inline">\(W=\mathcal{R}(\mathbf{X})\)</span>. Suppose <span class="math inline">\(\mathbf{P}_W\)</span> is a projection matrix onto <span class="math inline">\(W\)</span> and assume <span class="math inline">\(\mathbf{X}\)</span> is full-rank, then <span class="math inline">\(\mathbf{P}_W = \mathbf{X}(\mathbf{X}^{\scriptscriptstyle \top}\mathbf{X})^{-1}\mathbf{X}^{\scriptscriptstyle \top}\)</span>. Note there are, of course, other projection matrices onto <span class="math inline">\(W\)</span>. Note that the <span class="math inline">\({\rm tr}\left(\mathbf{P}_W\right) = {\rm rank}\left(\mathbf{X}\right)\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="row-24" class="section level2">
+<h2>Row</h2>
+<div id="idempotent-matrix" class="section level3">
+<h3>Idempotent matrix</h3>
+<p>A matrix <span class="math inline">\(\mathbf{A}\)</span> such that <span class="math inline">\(\mathbf{A}= \mathbf{A}^2\)</span> is called <strong>idempotent</strong>. An idempotent matrix <span class="math inline">\(\mathbf{A}\)</span> has the following properties:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{A}\)</span> is a square matrix</li>
+<li>the eigenvalues of <span class="math inline">\(\mathbf{A}\)</span> are either 0 or 1</li>
+<li><span class="math inline">\({\rm tr}\left(\mathbf{A}\right) = {\rm rank}\left(\mathbf{A}\right)\)</span></li>
+<li><span class="math inline">\(\mathbf{A}\)</span> is singular unless <span class="math inline">\(\mathbf{A}= \mathbf{I}\)</span>, the identity matrix</li>
+<li><span class="math inline">\(\mathbf{I} - \mathbf{A}\)</span> is also an idempotent matrix</li>
+</ul>
+</div>
+<div id="nilpotent-and-unipotent-matrices" class="section level3">
+<h3>Nilpotent and Unipotent matrices</h3>
+<ul>
+<li>A matrix <span class="math inline">\(\mathbf{A}\)</span> is nilpotent if <span class="math inline">\(\mathbf{A}^2 = \mathbf{0}\)</span>.</li>
+<li>A matrix <span class="math inline">\(\mathbf{A}\)</span> is unipotent if <span class="math inline">\(\mathbf{A}^2 = \mathbf{I}\)</span>.</li>
+</ul>
+</div>
+<div id="permutation-matrix" class="section level3">
+<h3>Permutation matrix</h3>
+<p>A permutation matrix <span class="math inline">\(\mathbf{P}\)</span> is a square binary matrix that has exactly one entry of 1 in each row and each column and 0s elsewhere. The properties of a permutation matrix include</p>
+<ul>
+<li>Pre-multiplying by <span class="math inline">\(\mathbf{P}\)</span> will result in permutation of the rows.</li>
+<li>Post-multiplying by <span class="math inline">\(\mathbf{P}\)</span> will result in permutation of the columns.</li>
+<li><span class="math inline">\(\mathbf{P}\)</span> is a orthogonal matrix.</li>
+<li><span class="math inline">\(\mathbf{P}^{-1} = \mathbf{P}^{\scriptscriptstyle \top}\)</span>.</li>
+</ul>
+</div>
+<div id="rotation-matrix" class="section level3">
+<h3>Rotation matrix</h3>
+<p>A rotation matrix <span class="math inline">\(\mathbf{R}\)</span> is a matrix that is used to perform a rotation in Euclidean space. For example the matrix <span class="math display">\[\mathbf{R} = \begin{bmatrix}
+\cos\theta &amp; -\sin\theta\\
+\sin\theta &amp; \cos\theta
+\end{bmatrix} \]</span> rotates points in the <span class="math inline">\(xy\)</span>-Cartesian plane (counter)-clockwise through an angle <span class="math inline">\(\theta\)</span> about the origin of the Cartesian coordinate system by (pre-) post-multiplying.</p>
+</div>
+</div>
+<div id="row-25" class="section level2">
+<h2>Row</h2>
+<div id="vectormatrix-operations" class="section level3">
+<h3>Vector/Matrix operations</h3>
+<ul>
+<li>A <strong>scalar product</strong> (also called <em>inner product</em> or <em>dot product</em>) for vectors <span class="math inline">\(\boldsymbol{v}\)</span>, <span class="math inline">\(\boldsymbol{w}\in \mathbb{R}^n\)</span> is written <span class="math inline">\(\boldsymbol{v}\cdot\boldsymbol{w}\)</span> and <span class="math display">\[\boldsymbol{v}\cdot\boldsymbol{w} = \boldsymbol{v}^{\scriptscriptstyle \top}\boldsymbol{w} = \displaystyle\sum_{i=1}^nv_i w_i = v_1 w_1 + .. + v_n w_n.\]</span> The (Euclidean) <strong>norm</strong> (sometimes called <em>length</em> or <em>magnitude</em>) of a vector <span class="math inline">\(\boldsymbol{v}\)</span> is written as <span class="math inline">\(||\boldsymbol{v}||\)</span> and note <span class="math inline">\(\boldsymbol{v}^{\scriptscriptstyle \top}\boldsymbol{v} = \displaystyle\sum_{i=1}^n v^2_i=||\boldsymbol{v}||^2\)</span>.</li>
+<li>A <strong>Hadamard product</strong> is given as <span class="math inline">\(\mathbf{A}\cdot \mathbf{B}= \{a_{ij}b_{ij}\}\)</span>.</li>
+<li>A <strong>Kronecker product</strong></li>
+<li>A <strong>matrix product</strong> of <span class="math inline">\(\mathbf{A}= \begin{bmatrix}\boldsymbol{a}_1^{\scriptscriptstyle \top}\\\boldsymbol{a}_2^{\scriptscriptstyle \top}\\\end{bmatrix}\)</span> and <span class="math inline">\(\mathbf{B}= \begin{bmatrix}\boldsymbol{b}_1 &amp; \boldsymbol{b}_2 &amp; \boldsymbol{b}_3 &amp; \boldsymbol{b}_4 \end{bmatrix}\)</span>: <span class="math display">\[\mathbf{A}\mathbf{B}= \begin{bmatrix}
+\mathbf{A}\boldsymbol{b}_1 &amp; \mathbf{A}\boldsymbol{b}_2 &amp; \mathbf{A}\boldsymbol{b}_3 &amp; \mathbf{A}\boldsymbol{b}_4\end{bmatrix}\]</span> <span class="math display">\[\mathbf{A}\mathbf{B}= \begin{bmatrix}
+\boldsymbol{a}_1^{\scriptscriptstyle \top}\boldsymbol{b}_1 &amp; \boldsymbol{a}_1^{\scriptscriptstyle \top}\boldsymbol{b}_2 &amp; \boldsymbol{a}_1^{\scriptscriptstyle \top}\boldsymbol{b}_3 &amp; \boldsymbol{a}_1^{\scriptscriptstyle \top}\boldsymbol{b}_4\\
+\boldsymbol{a}_2^{\scriptscriptstyle \top}\boldsymbol{b}_1 &amp; \boldsymbol{a}_2^{\scriptscriptstyle \top}\boldsymbol{b}_2 &amp; \boldsymbol{a}_2^{\scriptscriptstyle \top}\boldsymbol{b}_3 &amp; \boldsymbol{a}_2^{\scriptscriptstyle \top}\boldsymbol{b}_4\\\end{bmatrix}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="about" class="section level1" data-orientation="rows">
+<h1>About</h1>
+<div id="row-26" class="section level2">
+<h2>Row</h2>
+</div>
+</div>
+<div id="references" class="section level1" data-orientation="rows">
+<h1>References</h1>
+<div id="row-27" class="section level2">
+<h2>Row</h2>
+<div id="references-1" class="section level3 unnumbered">
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-searle2006a">
+<p>Searle, Shayle Roy. 2006. <em>Matrix Algebra Useful for Statistics</em>. John Wiley &amp; Sons Inc.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+$(document).ready(function () {
+
+  // add bootstrap table styles to pandoc tables
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+
+  // initialize mathjax
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  FlexDashboard.init({
+    theme: "united",
+    fillPage: false,
+    orientation: "columns",
+    storyboard: false,
+    defaultFigWidth: 576,
+    defaultFigHeight: 460,
+    defaultFigWidthMobile: 360,
+    defaultFigHeightMobile: 460
+  });
+});
+</script>
+
+</body>
+</html>

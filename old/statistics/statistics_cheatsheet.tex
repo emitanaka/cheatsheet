@@ -1,0 +1,150 @@
+\documentclass[12pt,landscape, a4paper]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\tp}{{\!\scriptscriptstyle \top}}
+\RequirePackage{amsmath,amssymb,hyperref}
+%%%% FONT %%%%%%%%%%%%%%
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+% fix markign
+\geometry{top=0.2cm,left=0.2cm,right=0.2cm,bottom=1.1cm} 
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\RequirePackage{titlesec, xcolor}
+\titleformat{name=\section,numberless}{\large\scshape\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+\titleformat{name=\subsection,numberless}{}{}{0em}{\colorsubsectionnonumber}
+\newcommand{\colorsectionnonumber}[1]{%
+	\colorbox{blue!20}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+	\colorbox{blue!10}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyhead{}
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyfoot[R]{\scriptsize Copyright \copyright\ 2017 Emi Tanaka \qquad \url{emi.tanaka@sydney.edu.au} \hfill Page~\thepage}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+
+\begin{center}
+     \Large{\textbf{Statistics}} \\
+\end{center}
+
+\section{Univariate Distributions}
+\subsection{Normal distribution}
+Suppose $X\sim N(\mu, \sigma^2)$.
+\begin{itemize}
+\item $f(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}} {\rm exp}\left(-\dfrac{1}{2\sigma^2}(x-\mu) ^2\right)$
+\item $E(X)=\mu$ and $var(X) = \sigma^2$
+\end{itemize}
+
+\subsection{$t$ distribution}
+
+\subsection{$\chi^2$ distribution}
+Suppose $X \sim \chi^2_k$.
+\begin{itemize}
+	\item Support: $x \in (0, \infty)$ if $k=1$ otherwise $x \in [0, \infty)$
+	\item $E(X) = k$ and $var(X) = 2k$
+	\item $\sum_{i=1}^k Z_i^2 \sim \chi^2_k$ where $Z_i \sim N(0,1)$
+	\item $\sum_{i=1}^k X_i^2 \sim \sigma^2 \chi^2_k$ where $X_i \sim N(0,\sigma^2)$	
+	\item $\sum_{i=1}^k (X_i - \hat{\mu})^2 \sim \sigma^2 \chi^2_{k-1}$ where $X_i \sim N(\mu,\sigma^2)$
+	\item $\frac{1}{m}\sum_{i=1}^k (X_i - \hat{\mu})^2 \sim \frac{\sigma^2}{m} \chi^2_{k-1}$ where $X_i \sim N(\mu,\sigma^2)$
+\end{itemize}
+
+\subsection{$F$ distribution}
+
+\begin{itemize}
+\item $\dfrac{X_1 /  d_1}{X_2 /  d_2} \sim F_{d_1, d_2}$ where $X_1 \sim \chi^2_{d_1}$ and $X_2 \sim \chi^2_{d_2}$
+\item $\dfrac{S_1^2/d_1} {\sigma^2_1} / \dfrac{S_2^2/d_2}{\sigma^2_2}\sim F_{d_1, d_2} $
+\item If $X \sim t_n$ then $X^2 \sim F_{1, n}$ and $X^{-2} \sim F_{n, 1}$ 
+\end{itemize}
+
+\section{Multivariate Distributions}
+\subsection{Normal Distribution}
+Suppose $\bs{X} \sim N(\bs{\mu}, \bs{\Sigma})$ with $|\bs{X}|=k$.
+\begin{itemize}
+\item $f(\bs{x}) = \dfrac{1}{\sqrt{(2\pi)^k|\bs{\Sigma}|}} {\rm exp}\left(-\dfrac{1}{2}(\bs{x}-\bs{\mu})^\tp\bs{\Sigma}^{-1} (\bs{x}-\bs{\mu})\right)$
+\end{itemize}
+\subsubsection{Special Cases}
+$$\begin{bmatrix}
+\bs{X}_1 \\
+\bs{X}_2 
+\end{bmatrix} \sim N\left(\begin{bmatrix}
+\bs{\mu}_1\\
+\bs{\mu}_2
+\end{bmatrix},  \begin{bmatrix}
+\bs{\Sigma}_{11} & \bs{\Sigma}_{12}\\
+\bs{\Sigma}_{21} & \bs{\Sigma}_{22}
+\end{bmatrix} \right)
+ $$
+\begin{itemize}
+	\item $E(\bs{X}_2 | \bs{X}_1 = \bs{x_1}) = \bs{\mu}_2 + \bs{\Sigma}_{21}\bs{\Sigma}_{11}^{-1}(\bs{x}_1 - \bs{\mu}_1)$
+	\item $var(\bs{X}_2 | \bs{X}_1 = \bs{x_1}) = \bs{\Sigma}_{22} - \bs{\Sigma}_{21}\bs{\Sigma}_{11}^{-1}\bs{\Sigma}_{12}$
+\end{itemize}
+
+\section{Univariate Tests}
+
+
+\small{\bibliography{/Users/emi/Dropbox/Articles/library}
+	\bibliographystyle{plain}\vspace{0.75in}}
+
+\end{multicols}
+\end{document}

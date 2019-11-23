@@ -1,0 +1,41 @@
+\BOOKMARK [1][-]{Doc-Start}{Range/Span/Column Space}{}% 1
+\BOOKMARK [1][-]{Doc-Start}{Kernel/Null space}{}% 2
+\BOOKMARK [1][-]{Doc-Start}{Orthogonal complement}{}% 3
+\BOOKMARK [1][-]{Doc-Start}{Idempotent matrix}{}% 4
+\BOOKMARK [1][-]{Doc-Start}{Permutation matrix}{}% 5
+\BOOKMARK [1][-]{Doc-Start}{Rotation matrix}{}% 6
+\BOOKMARK [1][-]{Doc-Start}{Projection matrix}{}% 7
+\BOOKMARK [2][-]{section*.1}{Projection onto the range of a matrix}{Doc-Start}% 8
+\BOOKMARK [1][-]{section*.1}{Diagonal Matrix}{}% 9
+\BOOKMARK [1][-]{section*.1}{Orthogonality}{}% 10
+\BOOKMARK [1][-]{Item.4}{Traces}{}% 11
+\BOOKMARK [1][-]{Item.4}{Inverses}{}% 12
+\BOOKMARK [2][-]{section*.2}{Woodbury matrix identity}{Item.4}% 13
+\BOOKMARK [2][-]{section*.2}{Generalised inverse}{Item.4}% 14
+\BOOKMARK [1][-]{section*.2}{Determinants}{}% 15
+\BOOKMARK [2][-]{section*.3}{Sylvestor's theorem for determinants}{section*.2}% 16
+\BOOKMARK [1][-]{section*.3}{Transpose}{}% 17
+\BOOKMARK [1][-]{section*.3}{Rank/Dimension}{}% 18
+\BOOKMARK [1][-]{section*.3}{Derivatives}{}% 19
+\BOOKMARK [1][-]{section*.3}{Non-negative definite matrix}{}% 20
+\BOOKMARK [2][-]{section*.4}{Positive definite matrices}{section*.3}% 21
+\BOOKMARK [2][-]{section*.4}{Positive semi-definite matrices}{section*.3}% 22
+\BOOKMARK [1][-]{section*.4}{Eigen-X}{}% 23
+\BOOKMARK [2][-]{section*.5}{Diagonalizable}{section*.4}% 24
+\BOOKMARK [1][-]{section*.5}{Illustrations}{}% 25
+\BOOKMARK [1][-]{Item.6}{Partitioned Matrix}{}% 26
+\BOOKMARK [1][-]{Item.6}{Vector/Matrix operations}{}% 27
+\BOOKMARK [1][-]{Item.6}{Quadratic Form}{}% 28
+\BOOKMARK [1][-]{Item.6}{Matrices with all element equal}{}% 29
+\BOOKMARK [1][-]{Item.6}{Vector Space}{}% 30
+\BOOKMARK [2][-]{section*.6}{Axioms of vector space:}{Item.6}% 31
+\BOOKMARK [2][-]{section*.6}{Special set of vectors}{Item.6}% 32
+\BOOKMARK [2][-]{section*.6}{Basis}{Item.6}% 33
+\BOOKMARK [2][-]{section*.6}{Vector subspaces}{Item.6}% 34
+\BOOKMARK [1][-]{section*.6}{Symmetric Matrices}{}% 35
+\BOOKMARK [1][-]{section*.6}{Matrix Factorisation}{}% 36
+\BOOKMARK [1][-]{section*.6}{Solving Linear Equations}{}% 37
+\BOOKMARK [1][-]{section*.6}{Direct Sum}{}% 38
+\BOOKMARK [1][-]{section*.6}{Direct Product}{}% 39
+\BOOKMARK [1][-]{section*.6}{The matrix bold0mu mumu XX1 XXXXbold0mu mumu XX1 XXXX}{}% 40
+\BOOKMARK [1][-]{section*.6}{Least Squares Equations}{}% 41

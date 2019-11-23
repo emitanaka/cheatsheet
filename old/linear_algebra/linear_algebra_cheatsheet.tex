@@ -1,0 +1,532 @@
+\documentclass[12pt,landscape, a4paper]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\tp}{{\!\scriptscriptstyle \top}}
+\RequirePackage{amsmath,amssymb,hyperref}
+%%%% FONT %%%%%%%%%%%%%%
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+% fix markign
+\geometry{top=0.2cm,left=0.2cm,right=0.2cm,bottom=1.1cm} 
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\RequirePackage{titlesec, xcolor}
+\titleformat{name=\section,numberless}{\large\scshape\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+\titleformat{name=\subsection,numberless}{}{}{0em}{\colorsubsectionnonumber}
+\newcommand{\colorsectionnonumber}[1]{%
+	\colorbox{blue!20}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+	\colorbox{blue!10}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyhead{}
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyfoot[R]{\scriptsize Copyright \copyright\ 2017 Emi Tanaka \qquad \url{emi.tanaka@sydney.edu.au} \hfill Page~\thepage}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+
+\begin{center}
+     \Large{\textbf{Linear Algebra Cheat Sheet}} \\
+\end{center}
+
+\section{Range/Span/Column Space}
+Denoted $\mathcal{R}(\bs{X})$ is the space or set of all possible linear combinations of the columns of $\bs{X}$. Thus $\bs{a} \in \mathcal{R}(\bs{X})$ if $\bs{a}=\bs{Xb}$ for some $\bs{b}$.
+
+\section{Kernel/Null space}
+Denoted $\mathcal{N}(\bs{X})$ is the space of all possible linear combinations of vectors orthogonal to the columns of $\bs{X}$.
+
+\section{Orthogonal complement}
+Let $V$ be a finite dimensional vector space and $W$ is a subspace of $V$. Then the orthogonal complement of $W$, denoted $W^\perp$, is the set of vectors 
+$$\{\bs{v}\in V: \bs{v}^\tp\bs{w}=0 \text{ for all } \bs{w}\in W\}.$$
+\begin{itemize}
+	\item $W^\perp$ is also a subspace of $V$
+	\item $(W^\perp)^\perp = W$
+	\item $\text{dim}(W^\perp) = \text{dim} V - \text{dim} W$
+	\item $V=W \oplus W^\perp$ 
+\end{itemize}
+
+\section{Idempotent matrix}
+	A matrix \bs{A} such that $\bs{A} = \bs{A}^2$ is called \textbf{idempotent}. 
+	An idempotent matrix $\bs{A}$ has the following properties:
+	\begin{itemize}
+		\item $\bs{A}$ is a square matrix
+		\item the eigenvalues of $\bs{A}$ are either 0 or 1
+		\item $\tr{\bs{A}} = \rank{\bs{A}}$
+		\item $\bs{A}$ is singular unless $\bs{A} = \bs{I}$, the identity matrix 
+		\item $\bs{I} - \bs{A}$ is also an idempotent matrix 
+	\end{itemize}
+
+
+\section{Permutation matrix}
+A permutation matrix $\bs{P}$ is a square binary matrix that has exactly one entry of 1 in each row and each column and 0s elsewhere. The properties of a permutation matrix include
+\begin{itemize}
+	\item Pre-multiplying by $\bs{P}$ will result in permutation of the rows. 
+	\item Post-multiplying by $\bs{P}$ will result in permutation of the columns.
+	\item \bs{P} is a orthogonal matrix.
+	\item $\bs{P}^{-1} = \bs{P}^\tp$.
+\end{itemize}
+
+\section{Rotation matrix}
+A rotation matrix \bs{R} is a matrix that is used to perform a rotation in Euclidean space. For example the matrix
+$$\bs{R} = \begin{bmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{bmatrix} $$
+rotates points in the $xy$-Cartesian plane (counter)-clockwise through an angle $\theta$ about the origin of the Cartesian coordinate system by (pre-) post-multiplying.
+
+\section{Projection matrix}
+For any $\bs{v}\in V$, there are unique vectors $\bs{x}\in W$ and $\bs{z}\in W^\perp$ such that $\bs{v} = \bs{x} + \bs{z}$. We call $\bs{x}$ the projection of $\bs{v}$ onto $W$ and write $\bs{x} = \bs{P}_W(\bs{v})$. In fact, $\bs{x} = \bs{P}_W\bs{v}$ where $\bs{P}_W$ is the projection matrix that maps any $\bs{v}\in V$ onto $W$. Similarly $\bs{z}$ is the projection of $\bs{v}$ onto $W^\perp$ and the corresponding projection matrix is referred to as the orthogonal projection matrix, $\bs{P}_{W^\perp}$. Note $\bs{z} = \bs{v} - \bs{P}_W\bs{v}=(\bs{I} - \bs{P}_W)\bs{v}$. So $\bs{P}_{W^\perp} = \bs{I} - \bs{P}_W$. 
+
+The projection matrix $\bs{P}_W$ has the following basic properties:
+\begin{itemize}
+	\item $\bs{P}_W$ is idempotent, i.e. $\bs{P}_W^2 = \bs{P}_W$,
+	\item $\bs{P}_W\bs{x} = \bs{x}$ for all $\bs{x}\in W$ (i.e. $\bs{P}_W$ is the identity operator on $W$),
+	\item Every vector $\bs{x}\in V$ may be decomposed uniquely as $\bs{v} = \bs{x} + \bs{z}$ with $\bs{x} = \bs{P}_W\bs{v}$ and $\bs{z} = \bs{P}_{W^\perp}\bs{v} = (\bs{I} - \bs{P}_W)\bs{v}$. 
+	\item There exists matrix $\bs{A}$ with columns corresponding to orthonormal basis of $W$ such that $\bs{P}_W = \bs{A}\bs{A}^\tp$.  
+\end{itemize}
+
+\subsection{Projection onto the range of a matrix}
+Suppose $W=\mathcal{R}(\bs{X})$.  Suppose $\bs{P}_W$ is a projection matrix onto $W$ and assume $\bs{X}$ is full-rank, then $\bs{P}_W = \bs{X}(\bs{X}^\tp\bs{X})^{-1}\bs{X}^\tp$. Note there are, of course, other projection matrices onto $W$. 
+Note that the $\tr{\bs{P}_W} = \rank{\bs{X}}$. 
+
+\section{Diagonal Matrix}
+\begin{itemize}
+	\item $\bs{D}\bs{A}$ (or $\bs{A}\bs{D}$) gives a matrix whose \emph{rows} (or \emph{columns}) are those of $\bs{A}$ multiplied by the respective diagonal elements of $\bs{D}$
+\end{itemize}
+
+
+\section{Orthogonality}
+\begin{itemize}
+	\item $\bs{v}$ is orthogonal to $\bs{w}$ if $\bs{v}^\tp\bs{w} = 0$  (written $\bs{v}\perp\bs{w}$).
+	\item If unit vectors \bs{u} and \bs{v} satisfy $\bs{u}^\tp \bs{v} = 0$ then \bs{u} and \bs{v} are \textbf{orthonormal vectors}. 
+	\item If any two of the following conditions are satisfied then the matrix $\bs{A}$ is an \textbf{orthogonal matrix}:
+	\begin{multicols}{2}
+			\begin{enumerate}
+			\item \bs{A} is square
+			\item $\bs{A}^\tp\bs{A} = \bs{I}$
+			\item $\bs{A}\bs{A}^\tp = \bs{I}$
+			\item $|\bs{A}| = \pm 1$
+		\end{enumerate}
+	\end{multicols}
+	\item $\bs{A}^{-1} = \bs{A}^\tp$
+\end{itemize}
+
+\section{Traces}
+The \textbf{trace} of a square $n\times n$ matrix \bs{A} is the sum of the diagonal elements and denoted $\tr{\bs{A}}$. The trace is not defined for a matrix that is not a square. Let $\lambda_1, \lambda_2, ..., \lambda_n$ be the eigenvalues of $\bs{A}$.
+\begin{itemize}
+	\item $\tr{\bs{A}} = \tr{\bs{A}^\tp}$
+	\item $\tr{\bs{A} + \bs{B}} = \tr{\bs{A}} + \tr{\bs{B}}$
+	\item $\tr{\bs{A}\bs{B}} = \tr{\bs{B}\bs{A}} = \sum_{i=1}^r\sum_{j=1}^c a_{ij}b_{ji} $
+	\item $\tr{\bs{A}\bs{A}^\tp} = \tr{\bs{A}^\tp\bs{A}} = \sum_{i=1}^r\sum_{j=1}^c a_{ij}^2 $
+	\item $\tr{\bs{A}\bs{B}\bs{C}} = \tr{\bs{B}\bs{C}\bs{A}} = \tr{\bs{C}\bs{A}\bs{B}} $
+	\item $\bs{x}^\tp\bs{A}\bs{y} = \tr{\bs{x}^\tp\bs{A}\bs{y}} =  \tr{\bs{A}\bs{y}\bs{x}^\tp}$
+	\item $\tr{\bs{A}} = \sum_i^n \lambda_i$
+	\item $\tr{\bs{A}^k} = \sum_i^n \lambda_i^k$
+\end{itemize}
+
+\section{Inverses}
+	\begin{itemize}
+		\item The \textbf{inverse} of a square matrix \bs{A} is the unique matrix $\bs{A}^{-1}$ such that $\bs{A}^{-1}\bs{A}=\bs{A}\bs{A}^{-1}=\bs{I}.$ Note that $\bs{A}^{-1}$ does not always exist.
+		\item $(\bs{A}\bs{B})^{-1} = \bs{B}^{-1}\bs{A}^{-1}$.
+				\item $$\begin{bmatrix}
+		\bs{R} & \bs{0} \\
+		\bs{X} & \bs{S} 
+		\end{bmatrix}^{-1} = \begin{bmatrix}
+		\bs{R}^{-1} & \bs{0} \\
+		-\bs{S}^{-1}\bs{X}\bs{R}^{-1} & \bs{S}^{-1} 
+		\end{bmatrix} $$
+				\item $\displaystyle \bs{A} = \begin{bmatrix}
+		a & b \\
+		c & d
+		\end{bmatrix}$ then $\bs{A}^{-1} =  \dfrac{1}{ab - cd} \begin{bmatrix}
+		d & -b \\
+		-c & a
+		\end{bmatrix}$.
+		\item Suppose we have the partitioned matrix $\bs{A} = \begin{bmatrix}
+		\bs{A}_{11} & \bs{A}_{12} \\
+		\bs{A}_{21} & \bs{A}_{22}
+		\end{bmatrix}$ then $\bs{A}^{-1}$
+		{ \scriptsize
+				$$ \begin{bmatrix}
+		(\bs{A}_{11} - \bs{A}_{12}\bs{A}_{22}^{-1}\bs{A}_{21})^{-1} & -\bs{A}_{11}^{-1}\bs{A}_{12}(\bs{A}_{22} - \bs{A}_{21}\bs{A}_{11}^{-1}\bs{A}_{12})^{-1} \\
+		-\bs{A}_{22}^{-1}\bs{A}_{21}(\bs{A}_{11} - \bs{A}_{12}\bs{A}_{22}^{-1}\bs{A}_{21})^{-1} & (\bs{A}_{22} - \bs{A}_{21}\bs{A}_{11}^{-1}\bs{A}_{12})^{-1}
+		\end{bmatrix} $$
+						$$ \begin{bmatrix}
+		(\bs{A}_{11} - \bs{A}_{12}\bs{A}_{22}^{-1}\bs{A}_{21})^{-1} & -(\bs{A}_{11} - \bs{A}_{12}\bs{A}_{22}^{-1}\bs{A}_{21})^{-1}\bs{A}_{12}\bs{A}_{22}^{-1} \\
+		-(\bs{A}_{22} - \bs{A}_{21}\bs{A}_{11}^{-1}\bs{A}_{12})^{-1}\bs{A}_{21}\bs{A}_{11}^{-1} & (\bs{A}_{22} - \bs{A}_{21}\bs{A}_{11}^{-1}\bs{A}_{12})^{-1}
+		\end{bmatrix} $$
+	}
+	\end{itemize}
+\subsection{Woodbury matrix identity}
+$$\left(\bs{A} + \bs{U}\bs{B}\bs{V}\right)^{-1} = \bs{A}^{-1} - \bs{A}^{-1}\bs{U}(\bs{B}^{-1} + \bs{V}\bs{A}^{-1}\bs{U})^{-1}\bs{V}\bs{A}^{-1}.$$
+Alternatively, \cite{Henderson1981} deal with 
+$$\left(\bs{A} + \bs{U}\bs{B}\bs{V}\right)^{-1} = \bs{A}^{-1} - \bs{A}^{-1}\bs{U}\bs{B}\bs{V}(\bs{I} + \bs{A}^{-1}\bs{U}\bs{B}\bs{V})^{-1}\bs{A}^{-1}.$$
+Special case:
+$$(\bs{A} + \bs{u}\bs{v}^\tp)^{-1} = \bs{A}^{-1} - \dfrac{\bs{A}^{-1}\bs{u}\bs{v}^\tp\bs{A}^{-1}}{1 + \bs{v}^\tp\bs{A}^{-1}\bs{u}} $$
+
+
+	\subsection{Generalised inverse}
+\begin{itemize}	
+		\item For a given matrix $\bs{A} \in \mathbb{R}^{n \times m}$, if $\bs{A}^{-} \in \mathbb{R}^{m \times n}$ is such that 
+		$$ \bs{AA}^{-}\bs{A} = \bs{A}$$
+		then $\bs{A}^{-}$ is a \textbf{generalised inverse} of \bs{A}. If $\bs{A}^{-}$ also satisfies 
+		$$ \bs{A}^{-}\bs{A}\bs{A}^{-} = \bs{A}^{-}$$
+		then $\bs{A}^{-}$ is a \textbf{generalised reflexive inverse} of \bs{A}. 
+		
+		If $\bs{A}^{-}$ satisfies the above two conditions and also $$ (\bs{A}\bs{A}^{-})^\tp = \bs{A}\bs{A}^{-}\quad\text{ and }\quad (\bs{A}^{-}\bs{A})^\tp = \bs{A}^{-}\bs{A},$$ then $\bs{A}^{-}$ is the \textbf{Moore-Penrose pseudoinverse} of \bs{A}.
+		
+		\item $\bs{A}^-$ is generally not unique (as opposed to $\bs{A}^{-1}$) although the Moore-Penrose pseudoinverse exists and unique for any matrix. 
+		\item For symmetric matrix $\bs{A}$, $\bs{G}=\bs{A}^-$ may not be symmetric although $\bs{G}^\tp$ is still a generalised inverse.    
+	\end{itemize}
+
+\section{Determinants}
+\begin{itemize}
+	\item $|\bs{A}\bs{B}| = |\bs{B}\bs{A}|= |\bs{A}||\bs{B}|$.
+	\item If $\bs{B}$ is obtained from $\bs{A}$ by swapping two rows then $|\bs{A}| = -|\bs{B}|$.
+	\item If $\bs{B}$ is obtained from $\bs{A}$ by adding a multiple of one row to another row then $|\bs{A}| = |\bs{B}|$.
+	\item If $\bs{B}$ is obtained from $\bs{A}$ by taking out a common factor $\lambda$ from each entry in a row of $\bs{A}$ then $|\bs{A}| = \lambda |\bs{B}|$.
+	\item If $\bs{A}$ is a triangular matrix then $|\bs{A}| = a_{11}a_{22}...a_{nn}$.
+	\item $|\bs{A}| = |\bs{A}^\tp|$. 
+	\item $|\bs{A}^{-1}| = |\bs{A}|^{-1}$.
+	\item For orthogonal \bs{A}, $|\bs{A}|=\pm 1$ since $\bs{A}\bs{A}^\tp = \bs{I}$ implies $|\bs{A}|^2 = 1$.
+	\item For idempotent \bs{A}, $|\bs{A}|=0$ or 1 because $|\bs{A}|^2 = |\bs{A}|$. 
+	\item $|\bs{A}| = \prod_{i=1}^{n} \lambda_i$
+\end{itemize}
+\subsection{Sylvestor's theorem for determinants}
+$$|\bs{A} + \bs{B}\bs{C}\bs{D}^\tp| = |\bs{C}^{-1} + \bs{D}^\tp\bs{A}^{-1}\bs{B}||\bs{A}||\bs{C}| $$
+
+\section{Transpose}
+	\begin{itemize}
+		\item $(\bs{A} + \bs{B})^\tp = \bs{A}^\tp + \bs{B}^\tp$
+		\item $(\bs{A}\bs{B})^\tp = \bs{B}^\tp \bs{A}^\tp$
+		\item Transposing a partitioned matrix:
+		$$\begin{bmatrix}
+		\bs{A} & \bs{B} & \bs{C} \\	
+		\bs{D} & \bs{E} & \bs{F} 
+		\end{bmatrix}^\tp  = \begin{bmatrix}
+		\bs{A}^\tp & \bs{D}^\tp \\
+		\bs{B}^\tp & \bs{E}^\tp \\
+		\bs{C}^\tp & \bs{F}^\tp 
+		\end{bmatrix}$$
+		\item $\left(\bs{A}^{-1}\right)^\tp = \left(\bs{A}^\tp\right)^{-1} $
+	\end{itemize}
+
+\section{Rank/Dimension}
+The \textbf{dimension} of $\mathcal{R}(\bs{X})$ or the \textbf{rank} of the matrix \bs{X}, written as dim($\mathcal{R}(\bs{X})$) or simply rank(\bs{X}), is the number in the minimal (linearly independent) set of columns of \bs{X} that span $\mathcal{R}(\bs{X})$. Similar definition applies to any vector space $V$, where the dimension of $V$ is the number of the vectors in any basis of $V$. 
+
+Suppose that $\bs{A}$ is an $m\times n$ matrix then
+\begin{itemize}
+	\item $\rank{\bs{A}} \leq \min (m,n)$
+	\item If $\rank{\bs{A}} = \min (m,n)$ then the matrix $\bs{A}$ is said to have \emph{full rank}.
+	\item Only a zero matrix has rank zero. 
+	\item If $\bs{A}$ is a square matrix ($m=n$) then $\bs{A}$ is invertible if and only if $\bs{A}$ has rank $n$. 
+	\item If $\bs{B}$ is any $n\times k$ matrix, then $\rank{\bs{A}\bs{B}} \leq \min(\rank{\bs{A}}, \rank{\bs{B}})$.
+	\item  If $\bs{B}$ is any $n\times k$ matrix of rank $n$, then $\rank{\bs{A}\bs{B}} = \rank{\bs{A}}$.
+	\item  If $\bs{C}$ is any $l\times m$ matrix of rank $m$, then $\rank{\bs{C}\bs{A}} = \rank{\bs{A}}$.
+	\item The $\rank{\bs{A}}=r$ if and only if there exists an invertible $m\times m$ matrix $\bs{X}$ and an invertible $n\times n$ matrix $\bs{Y}$ such that $\bs{X}\bs{A}\bs{Y} = \begin{bmatrix}
+	\bs{I}_r & \bs{0} \\
+	\bs{0} & \bs{0}
+	\end{bmatrix}$. 
+	\item $\rank{\bs{A} + \bs{B}} \leq \rank{\begin{bmatrix}
+		\bs{A} & \bs{B}
+		\end{bmatrix}} \leq \rank{\bs{A}} + \rank{\bs{B}}$
+	\item Sylvestor's rank of nullity: If $\bs{A}$ is an $m\times n$ matrix and $\bs{B}$ is any $n\times k$ matrix, $\rank{A} + \rank{B} - n \leq \rank{AB}$.
+	\item The inequality due to Frobenius: $\rank{AB} + \rank{BC} \leq \rank{B} + \rank{ABC}$.
+	\item If $\bs{A}\bs{B}\bs{A} = \bs{A}$ then $\rank{\bs{B}\bs{A}} = \rank{\bs{A}}$
+	\item \textbf{Rank-nullity Theorem}: The rank of a matrix plus the nullity of the matrix equals the number of columns of the matrix, i.e. $$\dim{\mathcal{R}(\bs{A})} + \dim{\mathcal{N}(\bs{A})} = n.$$
+	\item $\rank{\bs{A}^\tp \bs{A}} = \rank{\bs{A}\bs{A}^\tp} = \rank{\bs{A}} = \rank{\bs{A}^\tp}$
+\end{itemize}
+
+\section{Derivatives}
+
+Let $a$ be a constant that is not a function of $\bs{x}$; $b$ a constant that is a function of $\bs{x}$; vectors $\bs{u}$ and $\bs{v}$ functions of $\bs{x}$, and a matrix \bs{A} that is not a function of $\bs{x}$ and a non-singular matrix $\bs{B}$ that is a function of the scalar $s$.    
+\begin{multicols}{2}
+	\begin{itemize}
+		\item $\displaystyle \frac{\partial a}{\partial \bs{x}} = \bs{0}$
+		\item $\displaystyle \frac{\partial \bs{x}}{\partial \bs{x}} = \bs{I}_m$
+		\item $\displaystyle \frac{\partial \bs{Ax}}{\partial \bs{x}} = \bs{A}^\tp$
+		\item $\displaystyle \frac{\partial \bs{x}^\tp\bs{A}}{\partial \bs{x}} = \bs{A}$
+		\item $\displaystyle \frac{\partial a\bs{u}}{\partial \bs{x}} = a\frac{\partial \bs{u}}{\partial \bs{x}}$
+		\item $\displaystyle \frac{\partial b\bs{u}}{\partial \bs{x}} = b\frac{\partial \bs{u}}{\partial \bs{x}} + \frac{\partial b}{\partial \bs{x}}\bs{u}^\tp$
+		\item $\displaystyle \frac{\partial \bs{Au}}{\partial \bs{x}} = \frac{\partial \bs{u}}{\partial \bs{x}}\bs{A}^\tp$
+		\item $\displaystyle \frac{\partial (\bs{u} + \bs{v})}{\partial \bs{x}} = \frac{\partial \bs{u}}{\partial \bs{x}} + \frac{\partial \bs{v}}{\partial \bs{x}}$
+		\item $\displaystyle \frac{\partial \bs{g}(\bs{u})}{\partial \bs{x}} = \frac{\partial \bs{u}}{\partial \bs{x}}\frac{\partial \bs{g}(\bs{u})}{\partial \bs{u}} $
+		\item $\displaystyle \frac{\partial \bs{u}^\tp\bs{v}}{\partial \bs{x}} = \frac{\partial \bs{u}}{\partial \bs{x}}\bs{v} + \frac{\partial \bs{v}}{\partial \bs{x}}\bs{u} $
+		\item $\displaystyle \frac{\partial \bs{u}^\tp\bs{Av}}{\partial \bs{x}} = \frac{\partial \bs{u}}{\partial \bs{x}}\bs{Av} + \frac{\partial \bs{v}}{\partial \bs{x}}\bs{A}^\tp\bs{u} $
+		\item $\displaystyle \frac{\partial \bs{B}^{-1}}{\partial s} = -\bs{B}^{-1} \frac{\partial \bs{B}}{\partial s} \bs{B}^{-1}$
+		\item $\displaystyle \frac{\partial \log|\bs{B}|}{\partial s} = \tr{\bs{B}^{-1}\frac{\partial \bs{B}}{\partial s}}$
+	\end{itemize}
+\end{multicols}
+
+\section{Non-negative definite matrix}
+\subsection{Positive definite matrices}
+A symmetric $n\times n$ real matrix $\bs{A}$ is said to be \textbf{positive definite} if $\bs{x}^\tp\bs{A}\bs{x} > 0 $ is positive for every non-zero column vector $\bs{x}$. 
+
+A positive definite matrix holds the following properties:
+\begin{itemize}
+	\item all its eigenvalues are positive 
+	\item every positive definite matrix is invertible and its inverse is also positive definite.
+	\item it has a unique \textbf{Cholesky decomposition}: the matrix $\bs{A}$ is positive definite if and only if there exists a unique lower triangular matrix $\bs{L}$, with real and strictly positive diagonal elements, such that $\bs{A} = \bs{L}\bs{L}^\tp$.
+	\item $\bs{X}^\tp\bs{A}\bs{X}$ is positive-semidefinite. If $\bs{X}$ is invertible, then $\bs{X}^\tp\bs{A}\bs{X}$ is positive definite. Note that $\bs{X}^{-1}\bs{A}\bs{X}$ does not need to be positive definite.
+\end{itemize}
+\subsection{Positive semi-definite matrices}
+A symmetric matrix $\bs{A}$ is \textbf{positive semi-definite} if $\bs{x}^\tp\bs{A}\bs{x} \geq 0$ for all $\bs{x}$ and $\bs{x}^\tp\bs{A}\bs{x}=0$ for some $\bs{x}\neq \bs{0}$. 
+\begin{itemize}
+	\item When $\bs{A}$ is p.(s.)d. so is $\bs{P}\bs{A}\bs{P}^\tp$ for nonsingular $\bs{P}$. 
+	\item For real $\bs{X}$, $\bs{X}^\tp\bs{X}$ is n.n.d. It is p.d. when $\bs{X}$ has full rank or else it is p.s.d. 
+\end{itemize}
+
+\section{Eigen-X}
+If $\bs{A}$ is an $n\times n$ matrix, $\bs{x}$ a non-zero $n\times 1$ column vector and $\lambda$ is a scalar such that $\bs{A}\bs{x} = \lambda \bs{x}$, we call $\bs{x}$ an \textbf{eigenvector} of $\bs{A}$, and $\lambda$ the corresponding \textbf{eigenvalue} (or $\lambda$-eigenvector of $A$). The set $\{\bs{x} \in \mathbb{R}^{n} | \bs{A}\bs{x} = \lambda \bs{x} \}$ is called the $\lambda$-\textbf{eigenspace} of $\bs{A}$ and comprises of the $\lambda$-eigenvectors and $\bs{0}$.
+\begin{itemize}
+	\item A number $\lambda$ is an eigenvalue of $\bs{A}$ if and only if $|\bs{A}-\lambda \bs{I}_n| = 0$.
+\end{itemize}
+\subsection{Diagonalizable}
+\textbf{Diagonalizable Theorem}: If $\mathbb{R}^n$ is a basis of $\{\bs{v}_1, \bs{v}_2, ..., \bs{v}_n  \}$ consisting of eigenvectors of an $n\times n$ matrix $\bs{A}$ then there exists an invertible matrix $\bs{P}$ and a diagonal matrix $\bs{D}$ such that $\bs{D} = \bs{P}^{-1}\bs{A}\bs{P}$. And so $\bs{A}^n = \bs{P}\bs{D}^{n}\bs{P}^{-1}$.
+\begin{itemize}
+	\item Projection matrix are diagonalizable with 0s and 1s on the diagonal.
+	\item Real symmetric matrices are (orthogonally) diagonalizable by orthogonal matrices so $\bs{D} = \bs{Q}^\tp\bs{A}\bs{Q}$ where $\bs{Q}$ is an orthogonal matrix. 
+	\item \bs{A} is diagonalizable if and only if the sum of the dimensions of its eigenspaces is equal to $n$. 
+\end{itemize}
+
+\section{Illustrations}
+\begin{itemize}
+	\item \textbf{Generation matrix} $\bs{A}$: relating the frequencies of mating types in one generation to those in another $f^{(i+1)} = \bs{A}f^{(i)}$.
+	\item \textbf{Markov Chain}: $\bs{x}$ is a \emph{state probability vector} and $\bs{P}$ is the transition probability matrix which is related by $\bs{x}_{n+1}^\tp = \bs{x}_n^\tp \bs{P} = \bs{x}_0^\tp \bs{P}^{n+1}$. Note $\bs{P}^n\bs{1} = \bs{1}$.
+	\item \textbf{Linear Programming}: below are equivalent.
+	\begin{enumerate}
+		\item minimise $f=\bs{c}^\tp\bs{x}$ subject to $\bs{A}\bs{x} \geq \bs{r}$ and $\bs{x} \geq \bs{0}$
+		\item maximise $g=\bs{r}^\tp\bs{z}$ subject to $\bs{A}\bs{z} \leq \bs{r}$ and $\bs{z} \geq \bs{0}$
+	\end{enumerate}
+	\item \textbf{Graph Theory}: Suppose a set of communication stations $\{S_i\}$. $\bs{T} = \{t_{ij}\}$ where $t_{ij} = 0$ except $t_{ij}=1$ if a message can be sent from $S_i$ to $S_j$. Then $\bs{T}^r = \{t_{ij}^{(r)}\}$, the element $t_{ij}^{(r)}$ is then the number of ways of getting a message from station $i$ to station $j$ in exactly $r$ steps.  
+\end{itemize}
+
+\section{Partitioned Matrix}
+$\bs{A}_{r\times c} = \begin{bmatrix}
+\bs{\alpha}^\tp_1 \\
+\vdots \\
+\bs{\alpha}^\tp_r \\
+\end{bmatrix}$ and $\bs{B}_{c\times s} = \begin{bmatrix}
+\bs{b}_1 & \cdots & \bs{b}_s
+\end{bmatrix}$: 
+$$\bs{A} \bs{B} = \{\bs{\alpha}^\tp_i \bs{b}_j\} = \left\{\sum_{k=1}^c a_{ik}b_{kj}\right\}$$
+
+\section{Vector/Matrix operations}
+\begin{itemize}
+	\item 	A \textbf{scalar product} (also called \emph{inner product} or \emph{dot product}) for vectors $\bs{v}$, $\bs{w}\in \mathbb{R}^n$ is written $\bs{v}\cdot\bs{w}$ and 
+	\begin{equation*}
+	\bs{v}\cdot\bs{w} = \bs{v}^\tp\bs{w} = \displaystyle\sum_{i=1}^nv_i w_i = v_1 w_1 + .. + v_n w_n.
+	\end{equation*}
+	The (Euclidean) \textbf{norm} (sometimes called \emph{length} or \emph{magnitude}) of a vector $\bs{v}$ is written as $||\bs{v}||$ and note $\bs{v}^\tp\bs{v} = \displaystyle\sum_{i=1}^n v^2_i=||\bs{v}||^2$.
+	\item A \textbf{Hadamard product} is given as $\bs{A}\cdot \bs{B} = \{a_{ij}b_{ij}\}$.
+\end{itemize}
+
+\section{Quadratic Form}
+\begin{itemize}
+	\item 	The \textbf{quadratic form} of a matrix \bs{A} is given as $\bs{x}^\tp \bs{A}\bs{x} = \sum_i \sum_j x_i x_j a_{ij}$.
+	\item For any particular quadratic form, there is a unique symmetric matrix $\bs{A}$ for which the quadratic form can be expressed as $\bs{x}^\tp \bs{A}\bs{x}$. 
+	\item If we have the quadratic form $\bs{x}^\tp\bs{A}\bs{x}$ where $\bs{A}$ is not symmetric then we can rewrite it as $\bs{x}^\tp\left[\frac{1}{2}(\bs{A}+ \bs{A}^\tp)\right]\bs{x}$ where $\frac{1}{2}(\bs{A}+ \bs{A}^\tp)$ is a unique symmetric matrix. 
+\end{itemize}
+
+\section{Matrices with all element equal}
+\begin{multicols}{2}
+\begin{itemize}
+	\item $\bs{1}_n^\tp \bs{1}_n = n$
+	\item $\bs{1}_r\bs{1}_s^\tp = \bs{J}_{r\times s}$
+	\item $\bs{J}_{r\times s}\bs{J}_{s\times t} = s\bs{J}_{r\times t}$
+	\item $\bs{1}^\tp_r \bs{J}_{r\times s} = r\bs{1}_s^\tp$
+	\item $\bs{J}_{r\times s}\bs{1}_s = s\bs{1}_r$
+	\item $\bs{J}_n=\bs{1}_n\bs{1}_n^\tp$ 
+	\item $\bs{J}_n^2 = n\bs{J}_n$
+	\item $\bar{\bs{J}}_n = \frac{1}{n} \bs{J}_n$
+	\item $\bar{\bs{J}}_n^2 = \bar{\bs{J}}_n$
+	\item $\bs{C}_n = \bs{I} - \bar{\bs{J}}_n$
+	\item $\bs{C} = \bs{C}^\tp = \bs{C}^2$ 
+	\item $\bs{C}\bs{1} = \bs{0}$
+	\item $\bs{C}\bs{J} = \bs{J}\bs{C} = \bs{0}$
+	\item $\bs{x}^\tp \bs{C}\bs{x} = \sum_{i=1}^n (x_i - \bar{x})^2$
+\end{itemize}	
+\end{multicols}
+
+\section{Vector Space}
+A \textbf{vector space} over $\mathbb{R}$ is a non-empty set $V$ whose elements are called vectors on which two operations are defined, namely \emph{addition of vectors} and \emph{multiplication of a vector by a scalar} satisfying the 10 axioms below.
+
+\subsection{Axioms of vector space:}
+For all $\bs{u}, \bs{v}, \bs{w} \in V$ and $k$, $k1$, $k2$ $\in \mathbb{R}$,
+\begin{description}
+	\item[A1] $\bs{u} + \bs{v} \in V$. This property is called \emph{closure under addition}.
+	\item[A2] $(\bs{u} + \bs{v}) + \bs{w} = \bs{u} + (\bs{v} + \bs{w})$. This is called \emph{associative law of addition}.
+	\item[A3] $\bs{u} + \bs{v} = \bs{v} + \bs{u}$. That is, addition is \emph{commutative}. 
+	\item[A4] There is a \emph{zero vector} $\bs{0} \in V$ with $\bs{v} + \bs{0} = \bs{0} + \bs{v} = \bs{v}$. 
+	\item[A5] There is a vector which we write as $-\bs{v}$ and call a negative of \bs{v}, such that $\bs{v} +  -\bs{v} =  \bs{0}$. 
+	\item[S1] $k\bs{v} \in V$. This property is called \emph{closure under multiplication by a scalar}.
+	\item[S2] $k(\bs{u} + \bs{v}) = k\bs{u} + k\bs{v}$.
+	\item[S3] $(k_1 + k_2) \bs{v} = k_1\bs{v} + k_2 \bs{v}$.
+	\item[S4] $(k_1 k_2)\bs{v} = k_1(k_2\bs{v})$.
+	\item[S5] $1\bs{v} = \bs{v}$.
+\end{description}
+\subsection{Special set of vectors}
+The set of vectors $X=\{\bs{v}_1, \bs{v}_2, ..., \bs{v}_n \}$ in a vector space $V$ is called a \textbf{linearly independent} set if the only scalars that satisfy $\sum_{i=1}^n a_i\bs{v}_i =  \bs{0}$ are $a_1 = a_2 = ... = a_n = 0$, otherwise it is called a \textbf{linearly dependent} set. $\mathcal{R}(X)$ is a subspace of $V$ and is the smallest subspace of $V$ containing the set $X$.
+
+\subsection{Basis}. A set of vectors $X$ in a vector space $V$ is called a \textbf{basis} of $V$ if $\{\bs{v}_1, \bs{v}_2, ..., \bs{v}_n \}$ is a linearly independent set and $\mathcal{R}(X) = V$. 
+
+\begin{itemize}
+	\item If an $n\times n$ matrix $\bs{M}$ has $n$ distinct eigenvalues then the set of $n$ eigenvectors formed by selecting a non-zero vector from each eigenspace is a basis of $\mathbb{R}^n$.
+	\item If $\{\bs{v}_1, \bs{v}_2, ..., \bs{v}_n \}$ is a basis of a vector space $V$ then each vector $\bs{v}$ in $V$ can be expressed as a linear combination of the basis in \emph{exactly one way}.
+	\item If one basis of a vector space $V$ contains $n$ vectors then every basis of $V$ contains $n$ vectors.
+	\item If $W$ is a non-zero subspace of $V$ and $V$ has dimension $n$ then $\dim W$ $\leq n$  with $\dim W$ $=n$ if and only if $W=V$.
+	\item In a vector space $V$ of dimension $n$, every linearly independent set containing fewer than $n$ vectors can be extended to a basis of $V$, and every spanning set of $V$ with more than $n$ vectors contains a basis of $V$ where a spanning set is the span of the set of vectors in $V$. Moreover, every linearly independent set of $n$ vectors is a basis of $V$ and every set of $n$ vectors which spans $V$ is a basis of $V$.
+\end{itemize}
+
+\subsection{Vector subspaces}.
+Let $S$ be a non-empty subset of a vector space $V$. If $S$ itself satisfies the 10 vector space axioms with the same operations of addition and multiplication by a scalar then $S$ is called a \emph{subspace} of $V$. 
+
+A subset $S$ of a vector space $V$ is a subspace of $V$ if $S$ is not empty and $S$ satisfies A1 and S1. If the zero vector of $V$ is \emph{not} in $S$ then $S$ is not a subspace.
+
+The addition of vector spaces is defined below:
+$$V + U = \{\bs{v} + \bs{u}: \bs{v}\in V,\bs{w}\in U\}.$$
+A decomposition of a vector space $W$ to $V$ and $U$ is written as 
+$$  W = V \oplus U$$ 
+where $V \cap U = \{\bs{0}\}$. We also say $W$ is the direct sum of $V$ and $U$. 
+
+
+
+\section{Symmetric Matrices}
+\begin{itemize}
+	\item $\bs{A}$ is symmetric if $\bs{A} = \bs{A}^\tp$.
+	\item $\bs{A}\bs{A}^\tp$ and $\bs{A}^\tp\bs{A}$ are symmetric. 
+	\item $\bs{A}^\tp\bs{A} = \bs{0}$ implies $\bs{A} = \bs{0}$.
+	\item $\text{tr}\left(\bs{A}^\tp\bs{A}\right) = \bs{0}$ implies $\bs{A} = \bs{0}$.
+\end{itemize}
+
+\section{Matrix Factorisation}
+\begin{itemize}
+	\item Suppose a non-full rank matrix $\bs{A} = \begin{bmatrix}
+	\bs{X} & \bs{Y} \\
+	\bs{Z} & \bs{W} 
+	\end{bmatrix}$ where $\bs{X}$ is full rank. Then 
+	$$\bs{A} = \begin{bmatrix}
+	\bs{I} \\
+	\bs{Z}\bs{X}^{-1} 
+	\end{bmatrix} \bs{X} \begin{bmatrix}
+	\bs{I} & \bs{X}^{-1}\bs{Y}
+	\end{bmatrix}$$ 
+	\item If matrix $\bs{A}$ is not in above form then there exists permutation matrices $\bs{P}$ and $\bs{Q}$ such that $\bs{P}\bs{A}\bs{Q}$ is in the above form. 
+\end{itemize}
+
+\section{Solving Linear Equations}
+\begin{itemize}
+	\item The consistent equations $\bs{A}\bs{x} = \bs{y}$ for $\bs{y} \neq \bs{0}$ have a solution $\bs{x} = \bs{G}\bs{y}$ if and only if $\bs{A}\bs{G}\bs{A}=\bs{A}$.
+	\item $\bs{A}\bs{x} = \bs{y}$ have solutions 
+	$$\tilde{\bs{x}} = \bs{G}\bs{y} + (\bs{G}\bs{A} - \bs{I})\bs{z} $$
+	for $\bs{G}=\bs{A}^-$ and any arbitrary vector $\bs{z}$. 
+\end{itemize}
+
+\section{Direct Sum}
+\begin{itemize}
+	\item $\bs{A} \oplus \bs{B} = \begin{bmatrix}
+	\bs{A} & \bs{0} \\
+	\bs{0} & \bs{B}
+	\end{bmatrix}$
+	\item $(\bs{A} \oplus \bs{B}) + (\bs{C} \oplus \bs{D}) = (\bs{A} + \bs{C}) \oplus (\bs{B} + \bs{D})$
+	\item $(\bs{A}\oplus \bs{B})(\bs{C} \oplus \bs{D}) =  \bs{A}\bs{C} \oplus \bs{B}\bs{D}$
+	\item $(\bs{A} \oplus \bs{B})^{-1} = \bs{A}^{-1}\oplus \bs{B}^{-1}$
+\end{itemize}
+
+\section{Direct Product}
+\begin{itemize}
+	\item $(\bs{A} \otimes \bs{B})^\tp = \bs{A}^\tp\otimes \bs{B}^\tp$
+	\item For vectors $\bs{x}$ and $\bs{y}$: $\bs{x}^\tp\otimes \bs{y} = \bs{y}\bs{x}^\tp = \bs{y} \otimes \bs{x}^\tp$
+	\item $\begin{bmatrix}
+	\bs{A}_1 & \bs{A}_2
+	\end{bmatrix} \otimes \bs{B} = \begin{bmatrix}
+	\bs{A}_1 \otimes \bs{B} & \bs{A}_2 \otimes \bs{B}
+	\end{bmatrix}$
+	\item $(\bs{A} \otimes \bs{B})(\bs{X}\otimes \bs{Y}) = \bs{A}\bs{X} \otimes \bs{B}\bs{Y} $
+	\item $(\bs{A} \otimes \bs{B})^{-1} = \bs{A}^{-1}\otimes \bs{B}^{-1}$
+	\item $\tr{\bs{A}\otimes \bs{B}} = \tr{\bs{A}}\tr{\bs{B}}$
+	\item $|\bs{A}_{p\times p}\otimes \bs{B}_{m\times m }| = |\bs{A}|^m|\bs{B}|^p$
+	\item Eigenvalues of $\bs{A}\otimes \bs{B}$ are products of eigenvalues of $\bs{A}$ with those of $\bs{B}$. 
+\end{itemize}
+
+
+\section{The matrix $\bs{X}^\tp \bs{X}$}
+	Suppose $\bs{G}$ is the generalised inverse of $\bs{X}^\tp\bs{X}$ then 
+	\begin{itemize}
+		\item $\bs{G}^\tp$ is also a generalised inverse of $\bs{X}^\tp\bs{X}$.
+		\item $\bs{X}\bs{G}\bs{X}^\tp\bs{X} = \bs{X}$, i.e. $\bs{G}\bs{X}^\tp$ is a generalised inverse of $\bs{X}$.
+		\item $\bs{X}\bs{G}\bs{X}^\tp$ is invariant to $\bs{G}$.
+		\item $\bs{X}\bs{G}\bs{X}^\tp$ is symmetric whether $\bs{G}$ is or not. 
+	\end{itemize}
+
+\section{Least Squares Equations}
+The following are invariant to the choice of $\left(\bs{X}^\tp\bs{X}\right)^-$:
+\begin{itemize}
+	\item the vector of predicted values $\hat{\bs{y}} = \bs{X}\left(\bs{X}^\tp\bs{X}\right)^-\bs{X}^\tp \bs{y}$;
+	\item The residual sum of squares $(\bs{y} - \hat{\bs{y}})^\tp (\bs{y} - \hat{\bs{y}})$. 
+\end{itemize}
+
+\small{\bibliography{/Users/emi/Dropbox/Articles/library}
+	\bibliographystyle{plain}\vspace{0.75in}}
+
+\end{multicols}
+\end{document}

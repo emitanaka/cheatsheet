@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: udpating_strategies.aux
+The style file: plain.bst
+Database file #1: /Users/emi/Dropbox/Articles/library.bib
+You've used 3 entries,
+            2118 wiz_defined-function locations,
+            521 strings with 4514 characters,
+and the built_in function-call counts, 947 in all, are:
+= -- 98
+> -- 33
+< -- 0
++ -- 13
+- -- 10
+* -- 72
+:= -- 164
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 14
+chr.to.int$ -- 0
+cite$ -- 3
+duplicate$ -- 33
+empty$ -- 78
+format.name$ -- 10
+if$ -- 190
+int.to.chr$ -- 0
+int.to.str$ -- 3
+missing$ -- 3
+newline$ -- 18
+num.names$ -- 6
+pop$ -- 8
+preamble$ -- 1
+purify$ -- 11
+quote$ -- 0
+skip$ -- 23
+stack$ -- 0
+substring$ -- 78
+swap$ -- 3
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 12
+warning$ -- 0
+while$ -- 12
+width$ -- 4
+write$ -- 35

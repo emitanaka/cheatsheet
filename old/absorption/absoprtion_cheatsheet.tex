@@ -1,0 +1,250 @@
+\documentclass[12pt,landscape, a4paper]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\tp}{{\!\scriptscriptstyle \top}}
+\RequirePackage{amsmath,amssymb,hyperref}
+%\usefonttheme[onlymath]{serif}
+
+%%%% FONT %%%%%%%%%%%%%%
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+% fix markign
+\geometry{top=0.2cm,left=0.2cm,right=0.2cm,bottom=1.1cm} 
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+\newcommand{\tr}[1]{{\rm tr}\left(#1\right)}
+\newcommand{\rank}[1]{{\rm rank}\left(#1\right)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\RequirePackage{titlesec, xcolor}
+\titleformat{name=\section,numberless}{\large\scshape\raggedright}{}{0em}{\colorsectionnonumber}[\titlerule]
+\titleformat{name=\subsection,numberless}{}{}{0em}{\colorsubsectionnonumber}
+\newcommand{\colorsectionnonumber}[1]{%
+	\colorbox{green!20}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+\newcommand{\colorsubsectionnonumber}[1]{%
+	\colorbox{green!10}{\parbox{\dimexpr0.324\textwidth-2\fboxsep}{#1}}}
+
+% make a bigger \dot
+\usepackage{accents}
+\newcommand*{\dt}[1]{%
+	\accentset{\mbox{\large\bfseries .}}{#1}}
+
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+% Turn on the style
+\pagestyle{fancy}
+% Clear the header and footer
+\fancyhead{}
+\fancyfoot{}
+% Set the right side of the footer to be the page number
+\fancyfoot[R]{\scriptsize Copyright \copyright\ 2017 Emi Tanaka \qquad \url{emi.tanaka@sydney.edu.au} \hfill Page~\thepage}
+
+\definecolor{Melon}             {RGB}{255, 129, 141} 	% Melon  Approximate PANTONE 177
+\definecolor{RubineRed}         {RGB}{202, 0, 93}       % RubineRed  Approximate PANTONE RUBINE-RED
+\definecolor{Cerulean}          {RGB}{0, 122, 201}      % Cerulean  Approximate PANTONE 3005
+\newcommand{\colU}[1]{{\color{Melon}{#1}}}
+\newcommand{\colT}[1]{{\color{RubineRed}{#1}}}
+\newcommand{\colW}[1]{{\color{Cerulean}{#1}}}
+
+% the right brace for cases
+\newenvironment{rcases}
+{\left.\begin{aligned}}
+	{\end{aligned}\right\rbrace}
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+
+\begin{center}
+     \Large{\textbf{Absorption Cheat Sheet}} \\
+\end{center}
+
+\section{Matrix Partition}
+Suppose that the matrix of interest is partitioned as 
+$$\begin{bmatrix}
+\colU{\bs{U}} & \colT{\bs{T}} \\
+\bs{T}^\tp & \colW{\bs{W}} \\
+\end{bmatrix}$$
+where $\colU{\bs{U}}$ is a square non-singular matrix. 
+
+\section{Absorption}
+The absorption by $\colU{\bs{U}}$ is given by 
+$$\bs{W}^* = \colW{\bs{W}} - \bs{T}^\tp\colU{\bs{U}}^{-1}\colT{\bs{T}}. $$
+
+Note this is a special case of \textbf{Schur complement}.\\[3mm]
+
+Row by row absorption is equivalent to repeated application of the formula for $\bs{W}^*$, where $\colU{\bs{U}}$ is a scalar (the pivot) and $\colT{\bs{T}}$ is a row vector.
+
+\section{Gaussian Elimination}
+Note 
+\begin{eqnarray}
+\colU{\bs{U}}\bs{x}  + \colT{\bs{T}}\bs{y} \label{eq:ab1}\\ 
+\bs{T}^\tp\bs{x}  + \colW{\bs{W}}\bs{y} \label{eq:ab2}
+\end{eqnarray}
+Pre-multiplying \eqref{eq:ab1} by $\bs{T}^\tp\colU{\bs{U}}^{-1}$ results in $ \bs{T}^\tp\bs{x} + \bs{T}^\tp\bs{U}^{-1}\bs{T}\bs{y}$ and Gaussian elimination in \eqref{eq:ab2} results in $(\bs{W} - \bs{T}^\tp\bs{U}^-\bs{T})\bs{y}$. That is the absorption is the ``coefficient'' of $\bs{y}$ after elimination of $\bs{x}$.
+
+\section{Matrix Inversion}
+For inversion of symmetric positive definite matrix $\bs{E}^{n\times n}$, set 
+$$\begin{bmatrix}
+{\color{Melon}\bs{E}}& {\color{RubineRed}\bs{I}_n}\\
+\bs{I}_n & {\color{Cerulean}\bs{0}^{n\times n}} \\
+\end{bmatrix}$$
+then $\bs{W}^* = -\bs{E}^{-1}$.
+
+\section{$\bs{V}^{-1}$ in ML}
+$$\begin{bmatrix}
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}}&{\color{RubineRed}\bs{Z}^\tp\bs{R}^{-1}}\\
+\bs{R}^{-1}\bs{Z}& {\color{Cerulean}\bs{R}^{-1}} \\
+\end{bmatrix}$$
+then $\bs{W}^* = \bs{V}^{-1}$.
+
+\section{$\bs{P}$ in REML}
+$$\begin{bmatrix} {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{Z}} & {\color{RubineRed}\bs{X}^\tp\bs{R}^{-1}}\\
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}} & {\color{RubineRed}\bs{Z}^\tp\bs{R}^{-1}}\\\
+\bs{R}^{-1}\bs{X} & \bs{R}^{-1}\bs{Z} & {\color{Cerulean}\bs{R}^{-1}}
+\end{bmatrix}$$ 
+then $\bs{W}^*=\bs{P}$. 
+
+\section{Absorption in MME}
+$$\begin{bmatrix} {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{Z}} & {\color{RubineRed}\bs{X}^\tp\bs{R}^{-1}\bs{y}}\\
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}} & {\color{RubineRed}\bs{Z}^\tp\bs{R}^{-1}\bs{y} }\\\
+\bs{y}^\tp\bs{R}^{-1}\bs{X} &\bs{y}^\tp\bs{R}^{-1}\bs{Z} & {\color{Cerulean}\bs{y}^\tp\bs{R}^{-1}\bs{y}}
+\end{bmatrix}$$ 
+\subsection{Absorption of subset of fixed effects}
+Say we partition the fixed effect $\bs{\tau} = (\bs{\tau}_1^\tp, \bs{\tau}_2^\tp)^\tp$ and so the design matrix is given conformably as $\begin{bmatrix}
+\bs{X}_1 & \bs{X}_2
+\end{bmatrix}$. Then if we absorb $\bs{\tau}_2$ in the MME then the MME results in  
+$$
+\left[ \begin{array}{cc} \bs{X_1}^\tp\bs{S}\bs{X_1} & \bs{X_1}^\tp\bs{S}\bs{Z} \\
+\bs{Z}^\tp\bs{S}\bs{X_1} & \bs{Z}^\tp\bs{S}\bs{Z} + {\bs{G}}^{-1} \end{array} \right]
+\left[ \begin{array}{c} \hat{\bs{\tau}}_{\bs{1}} \\ \tilde{\bs{u}}  \end{array} \right ]
+= 
+\left[ \begin{array}{c} \bs{X_1}^\tp\bs{S}\bs{y} \\ \bs{Z}^\tp\bs{S}\bs{y} \end{array} \right ]
+$$
+where $\bs{S} = \bs{R}^{-1} - 
+\bs{R}^{-1}\bs{X}_2\left(\bs{X}_2^\tp\bs{R}^{-1}\bs{X}_2\right)^{-1}\bs{X}_2^\tp\bs{R}^{-1}$.
+
+\subsection{Absorption of subset of random effects}
+Say we partition the fixed effect $\bs{u} = (\bs{u}_1^\tp, \bs{u}_2^\tp)^\tp$ and so the design matrix is given conformably as $\begin{bmatrix}
+\bs{Z}_1 & \bs{Z}_2
+\end{bmatrix}$. Then if we absorb $\bs{u}_1$ and $\bs{\tau}$  in the MME then we have
+$$ \left(\bs{Z}_2^\tp\bs{S}\bs{Z}_2 + \bs{G}_2^{-1} \right)\tilde{\bs{u}}_2 = \bs{Z}_2^\tp \bs{S}\bs{y}$$
+where $\bs{S} = \bs{R}^{-1} - 
+\bs{R}^{-1}\begin{bmatrix}
+\bs{X} & \bs{Z}_1
+\end{bmatrix}
+\begin{bmatrix}
+\bs{X}^\tp\bs{R}^{-1}\bs{X} & \bs{X}^\tp\bs{R}^{-1}\bs{Z}_1 \\
+\bs{Z}_1^\tp\bs{R}^{-1}\bs{X} & \bs{Z}_1^\tp\bs{R}^{-1}\bs{Z}_1 + \bs{G}_1^{-1}
+\end{bmatrix}^{-1}\begin{bmatrix}
+\bs{X}^\tp \\ 
+\bs{Z}_1^\tp
+\end{bmatrix}\bs{R}^{-1}$.
+\begin{eqnarray}
+\bs{S} &=& \bs{R}^{-1} - 
+\bs{R}^{-1}\begin{bmatrix}
+\bs{X} & \bs{Z}_1
+\end{bmatrix}
+\begin{bmatrix}
+\bs{X}^\tp\bs{R}^{-1}\bs{X} & \bs{X}^\tp\bs{R}^{-1}\bs{Z}_1 \\
+\bs{Z}_1^\tp\bs{R}^{-1}\bs{X} & \bs{Z}_1^\tp\bs{R}^{-1}\bs{Z}_1 + \bs{G}_1^{-1}
+\end{bmatrix}^{-1}\begin{bmatrix}
+\bs{X}^\tp \\ 
+\bs{Z}_1^\tp
+\end{bmatrix}\bs{R}^{-1}\\
+&=& \bs{R}^{-1} - 
+\bs{R}^{-1}\begin{bmatrix}
+\bs{X} & \bs{Z}_1
+\end{bmatrix}
+(\bs{R}^{-1} - \bs{R}^{-1}\bs{Z}_1(\bs{Z}_1^\tp\bs{R}^{-1}\bs{Z}_1 + \bs{G}^{-1}_1)^{-1}\bs{Z}^\tp_1\bs{R}^{-1})
+\begin{bmatrix}
+\bs{X}^\tp \\ 
+\bs{Z}_1^\tp
+\end{bmatrix}\bs{R}^{-1}\\
+\end{eqnarray}
+
+
+
+\section{$\bs{Z}^\tp\bs{P}\bs{Z}$ -- Method 1}
+$$\begin{bmatrix} {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{Z}} & {\color{RubineRed}\bs{X}^\tp\bs{R}^{-1}\bs{Z}}\\
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}} & {\color{RubineRed}\bs{Z}^\tp\bs{R}^{-1}\bs{Z}}\\\
+\bs{Z}^\tp\bs{R}^{-1}\bs{X} & \bs{Z}^\tp\bs{R}^{-1}\bs{Z} & {\color{Cerulean}\bs{Z}^\tp\bs{R}^{-1}\bs{Z}}
+\end{bmatrix}$$ 
+then $\bs{W}^* = \bs{Z}^\tp\bs{P}\bs{Z}$. 
+
+\section{$\bs{Z}^\tp\bs{P}\bs{Z}$ -- Method 2}
+$$\begin{bmatrix} {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{Z}} & {\color{RubineRed}\bs{0}}\\
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}} & {\color{RubineRed}\bs{G}^{-1} }\\\
+\bs{0} &\bs{G}^{-1} & {\color{Cerulean}\bs{G}^{-1}}
+\end{bmatrix}$$ 
+then $\bs{W}^* = \bs{Z}^\tp\bs{P}\bs{Z}$.  	
+
+\section{$\bs{y}^\tp\bs{P}\bs{y}$}
+$$\begin{bmatrix} {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{X}^\tp\bs{R}^{-1}\bs{Z}} & {\color{RubineRed}\bs{X}^\tp\bs{R}^{-1}\bs{y}}\\
+{\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{X}} & {\color{Melon}\bs{Z}^\tp\bs{R}^{-1}\bs{Z} + \bs{G}^{-1}} & {\color{RubineRed}\bs{Z}^\tp\bs{R}^{-1}\bs{y} }\\\
+\bs{y}^\tp\bs{R}^{-1}\bs{X} &\bs{y}^\tp\bs{R}^{-1}\bs{Z} & {\color{Cerulean}\bs{y}^\tp\bs{R}^{-1}\bs{y}}
+\end{bmatrix}$$ 
+then $\bs{W}^* = \bs{y}^\tp\bs{P}\bs{y}$. 
+
+\section{Determinant}
+The determinant of $\bs{U}$ is evaluated by the product of the non-zero pivots. 
+
+\section{Calculating the exact $\bs{A}^{-1}$ for sub-populations}
+Partition $\bs{A}^{-1}$ into two parts: animal to be absorbed in \colU{$\bs{U}$} and animals that are to remain in \colW{$\bs{W}$}. The $\bs{W}^*$ is the exact inverse relationship matrix for the remaining selected animals. 
+
+
+%\section{Key References}
+%\nocite{Henderson1949}
+%\nocite{Smith2005}
+%\nocite{*} % Insert publications even if they are not cited in the poster
+\small{\bibliography{/Users/emi/Dropbox/Articles/library}
+	\bibliographystyle{plain}\vspace{0.75in}}
+\end{multicols}
+\end{document}
